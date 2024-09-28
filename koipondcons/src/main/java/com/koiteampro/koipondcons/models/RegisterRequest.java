@@ -1,6 +1,6 @@
-package com.koiteampro.koipondcons.model;
+package com.koiteampro.koipondcons.models;
 
-import com.koiteampro.koipondcons.entity.Role;
+import com.koiteampro.koipondcons.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

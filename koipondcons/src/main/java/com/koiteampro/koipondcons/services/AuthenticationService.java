@@ -1,11 +1,12 @@
-package com.koiteampro.koipondcons.service;
+package com.koiteampro.koipondcons.services;
 
-import com.koiteampro.koipondcons.entity.Account;
+import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.exception.DuplicateEntity;
-import com.koiteampro.koipondcons.model.AccountResponse;
-import com.koiteampro.koipondcons.model.LoginRequest;
-import com.koiteampro.koipondcons.model.RegisterRequest;
-import com.koiteampro.koipondcons.repository.AccountRepository;
+import com.koiteampro.koipondcons.models.AccountResponse;
+import com.koiteampro.koipondcons.models.EmailDetail;
+import com.koiteampro.koipondcons.models.LoginRequest;
+import com.koiteampro.koipondcons.models.RegisterRequest;
+import com.koiteampro.koipondcons.repositories.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    EmailService emailService;
+
     public AccountResponse register(RegisterRequest registerRequest) {
         Account account = modelMapper.map(registerRequest, Account.class);
         try {
@@ -42,6 +46,14 @@ public class AuthenticationService implements UserDetailsService {
             String originPassword = account.getPassword();
             account.setPassword(passwordEncoder.encode(originPassword));
             Account newAccount = accountRepository.save(account);
+
+            //sau khi đăng kí thành công, gửi mail về cho người dùng
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(newAccount);
+            emailDetail.setSubject("Welcome to B-Learning, ");
+            emailDetail.setLink("https://www.google.com/");
+            emailService.sendEmail(emailDetail);
+
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
             if (e.getMessage().contains(account.getEmail())) {

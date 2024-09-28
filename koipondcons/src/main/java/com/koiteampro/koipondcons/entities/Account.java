@@ -1,6 +1,7 @@
-package com.koiteampro.koipondcons.entity;
+package com.koiteampro.koipondcons.entities;
 
-import jakarta.annotation.Nullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.koiteampro.koipondcons.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,6 +11,8 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,32 +23,50 @@ import java.util.List;
 public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
     @NotBlank(message = "Vui lòng nhập họ và tên!")
-    String name;
+    private String name;
 
-    String avatar = "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg";
+    private String avatar = "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg";
 
     @Column(unique = true)
     @NotBlank(message = "Vui lòng nhập email!")
     @Email(message = "Không đúng định dạng email!")
-    String email;
+    private String email;
 
     @Pattern(regexp = "^(84|0)+[3|5|7|8|9]\\d{8}$", message = "Số điện thoại không hợp lệ!")
-    String phone;
+    private String phone;
 
-    String address;
+    private String address;
 
     @NotBlank(message = "Vui lòng nhập mật khẩu")
     @Size(min = 6, message = "Mật khẩu phải chứa ít nhất 6 kí tự!")
-    String password;
+    private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    Role role;
+    private Role role;
 
-    boolean isEnabled = true;
+    private LocalDate dateCreate;
+
+    private boolean isEnabled = true;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Notification> notificationList;
+
+    @OneToMany(mappedBy = "consultantAccount", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ConstructionOrder> consultantOrderList;
+
+    @OneToMany(mappedBy = "designerAccount", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<DesignDrawing> designDrawingList;
+
+    @OneToMany(mappedBy = "constructorAccount", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<StaffConstructionDetail> staffConstructionDetailList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -57,7 +78,7 @@ public class Account implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return this.email;
     }
 
     @Override

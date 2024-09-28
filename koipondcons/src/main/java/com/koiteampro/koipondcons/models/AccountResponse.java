@@ -1,7 +1,9 @@
-package com.koiteampro.koipondcons.model;
+package com.koiteampro.koipondcons.models;
 
-import com.koiteampro.koipondcons.entity.Role;
+import com.koiteampro.koipondcons.enums.Role;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class AccountResponse {
@@ -12,5 +14,6 @@ public class AccountResponse {
     String phone;
     String address;
     Role role;
+    LocalDate dateCreate;
     String token;
 }

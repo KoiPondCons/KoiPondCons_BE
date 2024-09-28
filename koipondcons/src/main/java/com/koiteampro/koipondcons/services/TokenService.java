@@ -1,7 +1,7 @@
-package com.koiteampro.koipondcons.service;
+package com.koiteampro.koipondcons.services;
 
-import com.koiteampro.koipondcons.entity.Account;
-import com.koiteampro.koipondcons.repository.AccountRepository;
+import com.koiteampro.koipondcons.entities.Account;
+import com.koiteampro.koipondcons.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

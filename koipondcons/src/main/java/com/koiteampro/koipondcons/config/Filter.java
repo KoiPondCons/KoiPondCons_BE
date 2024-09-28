@@ -1,8 +1,8 @@
 package com.koiteampro.koipondcons.config;
 
-import com.koiteampro.koipondcons.entity.Account;
+import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.exception.AuthenException;
-import com.koiteampro.koipondcons.service.TokenService;
+import com.koiteampro.koipondcons.services.TokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -37,7 +37,10 @@ public class Filter extends OncePerRequestFilter {
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/api/login",
-            "/api/register"
+            "/api/register",
+            "/submitOrder",
+            "/vnpay-payment-return",
+            "/"
     );
 
     public boolean isPublic(String uri) {

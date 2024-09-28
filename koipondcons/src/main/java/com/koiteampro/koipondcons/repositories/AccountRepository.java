@@ -1,6 +1,6 @@
-package com.koiteampro.koipondcons.repository;
+package com.koiteampro.koipondcons.repositories;
 
-import com.koiteampro.koipondcons.entity.Account;
+import com.koiteampro.koipondcons.entities.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {

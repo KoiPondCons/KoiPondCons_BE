@@ -1,6 +1,6 @@
 package com.koiteampro.koipondcons.config;
 
-import com.koiteampro.koipondcons.service.AuthenticationService;
+import com.koiteampro.koipondcons.services.AuthenticationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
