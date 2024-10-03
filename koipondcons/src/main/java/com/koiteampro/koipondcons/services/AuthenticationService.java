@@ -1,22 +1,28 @@
 package com.koiteampro.koipondcons.services;
 
 import com.koiteampro.koipondcons.entities.Account;
+import com.koiteampro.koipondcons.entities.Customer;
+import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.DuplicateEntity;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.models.request.LoginRequest;
 import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
+import com.koiteampro.koipondcons.repositories.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
@@ -38,13 +44,24 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    CustomerRepository customerRepository;
+
     public AccountResponse register(RegisterRequest registerRequest) {
         Account account = modelMapper.map(registerRequest, Account.class);
         try {
             //mã hóa password
             String originPassword = account.getPassword();
             account.setPassword(passwordEncoder.encode(originPassword));
+            account.setDateCreate(LocalDate.now());
             Account newAccount = accountRepository.save(account);
+
+            if(registerRequest.getRole() == Role.CUSTOMER) {
+                Customer customer = new Customer();
+                customer.setAccount(newAccount);
+                customer.setTotal_points(0);
+                customerRepository.save(customer);
+            }
 
             //sau khi đăng kí thành công, gửi mail về cho người dùng
 //            EmailDetail emailDetail = new EmailDetail();
@@ -79,10 +96,15 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
+    public Account getCurrentAccount() {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return accountRepository.findAccountById(account.getId());
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return accountRepository.findAccountByEmailAndIsEnabledTrue(email);
     }
 
-    
+
 }

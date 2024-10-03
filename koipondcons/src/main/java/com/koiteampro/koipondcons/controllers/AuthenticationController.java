@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 //@SecurityRequirement(name = "api")  //yêu cầu xác thực tài khoản để truy cập API
 public class AuthenticationController {
 

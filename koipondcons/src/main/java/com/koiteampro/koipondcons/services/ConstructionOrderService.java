@@ -2,6 +2,7 @@ package com.koiteampro.koipondcons.services;
 
 import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.ConstructionOrder;
+import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.entities.Quotation;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.exception.NotFoundException;
@@ -10,6 +11,7 @@ import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
+import com.koiteampro.koipondcons.repositories.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,12 @@ public class ConstructionOrderService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
     ModelMapper modelMapper;
 
     public ConstructionOrderResponse createConstructionOrder(ConstructionOrderRequest constructionOrderRequest) {
@@ -41,6 +49,15 @@ public class ConstructionOrderService {
         quotation.setConstructionOrder(constructionOrder);
 
         constructionOrder.setQuotation(quotation);
+
+        Account account = authenticationService.getCurrentAccount();
+        Customer customer = customerRepository.findByAccountId(account.getId());
+
+        constructionOrder.setCustomer(customer);
+        customer.getConstructionOrderList().add(constructionOrder);
+
+        System.out.println(customer.getId());
+
 
         constructionOrderRepository.save(constructionOrder);
 

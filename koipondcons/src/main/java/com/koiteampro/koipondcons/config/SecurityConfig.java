@@ -41,15 +41,17 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception {
+
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register").permitAll()
                                 .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**").hasAuthority("MANAGER")
-                                .requestMatchers("/api/orders").hasAnyAuthority("CUSTOMER", "MANAGER")
+                                .requestMatchers("/api/orders").hasAnyAuthority("MANAGER", "CUSTOMER")
                                 .anyRequest()
                                 .authenticated()
 
