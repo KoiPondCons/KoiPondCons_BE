@@ -1,8 +1,8 @@
 package com.koiteampro.koipondcons.controllers;
 
-import com.koiteampro.koipondcons.models.AccountResponse;
-import com.koiteampro.koipondcons.models.LoginRequest;
-import com.koiteampro.koipondcons.models.RegisterRequest;
+import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.request.LoginRequest;
+import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.services.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api")
 @CrossOrigin("*")
-@SecurityRequirement(name = "api")  //yêu cầu xác thực tài khoản để truy cập API
+//@SecurityRequirement(name = "api")  //yêu cầu xác thực tài khoản để truy cập API
 public class AuthenticationController {
 
     @Autowired
@@ -30,4 +30,6 @@ public class AuthenticationController {
         AccountResponse account = authenticationService.login(loginRequest);
         return ResponseEntity.ok(account);
     }
+
+
 }

@@ -13,15 +13,15 @@ public class StaffConstructionDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "construction_order_id", nullable = false)
     private ConstructionOrder constructionOrder;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "constructor_account_id", nullable = false)
     private Account constructorAccount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "construction_item_id", nullable = false)
     private ComboConstructionItem constructionItem;
 

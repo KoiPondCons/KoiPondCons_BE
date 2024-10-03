@@ -16,7 +16,7 @@ public class DesignDrawing {
     @JsonIgnore
     private ConstructionOrder constructionOrder;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "designer_account_id")
     private Account designerAccount;
 

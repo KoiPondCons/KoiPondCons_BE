@@ -12,6 +12,7 @@ public class ComboPrice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
     @ManyToOne
     @JoinColumn(name = "combo_id", nullable = false)
     private Combo combo;

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -31,22 +32,22 @@ public class Filter extends OncePerRequestFilter {
     @Qualifier("handlerExceptionResolver")
     HandlerExceptionResolver resolver;
 
-    //ai cũng có thể truy cập được
-    private final List<String> AUTH_PERMISSION = List.of(
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/swagger-resources/**",
-            "/api/login",
-            "/api/register",
-            "/submitOrder",
-            "/vnpay-payment-return",
-            "/"
-    );
-
-    public boolean isPublic(String uri) {
-        AntPathMatcher pathMatcher = new AntPathMatcher();
-        return AUTH_PERMISSION.stream().anyMatch(pattern -> pathMatcher.match(pattern, uri));
-    }
+//    //ai cũng có thể truy cập được
+//    private final List<String> AUTH_PERMISSION = List.of(
+//            "/swagger-ui/**",
+//            "/v3/api-docs/**",
+//            "/swagger-resources/**",
+//            "/api/login",
+//            "/api/register",
+//            "/submitOrder",
+//            "/vnpay-payment-return",
+//            "/"
+//    );
+//
+//    public boolean isPublic(String uri) {
+//        AntPathMatcher pathMatcher = new AntPathMatcher();
+//        return AUTH_PERMISSION.stream().anyMatch(pattern -> pathMatcher.match(pattern, uri));
+//    }
 
     public String getToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
@@ -57,14 +58,11 @@ public class Filter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        boolean isPublicApi = isPublic(request.getRequestURI());
-        if (isPublicApi)
-            filterChain.doFilter(request, response);
-        else {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
             String token = getToken(request);
             if (token == null) {
-                resolver.resolveException(request, response, null, new AuthenException("Empty token!"));
+//                resolver.resolveException(request, response, null, new AuthenException("Empty token!"));
+                filterChain.doFilter(request, response);
                 return;
             }
             Account account;
@@ -88,6 +86,6 @@ public class Filter extends OncePerRequestFilter {
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
-        }
+
     }
 }

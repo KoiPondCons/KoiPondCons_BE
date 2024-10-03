@@ -2,10 +2,9 @@ package com.koiteampro.koipondcons.services;
 
 import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.exception.DuplicateEntity;
-import com.koiteampro.koipondcons.models.AccountResponse;
-import com.koiteampro.koipondcons.models.EmailDetail;
-import com.koiteampro.koipondcons.models.LoginRequest;
-import com.koiteampro.koipondcons.models.RegisterRequest;
+import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.request.LoginRequest;
+import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -48,11 +47,11 @@ public class AuthenticationService implements UserDetailsService {
             Account newAccount = accountRepository.save(account);
 
             //sau khi đăng kí thành công, gửi mail về cho người dùng
-            EmailDetail emailDetail = new EmailDetail();
-            emailDetail.setReceiver(newAccount);
-            emailDetail.setSubject("Welcome to B-Learning, ");
-            emailDetail.setLink("https://www.google.com/");
-            emailService.sendEmail(emailDetail);
+//            EmailDetail emailDetail = new EmailDetail();
+//            emailDetail.setReceiver(newAccount);
+//            emailDetail.setSubject("Welcome to B-Learning, ");
+//            emailDetail.setLink("https://www.google.com/");
+//            emailService.sendEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
@@ -84,4 +83,6 @@ public class AuthenticationService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return accountRepository.findAccountByEmailAndIsEnabledTrue(email);
     }
+
+    
 }
