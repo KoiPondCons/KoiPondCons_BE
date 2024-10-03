@@ -1,4 +1,4 @@
-package com.koiteampro.koipondcons.models;
+package com.koiteampro.koipondcons.models.request;
 
 import com.koiteampro.koipondcons.enums.Role;
 import jakarta.validation.constraints.Email;

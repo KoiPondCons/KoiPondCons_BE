@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.config;
 
+import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.services.AuthenticationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req
+
                                 .requestMatchers("/**")
                                 .permitAll()
                                 .anyRequest()
