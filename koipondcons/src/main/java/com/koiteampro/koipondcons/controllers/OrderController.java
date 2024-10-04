@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class OrderController {
 
     @Autowired
@@ -43,5 +43,10 @@ public class OrderController {
     @GetMapping("/orders")
     public ResponseEntity getAllOrders () {
         return ResponseEntity.ok(orderService.getAllConstructionOrders());
+    }
+
+    @GetMapping("/demo")
+    public ResponseEntity demo () {
+        return ResponseEntity.ok("Okeee");
     }
 }

@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.models.response;
 
+import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import lombok.Data;
@@ -9,7 +10,11 @@ import java.time.LocalDateTime;
 @Data
 public class ConstructionOrderResponse {
 
+    private long id;
+
     private Customer customer;
+
+    private Account consultantAccount;
 
     private ConstructionOrderStatus status;
 
@@ -26,4 +31,6 @@ public class ConstructionOrderResponse {
     private LocalDateTime requestDate;
 
     private LocalDateTime confirmedDate;
+
+    private String statusDescription;
 }

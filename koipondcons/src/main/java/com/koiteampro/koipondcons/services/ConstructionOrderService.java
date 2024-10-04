@@ -107,7 +107,9 @@ public class ConstructionOrderService {
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            constructionOrderResponses.add(modelMapper.map(constructionOrder, ConstructionOrderResponse.class));
+            ConstructionOrderResponse constructionOrderResponse = modelMapper.map(constructionOrder, ConstructionOrderResponse.class);
+            constructionOrderResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
+            constructionOrderResponses.add(constructionOrderResponse);
         }
         return constructionOrderResponses;
     }
