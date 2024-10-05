@@ -56,8 +56,8 @@ public class SecurityConfig {
                         req -> req
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register").permitAll()
                                 .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**").hasAuthority("MANAGER")
-                                .requestMatchers("/api/orders").hasAnyAuthority("MANAGER", "CUSTOMER")
-                                .requestMatchers("/api/demo").permitAll()
+                                .requestMatchers("/api/orders/**", "/api/design-drawings/**").hasAnyAuthority("MANAGER", "CUSTOMER")
+                                .requestMatchers("/api/demo").hasAnyAuthority("MANAGER")
                                 .anyRequest()
                                 .authenticated()
 
@@ -74,7 +74,6 @@ public class SecurityConfig {
         configuration.addAllowedOrigin("http://localhost:5173"); // Replace with your frontend URL
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

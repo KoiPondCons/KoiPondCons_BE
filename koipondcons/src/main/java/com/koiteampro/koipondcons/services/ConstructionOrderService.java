@@ -1,9 +1,6 @@
 package com.koiteampro.koipondcons.services;
 
-import com.koiteampro.koipondcons.entities.Account;
-import com.koiteampro.koipondcons.entities.ConstructionOrder;
-import com.koiteampro.koipondcons.entities.Customer;
-import com.koiteampro.koipondcons.entities.Quotation;
+import com.koiteampro.koipondcons.entities.*;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
@@ -30,10 +27,7 @@ public class ConstructionOrderService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private AuthenticationService authenticationService;
+    private CustomerService customerService;
 
     @Autowired
     ModelMapper modelMapper;
@@ -41,6 +35,8 @@ public class ConstructionOrderService {
     public ConstructionOrderResponse createConstructionOrder(ConstructionOrderRequest constructionOrderRequest) {
 
         ConstructionOrder constructionOrder = modelMapper.map(constructionOrderRequest, ConstructionOrder.class);
+
+        ////////////////////////////////////////////
 
         Quotation quotation = new Quotation();
 
@@ -50,14 +46,22 @@ public class ConstructionOrderService {
 
         constructionOrder.setQuotation(quotation);
 
-        Account account = authenticationService.getCurrentAccount();
-        Customer customer = customerRepository.findByAccountId(account.getId());
+        //////////////////////////////////////////
+
+        DesignDrawing drawing = new DesignDrawing();
+
+        drawing.setConstructionOrder(constructionOrder);
+
+        constructionOrder.setDesignDrawing(drawing);
+
+        //////////////////////////////////////////
+
+        Customer customer = customerService.getCurrentCustomer();
 
         constructionOrder.setCustomer(customer);
         customer.getConstructionOrderList().add(constructionOrder);
 
         System.out.println(customer.getId());
-
 
         constructionOrderRepository.save(constructionOrder);
 
@@ -116,6 +120,19 @@ public class ConstructionOrderService {
 
     public List<ConstructionOrderResponse> getAllConstructionOrders() {
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAll();
+        List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
+
+        for (ConstructionOrder constructionOrder : constructionOrders) {
+            constructionOrderResponses.add(modelMapper.map(constructionOrder, ConstructionOrderResponse.class));
+        }
+
+        return constructionOrderResponses;
+    }
+
+    public List<ConstructionOrderResponse> getAllConstructionOrdersOfCustomer() {
+        Customer customer = customerService.getCurrentCustomer();
+
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerId(customer.getId());
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {

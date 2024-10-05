@@ -1,6 +1,7 @@
 package com.koiteampro.koipondcons.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.koiteampro.koipondcons.enums.DesignDrawingStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,12 +17,14 @@ public class DesignDrawing {
     @JsonIgnore
     private ConstructionOrder constructionOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "designer_account_id")
     private Account designerAccount;
 
     @Column(nullable = false)
-    private String designFile;
+    private String designFile = "N/A";
 
-    private boolean isConfirmed = false;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private DesignDrawingStatus status = DesignDrawingStatus.NOTSTART;
 }

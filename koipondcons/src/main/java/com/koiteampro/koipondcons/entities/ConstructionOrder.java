@@ -53,7 +53,7 @@ public class ConstructionOrder {
 //    @JoinColumn(name = "combo_id")
 //    private Combo combo;
 
-    @OneToOne(mappedBy = "constructionOrder", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "constructionOrder", cascade = CascadeType.PERSIST)
     private DesignDrawing designDrawing;
 
     @OneToMany(mappedBy = "constructionOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

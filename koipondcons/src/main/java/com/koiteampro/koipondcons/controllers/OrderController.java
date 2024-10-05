@@ -45,6 +45,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllConstructionOrders());
     }
 
+    @GetMapping("/orders/customer")
+    public ResponseEntity getAllOrdersOfCustomer () {
+        return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomer());
+    }
+
     @GetMapping("/demo")
     public ResponseEntity demo () {
         return ResponseEntity.ok("Okeee");

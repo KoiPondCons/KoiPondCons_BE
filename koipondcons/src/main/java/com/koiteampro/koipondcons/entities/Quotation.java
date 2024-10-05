@@ -1,6 +1,7 @@
 package com.koiteampro.koipondcons.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.koiteampro.koipondcons.enums.QuotationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,6 +34,10 @@ public class Quotation {
     private BigDecimal discountPrice = BigDecimal.ZERO;
 
     private BigDecimal finalPrice = BigDecimal.ZERO;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private QuotationStatus status = QuotationStatus.PROCESSING;
 
 //    @OneToMany(mappedBy = "quotation", fetch = FetchType.LAZY)
 //    private List<QuotationPromotion> quotationPromotionList;
