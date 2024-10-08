@@ -6,4 +6,5 @@ import lombok.Data;
 public class PromotionRequest {
     private String content;
     private float discountPercent;
+    private int pointsAvailable;
 }

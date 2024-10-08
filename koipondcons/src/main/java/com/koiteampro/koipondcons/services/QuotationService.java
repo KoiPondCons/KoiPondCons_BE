@@ -32,6 +32,9 @@ public class QuotationService {
     @Autowired
     ComboPriceRepository comboPriceRepository;
 
+    @Autowired
+    CustomerService customerService;
+
     public void addPromotionToQuotation(@PathVariable long id, @PathVariable long promotionId) {
         Optional<Quotation> quotation = quotationRepository.findById(id);
         Optional<Promotion> promotion = promotionRepository.findById(promotionId);
@@ -40,10 +43,19 @@ public class QuotationService {
             Quotation quotationToAdd = quotation.get();
             Promotion promotionToAdd = promotion.get();
 
-            quotationToAdd.getPromotions().add(promotionToAdd);
+            if (quotationToAdd.getConstructionOrder().getCustomer().getTotal_points() < promotionToAdd.getPointsAvailable()) {
+                throw new NotFoundException("Don't enough points to add promotion");
+            }
 
-            quotationRepository.save(quotationToAdd);
-            updateQuotationPrice(quotationToAdd);
+            if (!quotationToAdd.getPromotions().contains(promotionToAdd)) {
+                customerService.minusTotalPoint(quotationToAdd.getConstructionOrder().getCustomer().getId(), promotionToAdd.getPointsAvailable());
+                quotationToAdd.getPromotions().add(promotionToAdd);
+                quotationRepository.save(quotationToAdd);
+                updateQuotationPrice(quotationToAdd);
+            } else {
+                throw new NotFoundException("Promotion already exists");
+            }
+
         } else {
             throw new NotFoundException("Quotation or promotion not found");
         }
@@ -58,6 +70,7 @@ public class QuotationService {
             Promotion promotionToAdd = promotion.get();
 
             if (quotationToAdd.getPromotions().contains(promotionToAdd)) {
+                customerService.addTotalPoint(quotationToAdd.getConstructionOrder().getCustomer().getId(), promotionToAdd.getPointsAvailable());
                 quotationToAdd.getPromotions().remove(promotionToAdd);
                 quotationRepository.save(quotationToAdd);
                 updateQuotationPrice(quotationToAdd);

@@ -1,8 +1,10 @@
 package com.koiteampro.koipondcons.services;
 
+import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.entities.Promotion;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.PromotionRequest;
+import com.koiteampro.koipondcons.repositories.CustomerRepository;
 import com.koiteampro.koipondcons.repositories.PromotionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class PromotionService {
 
     @Autowired
     PromotionRepository promotionRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     public Promotion createPromotion(PromotionRequest promotionRequest) {
         Promotion promotion = modelMapper.map(promotionRequest, Promotion.class);
@@ -45,5 +50,17 @@ public class PromotionService {
         promotion.setId(id);
         promotionRepository.save(promotion);
         return promotion;
+    }
+
+    public List<Promotion> getPromotionsByCustomerAvailableForCustomer(long customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+
+        if (customer.isPresent()) {
+            Customer customer1 = customer.get();
+            int point = customer1.getTotal_points();
+            return promotionRepository.findAllByPointsAvailableLessThanEqual(point);
+        } else {
+            throw new NotFoundException("Customer not found");
+        }
     }
 }
