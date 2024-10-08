@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.config;
 
+import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.services.AuthenticationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,9 @@ public class SecurityConfig {
                                 .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**").hasAuthority("MANAGER")
                                 .requestMatchers("/api/orders/**", "/api/design-drawings/**").hasAnyAuthority("MANAGER", "CUSTOMER")
                                 .requestMatchers("/api/demo").hasAnyAuthority("MANAGER")
+
+                                .requestMatchers("/**")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated()
 

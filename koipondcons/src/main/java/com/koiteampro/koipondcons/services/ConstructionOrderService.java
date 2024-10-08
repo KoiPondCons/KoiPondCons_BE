@@ -9,6 +9,7 @@ import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.CustomerRepository;
+import com.koiteampro.koipondcons.repositories.StaffConstructionDetailRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,16 @@ public class ConstructionOrderService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private StaffConstructionDetailRepository staffConstructionDetailRepository;
+
+    @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private QuotationService quotationService;
+
+    @Autowired
+    private ComboConstructionItemService comboConstructionItemService;
     @Autowired
     ModelMapper modelMapper;
 
@@ -141,4 +150,23 @@ public class ConstructionOrderService {
 
         return constructionOrderResponses;
     }
+
+    public void setConstructorToOrder(long constructionOrderId, long constructorId) {
+        Optional<ConstructionOrder> constructionOrder = constructionOrderRepository.findById(constructionOrderId);
+        Optional<Account> constructorAccount = accountRepository.findById(constructorId);
+        if (constructionOrder.isPresent() && constructorAccount.isPresent()) {
+            Quotation quotation = constructionOrder.get().getQuotation();
+            List<ComboConstructionItem> comboConstructionItems = quotation.getCombo().getComboConstructionItemList();
+
+
+            for(ComboConstructionItem comboConstructionItem : comboConstructionItems) {
+                StaffConstructionDetail staffConstructionDetail = new StaffConstructionDetail();
+                staffConstructionDetail.setConstructionItem(comboConstructionItem);
+                staffConstructionDetail.setConstructionOrder(constructionOrder.get());
+                staffConstructionDetail.setConstructorAccount(constructorAccount.get());
+                staffConstructionDetailRepository.save(staffConstructionDetail);
+            }
+        }
+    }
+
 }
