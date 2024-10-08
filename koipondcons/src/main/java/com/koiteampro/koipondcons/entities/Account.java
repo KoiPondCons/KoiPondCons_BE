@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 //implements UserDetails: đánh dấu cho spring security biết đây là bảng lưu account đăng nhập
 public class Account implements UserDetails {
     @Id
@@ -52,28 +55,29 @@ public class Account implements UserDetails {
 
     private boolean isEnabled = true;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     List<Notification> notificationList;
 
-    @OneToMany(mappedBy = "consultantAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "consultantAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ConstructionOrder> consultantOrderList;
 
-    @OneToMany(mappedBy = "designerAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "designerAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DesignDrawing> designDrawingList;
 
-    @OneToMany(mappedBy = "constructorAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "constructorAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<StaffConstructionDetail> staffConstructionDetailList;
 
+    public Account(long id) {
+        this.id = id;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if (this.role != null)
-            authorities.add(new SimpleGrantedAuthority(this.role.toString()));
-        return authorities;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

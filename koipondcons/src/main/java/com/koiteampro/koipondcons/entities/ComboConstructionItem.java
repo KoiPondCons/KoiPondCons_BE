@@ -13,8 +13,10 @@ public class ComboConstructionItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+//    @ManyToOne(fetch = FetchType.LAZY) /////////
     @ManyToOne
     @JoinColumn(name = "combo_id", nullable = false)
+//    @JsonIgnore
     private Combo combo;
 
     @Column(nullable = false)
@@ -22,7 +24,7 @@ public class ComboConstructionItem {
 
     private int duration;
 
-    @OneToMany(mappedBy = "constructionItem", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "constructionItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<StaffConstructionDetail> staffConstructionDetailList;
 }

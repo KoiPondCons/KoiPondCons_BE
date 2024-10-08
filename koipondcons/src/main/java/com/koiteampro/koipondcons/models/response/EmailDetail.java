@@ -1,4 +1,5 @@
-package com.koiteampro.koipondcons.models.request;
+
+package com.koiteampro.koipondcons.models.response;
 
 import com.koiteampro.koipondcons.entities.Account;
 import lombok.Data;

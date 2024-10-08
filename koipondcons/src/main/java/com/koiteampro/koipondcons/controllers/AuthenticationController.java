@@ -6,6 +6,9 @@ import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.models.request.SetRoleRequest;
 import com.koiteampro.koipondcons.models.request.UpdateAccountRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.request.LoginRequest;
+import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.services.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -20,8 +23,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin("*")
-@SecurityRequirement(name = "api")  //yêu cầu xác thực tài khoản để truy cập API
+@CrossOrigin(origins = "*")
+//@SecurityRequirement(name = "api")  //yêu cầu xác thực tài khoản để truy cập API
 public class AuthenticationController {
 
     @Autowired
@@ -98,4 +101,6 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid role");
         }
     }
+
+
 }

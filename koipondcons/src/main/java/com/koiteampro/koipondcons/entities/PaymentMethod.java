@@ -16,7 +16,7 @@ public class PaymentMethod {
     @Column(nullable = false)
     private String methodName;
 
-    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ConsOrderPayment> consOrderPaymentList;
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -17,8 +18,21 @@ public class Promotion {
 
     private float discountPercent;
 
-    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "promotions", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<QuotationPromotion> quotationPromotionList;
+    private Set<Quotation> quotations;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Promotion that = (Promotion) o;
+        return id == that.id;
+    }
+
+
+//    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    private List<QuotationPromotion> quotationPromotionList;
 
 }

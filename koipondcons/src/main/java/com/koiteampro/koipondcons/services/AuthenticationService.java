@@ -4,11 +4,14 @@ import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.DuplicateEntity;
-import com.koiteampro.koipondcons.models.request.EmailDetail;
+import com.koiteampro.koipondcons.models.response.EmailDetail;
 import com.koiteampro.koipondcons.models.request.LoginRequest;
 import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.models.request.UpdateAccountRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.request.LoginRequest;
+import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +32,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import java.time.LocalDate;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
@@ -53,6 +58,7 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     EmailService emailService;
 
+
     public AccountResponse register(RegisterRequest registerRequest) {
         Account account = modelMapper.map(registerRequest, Account.class);
         try {
@@ -72,7 +78,7 @@ public class AuthenticationService implements UserDetailsService {
             //sau khi đăng kí thành công, gửi mail về cho người dùng
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(newAccount);
-            emailDetail.setSubject("Hieu Ngu");
+            emailDetail.setSubject("Welcome to B-Learning, ");
             emailDetail.setLink("https://www.google.com/");
             emailService.sendEmail(emailDetail);
 
@@ -100,6 +106,11 @@ public class AuthenticationService implements UserDetailsService {
         } catch (Exception e) {
             throw new EntityNotFoundException("Mật khẩu không đúng hoặc email không tồn tại!");
         }
+    }
+
+    public Account getCurrentAccount() {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return accountRepository.findAccountById(account.getId());
     }
 
     @Override
@@ -202,4 +213,6 @@ public class AuthenticationService implements UserDetailsService {
         accountRepository.save(account);
         return true;
     }
+
+
 }

@@ -1,6 +1,9 @@
 package com.koiteampro.koipondcons.models.request;
 
 import com.koiteampro.koipondcons.enums.Role;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -23,5 +26,7 @@ public class RegisterRequest {
     @Size(min = 6, message = "Password must be at least 6 characters!")
     String password;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     Role role;
 }

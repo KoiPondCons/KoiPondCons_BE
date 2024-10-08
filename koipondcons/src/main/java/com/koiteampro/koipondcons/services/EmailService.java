@@ -1,6 +1,6 @@
 package com.koiteampro.koipondcons.services;
 
-import com.koiteampro.koipondcons.models.request.EmailDetail;
+import com.koiteampro.koipondcons.models.response.EmailDetail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

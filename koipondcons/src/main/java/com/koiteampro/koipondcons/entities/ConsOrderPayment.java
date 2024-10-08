@@ -13,7 +13,7 @@ public class ConsOrderPayment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "construction_order_id", nullable = false)
     private ConstructionOrder constructionOrder;
 
@@ -28,7 +28,7 @@ public class ConsOrderPayment {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 }

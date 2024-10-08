@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koiteampro.koipondcons.enums.PointAction;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,15 +19,19 @@ public class Customer {
 
     private double total_points;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    public Customer(long id) {
+        this.id = id;
+    }
+
+    @OneToOne
     @JoinColumn(name = "account_id", unique = true, nullable = false)
     Account account;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PointHistory> pointHistoryList;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ConstructionOrder> constructionOrderList;
 }

@@ -24,7 +24,7 @@ public class ConstructionOrder {
     private ConstructionOrderStatus status = ConstructionOrderStatus.REQUESTED;
 
     @ManyToOne
-    @JoinColumn(name = "consultant_account_id", nullable = false)
+    @JoinColumn(name = "consultant_account_id", nullable = true)
     private Account consultantAccount;
 
     @ManyToOne
@@ -41,7 +41,7 @@ public class ConstructionOrder {
 
     private String pondAddress;
 
-    private float pondVolume;
+//    private float pondVolume;
 
     private boolean isDesigned;
 
@@ -49,17 +49,21 @@ public class ConstructionOrder {
 
     private LocalDateTime confirmedDate;
 
-    @OneToOne(mappedBy = "constructionOrder", cascade = CascadeType.ALL)
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "combo_id")
+//    private Combo combo;
+
+    @OneToOne(mappedBy = "constructionOrder", cascade = CascadeType.PERSIST)
     private DesignDrawing designDrawing;
 
-    @OneToMany(mappedBy = "constructionOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "constructionOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<StaffConstructionDetail> staffConstructionDetailList;
 
-    @OneToMany(mappedBy = "constructionOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "constructionOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ConsOrderPayment> consOrderPaymentList;
 
-    @OneToOne(mappedBy = "constructionOrder", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "constructionOrder", cascade = CascadeType.PERSIST)
     private Quotation quotation;
 }
