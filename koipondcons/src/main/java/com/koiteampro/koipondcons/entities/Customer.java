@@ -17,7 +17,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private double total_points;
+    private int total_points;
 
     public Customer(long id) {
         this.id = id;

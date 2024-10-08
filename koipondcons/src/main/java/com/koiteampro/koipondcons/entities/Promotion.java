@@ -18,6 +18,8 @@ public class Promotion {
 
     private float discountPercent;
 
+    private int pointsAvailable;
+
     @ManyToMany(mappedBy = "promotions", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Quotation> quotations;
