@@ -52,7 +52,6 @@ public class AuthenticationController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
 
         boolean isDeleted = authenticationService.deleteAccount(id);
@@ -86,7 +85,6 @@ public class AuthenticationController {
     }
 
     @PutMapping("role/{id}")
-    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<String> setRole(@PathVariable("id") long id, @RequestBody SetRoleRequest setRoleRequest){
         try {
 

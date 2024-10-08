@@ -76,11 +76,11 @@ public class AuthenticationService implements UserDetailsService {
             }
 
             //sau khi đăng kí thành công, gửi mail về cho người dùng
-            EmailDetail emailDetail = new EmailDetail();
-            emailDetail.setReceiver(newAccount);
-            emailDetail.setSubject("Welcome to B-Learning, ");
-            emailDetail.setLink("https://www.google.com/");
-            emailService.sendEmail(emailDetail);
+//            EmailDetail emailDetail = new EmailDetail();
+//            emailDetail.setReceiver(newAccount);
+//            emailDetail.setSubject("Welcome to B-Learning, ");
+//            emailDetail.setLink("https://www.google.com/");
+//            emailService.sendEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
