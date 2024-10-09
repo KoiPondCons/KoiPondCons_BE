@@ -186,4 +186,14 @@ public class ConstructionOrderService {
         }
     }
 
+    public ConstructionOrderResponse getOrderById(long constructionOrderId) {
+        Optional<ConstructionOrder> constructionOrder = constructionOrderRepository.findById(constructionOrderId);
+
+        if (constructionOrder.isPresent()) {
+            ConstructionOrder constructionOrderUpdate = constructionOrder.get();
+            return modelMapper.map(constructionOrderUpdate, ConstructionOrderResponse.class);
+        } else {
+            throw new NotFoundException("Construction order not found with id " + constructionOrderId);
+        }
+    }
 }

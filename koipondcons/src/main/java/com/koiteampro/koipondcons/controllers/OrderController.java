@@ -30,6 +30,12 @@ public class OrderController {
         return ResponseEntity.ok(orderResponse);
     }
 
+    @GetMapping("/orders/{id}")
+    public ResponseEntity getOrderById (@PathVariable long id) {
+        ConstructionOrderResponse orderResponse = orderService.getOrderById(id);
+        return ResponseEntity.ok(orderResponse);
+    }
+
     @PutMapping("/orders/consultant/{id}")
     public ResponseEntity setConsulting (@PathVariable long id) {
         orderService.setConsultingToOrder(id);
