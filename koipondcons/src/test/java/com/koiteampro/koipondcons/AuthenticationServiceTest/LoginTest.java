@@ -1,4 +1,4 @@
-package com.koiteampro.koipondcons;
+package com.koiteampro.koipondcons.AuthenticationServiceTest;
 
 import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.models.request.LoginRequest;
@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class AuthenticationServiceLoginTest {
+public class LoginTest {
 
     @InjectMocks
     private AuthenticationService authenticationService;
@@ -41,13 +41,13 @@ public class AuthenticationServiceLoginTest {
     @Test
     public void testLogin_Success() {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("hoacus@gmail.com");
+        loginRequest.setEmail("hoa@gmail.com");
         loginRequest.setPassword("123456");
 
         Authentication authentication = Mockito.mock(Authentication.class);
 
         Account account = new Account();
-        account.setEmail("hoacus@gmail.com");
+        account.setEmail("hoa@gmail.com");
         account.setPassword("123456");
 
         Mockito.when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
@@ -56,13 +56,13 @@ public class AuthenticationServiceLoginTest {
         Mockito.when(tokenService.generateToken(account)).thenReturn("jwt-token");
 
         AccountResponse accountResponse = new AccountResponse();
-        accountResponse.setEmail("hoacus@gmail.com");
+        accountResponse.setEmail("hoa@gmail.com");
         Mockito.when(modelMapper.map(account, AccountResponse.class)).thenReturn(accountResponse);
 
         AccountResponse result = authenticationService.login(loginRequest);
 
         Mockito.verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        assertEquals("hoacus@gmail.com", result.getEmail());
+        assertEquals("hoa@gmail.com", result.getEmail());
         assertEquals("jwt-token", result.getToken());
 
     }
