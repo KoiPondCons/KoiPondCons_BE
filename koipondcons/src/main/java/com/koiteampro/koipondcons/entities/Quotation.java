@@ -21,7 +21,7 @@ public class Quotation {
     @JsonIgnore
     private ConstructionOrder constructionOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "combo_id")
     private Combo combo;
 

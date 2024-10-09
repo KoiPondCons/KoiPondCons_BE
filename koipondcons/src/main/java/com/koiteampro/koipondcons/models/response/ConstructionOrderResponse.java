@@ -2,6 +2,7 @@ package com.koiteampro.koipondcons.models.response;
 
 import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.Customer;
+import com.koiteampro.koipondcons.entities.Quotation;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import lombok.Data;
 
@@ -33,4 +34,6 @@ public class ConstructionOrderResponse {
     private LocalDateTime confirmedDate;
 
     private String statusDescription;
+
+    private Quotation quotation;
 }
