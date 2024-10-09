@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DesignDrawingRepository extends JpaRepository<DesignDrawing, Long> {
     List<DesignDrawing> findAllByDesignerAccountId(Long id);
+    List<Long> findDesignerAccountIdByStatusNotLike(String status);
 }

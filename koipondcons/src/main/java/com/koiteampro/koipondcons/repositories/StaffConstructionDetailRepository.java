@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface StaffConstructionDetailRepository extends JpaRepository<StaffConstructionDetail, Long> {
     List<StaffConstructionDetail> findAllByConstructionOrderId(Long id);
+    List<Long> findConstructorAccountIdByIsFinishedFalse();
 }

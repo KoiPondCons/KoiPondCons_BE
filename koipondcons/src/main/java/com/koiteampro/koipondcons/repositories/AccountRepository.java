@@ -9,6 +9,8 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findAccountByEmailAndIsEnabledTrue(String email);
     Account findAccountById(long id);
+    List<Account> findAccountsByIsEnabledTrue();
 
-    List<Account> findAccountByRole(Role role);
+    List<Account> findAccountByRoleAndIsEnabledTrue(Role role);
+    List<Account> findByIdNotIn(List<Long> ids);
 }
