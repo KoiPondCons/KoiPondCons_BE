@@ -61,11 +61,11 @@ public class ConstructionOrderService {
 
         //////////////////////////////////////////
 
-        DesignDrawing drawing = new DesignDrawing();
+//        DesignDrawing drawing = new DesignDrawing();
 
-        drawing.setConstructionOrder(constructionOrder);
-
-        constructionOrder.setDesignDrawing(drawing);
+//        drawing.setConstructionOrder(constructionOrder);
+//
+//        constructionOrder.setDesignDrawing(drawing);
 
         //////////////////////////////////////////
 
