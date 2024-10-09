@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,11 +55,16 @@ public class PromotionService {
 
     public List<Promotion> getPromotionsByCustomerAvailableForCustomer(long customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
+        List<Promotion> promotions = new ArrayList<>();
 
         if (customer.isPresent()) {
             Customer customer1 = customer.get();
             int point = customer1.getTotal_points();
-            return promotionRepository.findAllByPointsAvailableLessThanEqual(point);
+            promotions = promotionRepository.findAllByPointsAvailableLessThanEqualOrderByPointsAvailable(point);
+            List<Promotion> promotionList = new ArrayList<>();
+            promotionList.add(promotions.getFirst());
+            promotionList.add(promotions.getLast());
+            return promotionList;
         } else {
             throw new NotFoundException("Customer not found");
         }
