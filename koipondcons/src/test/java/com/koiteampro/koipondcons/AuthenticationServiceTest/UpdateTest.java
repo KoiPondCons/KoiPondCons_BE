@@ -89,4 +89,30 @@ public class UpdateTest {
         Exception exception = assertThrows(EntityNotFoundException.class, () -> authenticationService.updateAccount(id, updateAccountRequest));
         assertEquals("Id không tồn tại", exception.getMessage());
     }
+
+    @Test
+    public void testUpdateAccount_NotEnabled() {
+        long id = 1L;
+        UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest();
+        updateAccountRequest.setName("Hoa1");
+
+        existingAccount = new Account();
+        existingAccount.setId(id);
+        existingAccount.setName("Hoa");
+        existingAccount.setEnabled(false);
+
+        Mockito.when(accountRepository.findAccountById(id)).thenReturn(existingAccount);
+        Mockito.when(accountRepository.save(any(Account.class))).thenReturn(existingAccount);
+        Mockito.when(modelMapper.map(updateAccountRequest, Account.class)).thenReturn(existingAccount);
+
+        AccountResponse accountResponse = new AccountResponse();
+        Mockito.when(modelMapper.map(existingAccount, AccountResponse.class)).thenReturn(accountResponse);
+
+        AccountResponse result = authenticationService.updateAccount(id, updateAccountRequest);
+
+        assertNotNull(accountResponse);
+        assertEquals(accountResponse, result);
+        Mockito.verify(accountRepository).save(existingAccount);
+        assertNotEquals("Hoa1", result.getName());
+    }
 }

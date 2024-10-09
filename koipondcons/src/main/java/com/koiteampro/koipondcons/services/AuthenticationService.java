@@ -129,9 +129,9 @@ public class AuthenticationService implements UserDetailsService {
 
         }
 
-        modelMapper.map(updateAccountRequest, Account.class);
-
         if(account.isEnabled()) {
+            modelMapper.map(updateAccountRequest, Account.class);
+
             if (updateAccountRequest.getName() != null) {
                 account.setName(updateAccountRequest.getName());
             }
