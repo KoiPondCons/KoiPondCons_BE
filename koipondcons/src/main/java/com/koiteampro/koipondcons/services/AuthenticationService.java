@@ -159,7 +159,7 @@ public class AuthenticationService implements UserDetailsService {
 
         Account account = accountRepository.findAccountById(id);
 
-        if (account == null) {
+        if (account == null || !account.isEnabled()) {
            return false;
         }
         account.setEnabled(false);
