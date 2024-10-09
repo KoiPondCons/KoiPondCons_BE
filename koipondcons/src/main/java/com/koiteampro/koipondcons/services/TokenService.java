@@ -30,7 +30,7 @@ public class TokenService {
         String token = Jwts.builder()
                 .subject(account.getId() + "")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))  //30 phút
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))  //30 phút
                 .signWith(getSigninKey())
                 .compact();
         return token;
