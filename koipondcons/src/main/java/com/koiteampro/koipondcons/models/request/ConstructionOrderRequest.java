@@ -18,6 +18,8 @@ public class ConstructionOrderRequest {
 
     private String pondAddress;
 
+    private String customerDescription;
+
     private float pondVolume;
 
     private boolean isDesigned;

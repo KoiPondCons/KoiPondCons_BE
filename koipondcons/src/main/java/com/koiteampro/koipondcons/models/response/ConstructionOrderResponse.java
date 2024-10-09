@@ -35,5 +35,7 @@ public class ConstructionOrderResponse {
 
     private String statusDescription;
 
+    private String customerDescription;
+
     private Quotation quotation;
 }
