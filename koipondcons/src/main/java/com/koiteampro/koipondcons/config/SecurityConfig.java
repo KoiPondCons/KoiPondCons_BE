@@ -54,10 +54,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req
+//                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register").permitAll()
+//                                .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**").hasAuthority("MANAGER")
+//                                .requestMatchers("/api/orders/**", "/api/design-drawings/**").hasAnyAuthority("MANAGER", "CUSTOMER")
+//                                .requestMatchers("/api/demo").hasAnyAuthority("MANAGER")
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register").permitAll()
-                                .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**").hasAuthority("MANAGER")
-                                .requestMatchers("/api/orders/**", "/api/design-drawings/**").hasAnyAuthority("MANAGER", "CUSTOMER")
-                                .requestMatchers("/api/demo").hasAnyAuthority("MANAGER")
+                                .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**").permitAll()
+                                .requestMatchers("/api/orders/**", "/api/design-drawings/**").permitAll()
+                                .requestMatchers("/api/demo").permitAll()
                                 .anyRequest()
                                 .authenticated()
 
