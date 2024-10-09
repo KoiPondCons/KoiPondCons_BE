@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.controllers;
 
+import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderStatusRequest;
@@ -36,8 +37,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/status")
-    public ResponseEntity getOrderByStatus (@RequestBody ConstructionOrderStatusRequest status) {
-        return ResponseEntity.ok(orderService.getAllConstructionOrdersByStatus(status.getStatus()));
+    public ResponseEntity getOrderByStatus (@RequestParam String status) {
+        ConstructionOrderStatus orderStatus = ConstructionOrderStatus.valueOf(status);
+        return ResponseEntity.ok(orderService.getAllConstructionOrdersByStatus(orderStatus));
     }
 
     @GetMapping("/orders")
