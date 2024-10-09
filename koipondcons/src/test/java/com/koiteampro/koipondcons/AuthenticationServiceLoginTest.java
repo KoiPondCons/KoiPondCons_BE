@@ -5,6 +5,7 @@ import com.koiteampro.koipondcons.models.request.LoginRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.services.AuthenticationService;
 import com.koiteampro.koipondcons.services.TokenService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
@@ -63,5 +65,19 @@ public class AuthenticationServiceLoginTest {
         assertEquals("hoacus@gmail.com", result.getEmail());
         assertEquals("jwt-token", result.getToken());
 
+    }
+
+    @Test
+    public void testLogin_Failure() {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail("wrong@gmail.com");
+        loginRequest.setPassword("123456");
+
+        Mockito.when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenThrow(new RuntimeException("Bad credentials"));
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> authenticationService.login(loginRequest));
+
+        assertEquals("Mật khẩu không đúng hoặc email không tồn tại!", exception.getMessage());
     }
 }
