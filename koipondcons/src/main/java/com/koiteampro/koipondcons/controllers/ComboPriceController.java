@@ -33,4 +33,9 @@ public class ComboPriceController {
     public ResponseEntity updateComboPrices(@PathVariable Long id, @RequestBody ComboPriceRequest comboPriceRequest) {
         return ResponseEntity.ok(comboPriceService.updateComboPrice(id, comboPriceRequest));
     }
+
+    @GetMapping("/comboprices/combo/volume/{comboId}/{pondVolume}")
+    public ResponseEntity getCompoPriceByComboIdAndVolume(@PathVariable Long comboId, @PathVariable float pondVolume) {
+        return ResponseEntity.ok(comboPriceService.getCompoPriceByComboIdAndVolume(comboId, pondVolume));
+    }
 }

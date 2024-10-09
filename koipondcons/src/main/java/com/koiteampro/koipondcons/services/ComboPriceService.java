@@ -50,4 +50,13 @@ public class ComboPriceService {
     public void deleteComboPrice(long comboId) {
         comboPriceRepository.deleteById(comboId);
     }
+
+    public ComboPrice getCompoPriceByComboIdAndVolume(long comboId, float volume) {
+        ComboPrice comboPrice = comboPriceRepository.findByComboIdAndMinVolumeLessThanAndMaxVolumeGreaterThan(comboId, volume, volume);
+        if (comboPrice != null) {
+            return comboPrice;
+        } else {
+            throw new NotFoundException("Combo or Combo Price not found");
+        }
+    }
 }
