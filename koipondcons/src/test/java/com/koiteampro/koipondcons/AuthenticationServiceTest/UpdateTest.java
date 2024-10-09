@@ -5,6 +5,7 @@ import com.koiteampro.koipondcons.models.request.UpdateAccountRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.services.AuthenticationService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
@@ -77,5 +77,16 @@ public class UpdateTest {
         assertEquals("url", existingAccount.getAvatar());
         assertEquals("0904511170", existingAccount.getPhone());
 
+    }
+
+    @Test
+    public void testUpdateAccount_NotFoundId() {
+        long id = 1L;
+        UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest();
+
+        Mockito.when(accountRepository.findAccountById(id)).thenReturn(null);
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> authenticationService.updateAccount(id, updateAccountRequest));
+        assertEquals("Id không tồn tại", exception.getMessage());
     }
 }
