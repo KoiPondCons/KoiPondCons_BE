@@ -26,5 +26,5 @@ public class DesignDrawing {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private DesignDrawingStatus status = DesignDrawingStatus.NOTSTART;
+    private DesignDrawingStatus status = DesignDrawingStatus.DESIGNING;
 }
