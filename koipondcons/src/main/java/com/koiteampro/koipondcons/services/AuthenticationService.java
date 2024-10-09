@@ -122,16 +122,16 @@ public class AuthenticationService implements UserDetailsService {
     public AccountResponse updateAccount(long id, UpdateAccountRequest updateAccountRequest ) {
         Account account = accountRepository.findAccountById(id);
 
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        //String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         if (account == null) {
             throw new EntityNotFoundException("Id không tồn tại");
 
         }
 
-        modelMapper.map(updateAccountRequest, account);
-
         if(account.isEnabled()) {
+            modelMapper.map(updateAccountRequest, Account.class);
+
             if (updateAccountRequest.getName() != null) {
                 account.setName(updateAccountRequest.getName());
             }
@@ -150,9 +150,8 @@ public class AuthenticationService implements UserDetailsService {
 
         }
         accountRepository.save(account);
-        AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
 
-        return accountResponse;
+        return modelMapper.map(account, AccountResponse.class);
 
     }
 
@@ -160,17 +159,11 @@ public class AuthenticationService implements UserDetailsService {
 
         Account account = accountRepository.findAccountById(id);
 
-        if (account == null) {
+        if (account == null || !account.isEnabled()) {
            return false;
         }
-        //try{
-            account.setEnabled(false);
-            accountRepository.save(account);
-//        }catch(Exception e) {
-//            throw new UnauthorizeException("Không có quyền xóa");
-//        }
-
-
+        account.setEnabled(false);
+        accountRepository.save(account);
         return true;
     }
 

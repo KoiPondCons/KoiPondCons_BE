@@ -1,8 +1,8 @@
-package com.koiteampro.koipondcons;
+package com.koiteampro.koipondcons.AuthenticationServiceTest;
 
 import com.koiteampro.koipondcons.entities.Account;
-import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.enums.Role;
+import com.koiteampro.koipondcons.exception.DuplicateEntity;
 import com.koiteampro.koipondcons.models.request.RegisterRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
@@ -19,13 +19,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.hamcrest.Matchers.any;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class AuthenticationServiceRegisterTest {
+public class RegisterTest {
     @InjectMocks
     private AuthenticationService authenticationService;
 
@@ -48,7 +46,7 @@ public class AuthenticationServiceRegisterTest {
     public void testRegister_Customer_Success(){
         RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setName("Hoa Customer");
-        registerRequest.setEmail("hoacus@gmail.com");
+        registerRequest.setEmail("hoa@gmail.com");
         registerRequest.setPhone("0896671154");
         registerRequest.setPassword("123456");
         registerRequest.setRole(Role.CUSTOMER);
@@ -58,11 +56,11 @@ public class AuthenticationServiceRegisterTest {
         account.setPassword("123456");
 
         Account savedAccount = new Account();
-        savedAccount.setEmail("hoacus@gmail.com");
+        savedAccount.setEmail("hoa@gmail.com");
         savedAccount.setPassword("passwordEncoded");
 
         AccountResponse expectedAccountResponse = new AccountResponse();
-        expectedAccountResponse.setEmail("hoacus@gmail.com");
+        expectedAccountResponse.setEmail("hoa@gmail.com");
 
         Mockito.when(modelMapper.map(registerRequest, Account.class)).thenReturn(account);
         Mockito.when(passwordEncoder.encode(registerRequest.getPassword())).thenReturn("passwordEncoded");
@@ -78,8 +76,32 @@ public class AuthenticationServiceRegisterTest {
 
         Mockito.verify(accountRepository).save(account);
         assertNotNull(accountResponse);
-        assertEquals("hoacus@gmail.com", accountResponse.getEmail());
+        assertEquals("hoa@gmail.com", accountResponse.getEmail());
 
+    }
+
+    @Test
+    public void testRegister_Customer_EmailExisted(){
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setName("Hoa Customer");
+        registerRequest.setEmail("hoa@gmail.com");
+        registerRequest.setPhone("0896671154");
+        registerRequest.setPassword("123456");
+        registerRequest.setRole(Role.CUSTOMER);
+
+        Account account = new Account();
+        account.setEmail(registerRequest.getEmail());
+        account.setPassword(registerRequest.getPassword());
+
+        Mockito.when(modelMapper.map(registerRequest, Account.class)).thenReturn(account);
+        Mockito.when(passwordEncoder.encode(registerRequest.getPassword())).thenReturn("passwordEncoded");
+        Mockito.when(accountRepository.save(account)).thenThrow(new RuntimeException("hoa@gmail.com"));
+
+        Exception exception = assertThrows(DuplicateEntity.class, () ->{
+            authenticationService.register(registerRequest);
+        });
+
+        assertTrue(exception.getMessage().contains("Email đã được đăng ký, vui lòng sử dụng email khác!"));
     }
 
 }
