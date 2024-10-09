@@ -30,9 +30,9 @@ public class OrderController {
         return ResponseEntity.ok(orderResponse);
     }
 
-    @PutMapping("/orders/consultant/{id}/{consultantId}")
-    public ResponseEntity setConsulting (@PathVariable long id, @PathVariable long consultantId) {
-        orderService.setConsultingToOrder(id,consultantId);
+    @PutMapping("/orders/consultant/{id}")
+    public ResponseEntity setConsulting (@PathVariable long id) {
+        orderService.setConsultingToOrder(id);
         return ResponseEntity.ok("Set consulting successfully!");
     }
 
@@ -50,6 +50,11 @@ public class OrderController {
     @GetMapping("/orders/customer")
     public ResponseEntity getAllOrdersOfCustomer () {
         return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomer());
+    }
+
+    @GetMapping("/orders/consultant")
+    public ResponseEntity getAllOrdersOfConsultant () {
+        return ResponseEntity.ok(orderService.getAllConstructionOrdersOfConsultant());
     }
 
     @GetMapping("/demo")

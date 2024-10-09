@@ -9,4 +9,5 @@ import java.util.List;
 public interface ConstructionOrderRepository extends JpaRepository<ConstructionOrder, Long> {
     List<ConstructionOrder> findAllByStatusIs(ConstructionOrderStatus status);
     List<ConstructionOrder> findAllByCustomerId(Long customerId);
+    List<ConstructionOrder> findAllByConsultantAccountId(Long consultantAccountId);
 }

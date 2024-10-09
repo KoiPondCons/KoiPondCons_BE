@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 public class ConstructionOrderRequest {
 
-    private Customer customer;
-
     private String customerName;
 
     @Pattern(regexp = "^(84|0)+[3|5|7|8|9]\\d{8}$", message = "Số điện thoại không hợp lệ!")

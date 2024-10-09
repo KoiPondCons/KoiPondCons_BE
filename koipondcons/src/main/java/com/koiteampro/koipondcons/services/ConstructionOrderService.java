@@ -38,6 +38,10 @@ public class ConstructionOrderService {
 
     @Autowired
     private ComboConstructionItemService comboConstructionItemService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @Autowired
     ModelMapper modelMapper;
 
@@ -100,14 +104,14 @@ public class ConstructionOrderService {
         }
     }
 
-    public void setConsultingToOrder(long constructionOrderId, long consultantId) {
+    public void setConsultingToOrder(long constructionOrderId) {
         Optional<ConstructionOrder> constructionOrder = constructionOrderRepository.findById(constructionOrderId);
-        Optional<Account> consultingAccount = accountRepository.findById(consultantId);
+        Account consultingAccount = authenticationService.getCurrentAccount();
 
 
-        if (constructionOrder.isPresent() && consultingAccount.isPresent()) {
+        if (constructionOrder.isPresent()) {
             ConstructionOrder constructionOrderUpdate = constructionOrder.get();
-            constructionOrderUpdate.setConsultantAccount(consultingAccount.get());
+            constructionOrderUpdate.setConsultantAccount(consultingAccount);
 
             constructionOrderRepository.save(constructionOrderUpdate);
         } else {
@@ -142,6 +146,19 @@ public class ConstructionOrderService {
         Customer customer = customerService.getCurrentCustomer();
 
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerId(customer.getId());
+        List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
+
+        for (ConstructionOrder constructionOrder : constructionOrders) {
+            constructionOrderResponses.add(modelMapper.map(constructionOrder, ConstructionOrderResponse.class));
+        }
+
+        return constructionOrderResponses;
+    }
+
+    public List<ConstructionOrderResponse> getAllConstructionOrdersOfConsultant() {
+        Account account = authenticationService.getCurrentAccount();
+
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByConsultantAccountId(account.getId());
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
