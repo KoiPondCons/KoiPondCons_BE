@@ -9,6 +9,7 @@ import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.DesignDrawingRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.models.response.DesignDrawingResponse;
+import com.koiteampro.koipondcons.models.response.OrderCustomerResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.DesignDrawingRepository;
@@ -109,7 +110,12 @@ public class DesignDrawingService {
     public DesignDrawingResponse getDesignDrawingResponse(DesignDrawing designDrawing) {
         DesignDrawingResponse designDrawingResponse = new DesignDrawingResponse();
         designDrawingResponse.setId(designDrawing.getId());
-        designDrawingResponse.setConstructionOrder(designDrawing.getConstructionOrder());
+        OrderCustomerResponse orderCustomerResponse = new OrderCustomerResponse();
+        orderCustomerResponse.setOrderId(designDrawing.getConstructionOrder().getId());
+        orderCustomerResponse.setCustomerName(designDrawing.getConstructionOrder().getCustomerName());
+        orderCustomerResponse.setCustomerPhone(designDrawing.getConstructionOrder().getCustomerPhone());
+        orderCustomerResponse.setPondAddress(designDrawing.getConstructionOrder().getPondAddress());
+        designDrawingResponse.setOrderCustomerResponse(orderCustomerResponse);
         designDrawingResponse.setDesignerAccount(designDrawing.getDesignerAccount());
         designDrawingResponse.setDesignFile(designDrawing.getDesignFile());
         designDrawingResponse.setStatus(designDrawing.getStatus());

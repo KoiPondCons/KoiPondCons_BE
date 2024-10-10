@@ -8,7 +8,8 @@ import lombok.Data;
 @Data
 public class DesignDrawingResponse {
     private long id;
-    private ConstructionOrder constructionOrder;
+//    private ConstructionOrder constructionOrder;
+    private OrderCustomerResponse orderCustomerResponse;
     private Account designerAccount;
     private String designFile;
     private DesignDrawingStatus status;
