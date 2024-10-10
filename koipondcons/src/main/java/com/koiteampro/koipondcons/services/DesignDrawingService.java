@@ -45,18 +45,25 @@ public class DesignDrawingService {
         }
     }
 
-    public DesignDrawing getDesignDrawing(long id) {
+    public DesignDrawingResponse getDesignDrawing(long id) {
         Optional<DesignDrawing> designDrawingOptional = designDrawingRepository.findById(id);
 
         if (designDrawingOptional.isPresent()) {
-            return designDrawingOptional.get();
+            DesignDrawing designDrawing = designDrawingOptional.get();
+            return getDesignDrawingResponse(designDrawing);
         } else {
             throw new NotFoundException("DesignDrawing with id " + id + " not found");
         }
     }
 
-    public List<DesignDrawing> getAllDesignDrawings() {
-        return designDrawingRepository.findAll();
+    public List<DesignDrawingResponse> getAllDesignDrawings() {
+        List<DesignDrawing> designDrawings = designDrawingRepository.findAll();
+        List<DesignDrawingResponse> designDrawingResponses = new ArrayList<>();
+        for (DesignDrawing designDrawing : designDrawings) {
+            DesignDrawingResponse designDrawingResponse = getDesignDrawingResponse(designDrawing);
+            designDrawingResponses.add(designDrawingResponse);
+        }
+        return designDrawingResponses;
     }
 
     public List<DesignDrawingResponse> getAllDesignOfDesigner() {
@@ -103,6 +110,7 @@ public class DesignDrawingService {
         DesignDrawingResponse designDrawingResponse = new DesignDrawingResponse();
         designDrawingResponse.setId(designDrawing.getId());
         designDrawingResponse.setConstructionOrder(designDrawing.getConstructionOrder());
+        designDrawingResponse.setDesignerAccount(designDrawing.getDesignerAccount());
         designDrawingResponse.setDesignFile(designDrawing.getDesignFile());
         designDrawingResponse.setStatus(designDrawing.getStatus());
         designDrawingResponse.setStatusDescription(designDrawing.getStatus().getDescription());

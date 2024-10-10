@@ -5,6 +5,7 @@ import com.koiteampro.koipondcons.entities.Promotion;
 import com.koiteampro.koipondcons.entities.Quotation;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.QuotationRequest;
+import com.koiteampro.koipondcons.models.response.QuotationResponse;
 import com.koiteampro.koipondcons.repositories.ComboPriceRepository;
 import com.koiteampro.koipondcons.repositories.PromotionRepository;
 import com.koiteampro.koipondcons.repositories.QuotationRepository;
@@ -114,7 +115,7 @@ public class QuotationService {
         quotationRepository.save(quotationUpdate);
     }
 
-    public Quotation updateQuotation(@PathVariable long id, QuotationRequest quotationRequest) {
+    public QuotationResponse updateQuotation(@PathVariable long id, QuotationRequest quotationRequest) {
         Optional<Quotation> quotation = quotationRepository.findById(id);
         if (quotation.isPresent()) {
             Quotation quotationToUpdate = quotation.get();
@@ -127,9 +128,24 @@ public class QuotationService {
 
             updateQuotationPrice(quotationUpdate);
 
-            return quotationUpdate;
+            return getQuotationResponse(quotationUpdate);
         } else {
             throw new NotFoundException("Quotation not found");
         }
+    }
+
+    public QuotationResponse getQuotationResponse(Quotation quotation) {
+        QuotationResponse quotationResponse = new QuotationResponse();
+        quotationResponse.setId(quotation.getId());
+        quotationResponse.setCombo(quotation.getCombo());
+        quotationResponse.setPondVolume(quotation.getPondVolume());
+        quotationResponse.setQuotationFile(quotation.getQuotationFile());
+        quotationResponse.setPromotions(quotation.getPromotions());
+        quotationResponse.setStatus(quotation.getStatus());
+        quotationResponse.setStatusDescription(quotation.getStatus().getDescription());
+        quotationResponse.setInitialPrice(quotation.getInitialPrice());
+        quotationResponse.setDiscountPrice(quotation.getDiscountPrice());
+        quotationResponse.setFinalPrice(quotation.getFinalPrice());
+        return quotationResponse;
     }
 }

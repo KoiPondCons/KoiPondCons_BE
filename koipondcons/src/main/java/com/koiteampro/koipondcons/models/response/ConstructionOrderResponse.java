@@ -40,7 +40,7 @@ public class ConstructionOrderResponse {
 
     private Quotation quotation;
 
-    private DesignDrawing designDrawing;
+    private DesignDrawingResponse designDrawingResponse;
 
     private Account constructorAccount;
 
