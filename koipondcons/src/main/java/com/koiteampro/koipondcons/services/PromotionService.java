@@ -62,8 +62,13 @@ public class PromotionService {
             int point = customer1.getTotal_points();
             promotions = promotionRepository.findAllByPointsAvailableLessThanEqualOrderByPointsAvailable(point);
             List<Promotion> promotionList = new ArrayList<>();
-            promotionList.add(promotions.getFirst());
-            promotionList.add(promotions.getLast());
+            if (promotions.size() > 1) {
+                promotionList.add(promotions.getFirst());
+                promotionList.add(promotions.getLast());
+            }
+            else {
+                promotionList.add(promotions.getFirst());
+            }
             return promotionList;
         } else {
             throw new NotFoundException("Customer not found");
