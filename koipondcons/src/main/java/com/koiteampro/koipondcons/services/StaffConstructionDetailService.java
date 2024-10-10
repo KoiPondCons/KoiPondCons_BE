@@ -30,13 +30,15 @@ public class StaffConstructionDetailService {
 
     public List<AccountResponse> getAllFreeConstructors() {
         List<Account> freeConstructors = new ArrayList<>();
+        List<Long> accountIds = new ArrayList<>();
+
         try {
-            List<Long> accountIds = new ArrayList<>();
-            try {
-                accountIds = staffConstructionDetailRepository.findConstructorAccountIdByIsFinishedFalse();
-            } catch (Exception e) {
-                accountIds = null;
-            }
+            accountIds = staffConstructionDetailRepository.findConstructorAccountIdByIsFinishedFalse();
+        } catch (Exception e) {
+            accountIds = null;
+        }
+
+        try {
             if (accountIds == null || accountIds.isEmpty()) {
                 freeConstructors = accountRepository.findAccountByRoleAndIsEnabledTrue(Role.CONSTRUCTOR);
             } else {
@@ -44,13 +46,14 @@ public class StaffConstructionDetailService {
             }
         } catch (Exception e) {
             throw new NotFoundException("Staff not found!");
-        } finally {
-            List<AccountResponse> accountResponses = new ArrayList<>();
-            for (Account account : freeConstructors) {
-                AccountResponse accountResponse = authenticationService.getAccountResponse(account);
-                accountResponses.add(accountResponse);
-            }
-            return accountResponses;
         }
+
+        List<AccountResponse> accountResponses = new ArrayList<>();
+        for (Account account : freeConstructors) {
+            AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+            accountResponses.add(accountResponse);
+        }
+
+        return accountResponses;
     }
 }

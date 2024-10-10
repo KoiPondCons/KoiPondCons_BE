@@ -65,28 +65,30 @@ public class DesignDrawingService {
 
     public List<AccountResponse> getAllFreeDesigners() {
         List<Account> accounts = new ArrayList<>();
+        List<Long> accountIds = new ArrayList<>();
+
         try {
-            List<Long> accountIds = new ArrayList<>();
-            try {
-                accountIds = designDrawingRepository.findDesignerAccountIdByStatusNotLike("%" + DesignDrawingStatus.CUSTOMER_CONFIRMED.toString() + "%");
-            } catch (Exception e) {
-                accountIds = null;
-            }
+            accountIds = designDrawingRepository.findDesignerAccountIdByStatusNotLike("%" + DesignDrawingStatus.CUSTOMER_CONFIRMED + "%");
+        } catch (Exception e) {
+            accountIds = null;
+        }
+
+        try {
             if (accountIds == null || accountIds.isEmpty()) {
-                accounts =  accountRepository.findAccountByRoleAndIsEnabledTrue(Role.DESIGNER);
+                accounts = accountRepository.findAccountByRoleAndIsEnabledTrue(Role.DESIGNER);
             } else {
                 accounts = accountRepository.findByIdNotIn(accountIds);
             }
         } catch (Exception e) {
             throw new NotFoundException("Staff not found!");
         }
-        finally {
-            List<AccountResponse> accountResponses = new ArrayList<>();
-            for (Account account : accounts) {
-                AccountResponse accountResponse = authenticationService.getAccountResponse(account);
-                accountResponses.add(accountResponse);
-            }
-            return accountResponses;
+
+        List<AccountResponse> accountResponses = new ArrayList<>();
+        for (Account account : accounts) {
+            AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+            accountResponses.add(accountResponse);
         }
+
+        return accountResponses;
     }
 }
