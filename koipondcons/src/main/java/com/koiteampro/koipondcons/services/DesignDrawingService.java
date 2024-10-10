@@ -8,6 +8,7 @@ import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.DesignDrawingRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.response.DesignDrawingResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.DesignDrawingRepository;
@@ -58,9 +59,15 @@ public class DesignDrawingService {
         return designDrawingRepository.findAll();
     }
 
-    public List<DesignDrawing> getAllDesignOfDesigner() {
+    public List<DesignDrawingResponse> getAllDesignOfDesigner() {
         Account currentAccount = authenticationService.getCurrentAccount();
-        return designDrawingRepository.findAllByDesignerAccountId(currentAccount.getId());
+        List<DesignDrawing> designDrawings = designDrawingRepository.findAllByDesignerAccountId(currentAccount.getId());
+        List<DesignDrawingResponse> designDrawingResponses = new ArrayList<>();
+        for (DesignDrawing designDrawing : designDrawings) {
+            DesignDrawingResponse designDrawingResponse = getDesignDrawingResponse(designDrawing);
+            designDrawingResponses.add(designDrawingResponse);
+        }
+        return designDrawingResponses;
     }
 
     public List<AccountResponse> getAllFreeDesigners() {
@@ -90,5 +97,15 @@ public class DesignDrawingService {
         }
 
         return accountResponses;
+    }
+
+    public DesignDrawingResponse getDesignDrawingResponse(DesignDrawing designDrawing) {
+        DesignDrawingResponse designDrawingResponse = new DesignDrawingResponse();
+        designDrawingResponse.setId(designDrawing.getId());
+        designDrawingResponse.setConstructionOrder(designDrawing.getConstructionOrder());
+        designDrawingResponse.setDesignFile(designDrawing.getDesignFile());
+        designDrawingResponse.setStatus(designDrawing.getStatus());
+        designDrawingResponse.setStatusDescription(designDrawing.getStatus().getDescription());
+        return designDrawingResponse;
     }
 }
