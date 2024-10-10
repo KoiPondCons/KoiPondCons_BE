@@ -4,6 +4,7 @@ import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.StaffConstructionDetail;
 import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.NotFoundException;
+import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.StaffConstructionDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,14 @@ public class StaffConstructionDetailService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     public List<StaffConstructionDetail> findStaffConstructionDetailByConstructionOrderId(long constructionOrderId) {
         return  staffConstructionDetailRepository.findAllByConstructionOrderId(constructionOrderId);
     }
 
-    public List<Account> getAllFreeConstructors() {
+    public List<AccountResponse> getAllFreeConstructors() {
         List<Account> freeConstructors = new ArrayList<>();
         try {
             List<Long> accountIds = new ArrayList<>();
@@ -34,12 +38,19 @@ public class StaffConstructionDetailService {
                 accountIds = null;
             }
             if (accountIds == null || accountIds.isEmpty()) {
-                return accountRepository.findAccountByRoleAndIsEnabledTrue(Role.CONSTRUCTOR);
+                freeConstructors = accountRepository.findAccountByRoleAndIsEnabledTrue(Role.CONSTRUCTOR);
+            } else {
+                freeConstructors = accountRepository.findByIdNotIn(accountIds);
             }
-            freeConstructors = accountRepository.findByIdNotIn(accountIds);
-            return freeConstructors;
         } catch (Exception e) {
             throw new NotFoundException("Staff not found!");
+        } finally {
+            List<AccountResponse> accountResponses = new ArrayList<>();
+            for (Account account : freeConstructors) {
+                AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+                accountResponses.add(accountResponse);
+            }
+            return accountResponses;
         }
     }
 }

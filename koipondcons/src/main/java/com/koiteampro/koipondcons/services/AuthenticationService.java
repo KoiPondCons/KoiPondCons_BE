@@ -214,5 +214,16 @@ public class AuthenticationService implements UserDetailsService {
         return true;
     }
 
-
+    public AccountResponse getAccountResponse(Account account) {
+        AccountResponse accountResponse = new AccountResponse();
+        accountResponse.setId(account.getId());
+        accountResponse.setName(account.getName());
+        accountResponse.setRole(account.getRole());
+        accountResponse.setAvatar(account.getAvatar());
+        accountResponse.setEmail(account.getEmail());
+        accountResponse.setAddress(account.getAddress());
+        accountResponse.setPhone(account.getPhone());
+        accountResponse.setDateCreate(account.getDateCreate());
+        return accountResponse;
+    }
 }

@@ -7,6 +7,7 @@ import com.koiteampro.koipondcons.enums.DesignDrawingStatus;
 import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.DesignDrawingRequest;
+import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.DesignDrawingRepository;
@@ -62,7 +63,7 @@ public class DesignDrawingService {
         return designDrawingRepository.findAllByDesignerAccountId(currentAccount.getId());
     }
 
-    public List<Account> getAllFreeDesigners() {
+    public List<AccountResponse> getAllFreeDesigners() {
         List<Account> accounts = new ArrayList<>();
         try {
             List<Long> accountIds = new ArrayList<>();
@@ -72,12 +73,20 @@ public class DesignDrawingService {
                 accountIds = null;
             }
             if (accountIds == null || accountIds.isEmpty()) {
-                return accountRepository.findAccountByRoleAndIsEnabledTrue(Role.DESIGNER);
+                accounts =  accountRepository.findAccountByRoleAndIsEnabledTrue(Role.DESIGNER);
+            } else {
+                accounts = accountRepository.findByIdNotIn(accountIds);
             }
-            accounts = accountRepository.findByIdNotIn(accountIds);
-            return accounts;
         } catch (Exception e) {
             throw new NotFoundException("Staff not found!");
+        }
+        finally {
+            List<AccountResponse> accountResponses = new ArrayList<>();
+            for (Account account : accounts) {
+                AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+                accountResponses.add(accountResponse);
+            }
+            return accountResponses;
         }
     }
 }
