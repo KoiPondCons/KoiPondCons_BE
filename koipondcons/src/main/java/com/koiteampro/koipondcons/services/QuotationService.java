@@ -123,6 +123,7 @@ public class QuotationService {
             quotationUpdate.setId(quotationToUpdate.getId());
             quotationUpdate.setConstructionOrder(quotationToUpdate.getConstructionOrder());
             quotationUpdate.setPromotions(quotationToUpdate.getPromotions());
+            quotationUpdate.setStatus(quotationUpdate.getStatus());
 
             updateQuotationPrice(quotationUpdate);
 
