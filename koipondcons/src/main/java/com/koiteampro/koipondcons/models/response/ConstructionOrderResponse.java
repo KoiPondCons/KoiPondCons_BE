@@ -38,4 +38,9 @@ public class ConstructionOrderResponse {
     private String customerDescription;
 
     private Quotation quotation;
+
+    private Account designerAccount;
+
+    private Account constructorAccount;
+
 }
