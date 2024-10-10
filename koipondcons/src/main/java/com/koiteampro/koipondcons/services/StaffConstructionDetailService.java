@@ -56,4 +56,14 @@ public class StaffConstructionDetailService {
 
         return accountResponses;
     }
+
+    public Account getConstructorOfConstructionOrder(long constructionOrderId) {
+        List<StaffConstructionDetail> staffConstructionDetailList = staffConstructionDetailRepository.findAllByConstructionOrderId(constructionOrderId);
+
+        if (staffConstructionDetailList != null && !staffConstructionDetailList.isEmpty()) {
+            return staffConstructionDetailList.getFirst().getConstructorAccount();
+        } else {
+            return null;
+        }
+    }
 }

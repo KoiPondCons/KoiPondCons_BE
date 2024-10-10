@@ -25,7 +25,7 @@ public class VNPayController {
                             HttpServletRequest request){
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnPayService.createOrder(request, orderTotal, orderInfo, baseUrl);
-        return "redirect:" + vnpayUrl;
+        return vnpayUrl;
     }
 
     @GetMapping("/vnpay-payment-return")

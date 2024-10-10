@@ -2,10 +2,12 @@ package com.koiteampro.koipondcons.services;
 
 import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.entities.Promotion;
+import com.koiteampro.koipondcons.entities.Quotation;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.PromotionRequest;
 import com.koiteampro.koipondcons.repositories.CustomerRepository;
 import com.koiteampro.koipondcons.repositories.PromotionRepository;
+import com.koiteampro.koipondcons.repositories.QuotationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class PromotionService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    QuotationRepository quotationRepository;
 
     public Promotion createPromotion(PromotionRequest promotionRequest) {
         Promotion promotion = modelMapper.map(promotionRequest, Promotion.class);
@@ -72,6 +77,21 @@ public class PromotionService {
             return promotionList;
         } else {
             throw new NotFoundException("Customer not found");
+        }
+    }
+
+    public List<Promotion> getPromotionsOfQuotation(long quotationId) {
+        Optional<Quotation> quotationOptional = quotationRepository.findById(quotationId);
+
+        if (quotationOptional.isPresent()) {
+            Quotation quotation = quotationOptional.get();
+            List<Promotion> promotions = new ArrayList<>();
+            if (quotation.getPromotions() != null) {
+                promotions.addAll(quotation.getPromotions());
+            }
+            return promotions;
+        } else {
+            throw new NotFoundException("Quotation not found");
         }
     }
 }

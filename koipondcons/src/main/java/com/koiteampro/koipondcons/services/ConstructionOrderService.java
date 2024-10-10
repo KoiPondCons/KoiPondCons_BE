@@ -43,6 +43,9 @@ public class ConstructionOrderService {
     private AuthenticationService authenticationService;
 
     @Autowired
+    StaffConstructionDetailService staffConstructionDetailService;
+
+    @Autowired
     ModelMapper modelMapper;
 
     public ConstructionOrderResponse createConstructionOrder(ConstructionOrderRequest constructionOrderRequest) {
@@ -124,9 +127,7 @@ public class ConstructionOrderService {
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            ConstructionOrderResponse constructionOrderResponse = modelMapper.map(constructionOrder, ConstructionOrderResponse.class);
-            constructionOrderResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
-            constructionOrderResponses.add(constructionOrderResponse);
+            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
         }
         return constructionOrderResponses;
     }
@@ -136,7 +137,7 @@ public class ConstructionOrderService {
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            constructionOrderResponses.add(modelMapper.map(constructionOrder, ConstructionOrderResponse.class));
+            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
         }
 
         return constructionOrderResponses;
@@ -149,7 +150,7 @@ public class ConstructionOrderService {
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            constructionOrderResponses.add(modelMapper.map(constructionOrder, ConstructionOrderResponse.class));
+            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
         }
 
         return constructionOrderResponses;
@@ -162,7 +163,7 @@ public class ConstructionOrderService {
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            constructionOrderResponses.add(modelMapper.map(constructionOrder, ConstructionOrderResponse.class));
+            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
         }
 
         return constructionOrderResponses;
@@ -191,9 +192,16 @@ public class ConstructionOrderService {
 
         if (constructionOrder.isPresent()) {
             ConstructionOrder constructionOrderUpdate = constructionOrder.get();
-            return modelMapper.map(constructionOrderUpdate, ConstructionOrderResponse.class);
+            return setInfoForConstructionOrder(constructionOrderUpdate);
         } else {
             throw new NotFoundException("Construction order not found with id " + constructionOrderId);
         }
+    }
+
+    public ConstructionOrderResponse setInfoForConstructionOrder(ConstructionOrder constructionOrder) {
+        ConstructionOrderResponse constructionOrderResponse = modelMapper.map(constructionOrder, ConstructionOrderResponse.class);
+        constructionOrderResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
+        constructionOrderResponse.setConstructorAccount(staffConstructionDetailService.getConstructorOfConstructionOrder(constructionOrderResponse.getId()));
+        return constructionOrderResponse;
     }
 }

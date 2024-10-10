@@ -29,6 +29,11 @@ public class PromotionController {
         return ResponseEntity.ok(promotionService.getPromotionsByCustomerAvailableForCustomer(id));
     }
 
+    @GetMapping("/promotions/quotation/{id}")
+    public ResponseEntity getPromotionOfQuotation(@PathVariable long id) {
+        return ResponseEntity.ok(promotionService.getPromotionsOfQuotation(id));
+    }
+
     @GetMapping("/promotions/{id}")
     public ResponseEntity getPromotion(@PathVariable long id) {
         return ResponseEntity.ok(promotionService.getPromotionById(id));
