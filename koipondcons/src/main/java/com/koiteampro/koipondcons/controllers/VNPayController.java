@@ -20,12 +20,11 @@ public class VNPayController {
     }
 
     @PostMapping("/submitOrder")
-    public String submidOrder(@RequestParam("amount") int orderTotal,
+    public String submitOrder(@RequestParam("amount") int orderTotal,
                             @RequestParam("orderInfo") String orderInfo,
                             HttpServletRequest request){
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        String vnpayUrl = vnPayService.createOrder(request, orderTotal, orderInfo, baseUrl);
-        return vnpayUrl;
+        return vnPayService.createOrder(request, orderTotal, orderInfo, baseUrl);
     }
 
     @GetMapping("/vnpay-payment-return")
