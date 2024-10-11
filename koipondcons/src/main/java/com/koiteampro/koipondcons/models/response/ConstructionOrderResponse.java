@@ -38,9 +38,9 @@ public class ConstructionOrderResponse {
 
     private String customerDescription;
 
-    private Quotation quotation;
+    private QuotationResponse quotationResponse;
 
-    private DesignDrawing designDrawing;
+    private DesignDrawingResponse designDrawingResponse;
 
     private Account constructorAccount;
 

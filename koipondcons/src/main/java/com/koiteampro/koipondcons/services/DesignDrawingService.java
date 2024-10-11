@@ -8,6 +8,8 @@ import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.DesignDrawingRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
+import com.koiteampro.koipondcons.models.response.DesignDrawingResponse;
+import com.koiteampro.koipondcons.models.response.OrderCustomerResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.DesignDrawingRepository;
@@ -44,23 +46,36 @@ public class DesignDrawingService {
         }
     }
 
-    public DesignDrawing getDesignDrawing(long id) {
+    public DesignDrawingResponse getDesignDrawing(long id) {
         Optional<DesignDrawing> designDrawingOptional = designDrawingRepository.findById(id);
 
         if (designDrawingOptional.isPresent()) {
-            return designDrawingOptional.get();
+            DesignDrawing designDrawing = designDrawingOptional.get();
+            return getDesignDrawingResponse(designDrawing);
         } else {
             throw new NotFoundException("DesignDrawing with id " + id + " not found");
         }
     }
 
-    public List<DesignDrawing> getAllDesignDrawings() {
-        return designDrawingRepository.findAll();
+    public List<DesignDrawingResponse> getAllDesignDrawings() {
+        List<DesignDrawing> designDrawings = designDrawingRepository.findAll();
+        List<DesignDrawingResponse> designDrawingResponses = new ArrayList<>();
+        for (DesignDrawing designDrawing : designDrawings) {
+            DesignDrawingResponse designDrawingResponse = getDesignDrawingResponse(designDrawing);
+            designDrawingResponses.add(designDrawingResponse);
+        }
+        return designDrawingResponses;
     }
 
-    public List<DesignDrawing> getAllDesignOfDesigner() {
+    public List<DesignDrawingResponse> getAllDesignOfDesigner() {
         Account currentAccount = authenticationService.getCurrentAccount();
-        return designDrawingRepository.findAllByDesignerAccountId(currentAccount.getId());
+        List<DesignDrawing> designDrawings = designDrawingRepository.findAllByDesignerAccountId(currentAccount.getId());
+        List<DesignDrawingResponse> designDrawingResponses = new ArrayList<>();
+        for (DesignDrawing designDrawing : designDrawings) {
+            DesignDrawingResponse designDrawingResponse = getDesignDrawingResponse(designDrawing);
+            designDrawingResponses.add(designDrawingResponse);
+        }
+        return designDrawingResponses;
     }
 
     public List<AccountResponse> getAllFreeDesigners() {
@@ -90,5 +105,21 @@ public class DesignDrawingService {
         }
 
         return accountResponses;
+    }
+
+    public DesignDrawingResponse getDesignDrawingResponse(DesignDrawing designDrawing) {
+        DesignDrawingResponse designDrawingResponse = new DesignDrawingResponse();
+        designDrawingResponse.setId(designDrawing.getId());
+        OrderCustomerResponse orderCustomerResponse = new OrderCustomerResponse();
+        orderCustomerResponse.setOrderId(designDrawing.getConstructionOrder().getId());
+        orderCustomerResponse.setCustomerName(designDrawing.getConstructionOrder().getCustomerName());
+        orderCustomerResponse.setCustomerPhone(designDrawing.getConstructionOrder().getCustomerPhone());
+        orderCustomerResponse.setPondAddress(designDrawing.getConstructionOrder().getPondAddress());
+        designDrawingResponse.setOrderCustomerResponse(orderCustomerResponse);
+        designDrawingResponse.setDesignerAccount(designDrawing.getDesignerAccount());
+        designDrawingResponse.setDesignFile(designDrawing.getDesignFile());
+        designDrawingResponse.setStatus(designDrawing.getStatus());
+        designDrawingResponse.setStatusDescription(designDrawing.getStatus().getDescription());
+        return designDrawingResponse;
     }
 }

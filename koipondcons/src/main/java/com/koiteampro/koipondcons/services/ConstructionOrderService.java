@@ -48,6 +48,9 @@ public class ConstructionOrderService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    DesignDrawingService designDrawingService;
+
     public ConstructionOrderResponse createConstructionOrder(ConstructionOrderRequest constructionOrderRequest) {
 
         ConstructionOrder constructionOrder = modelMapper.map(constructionOrderRequest, ConstructionOrder.class);
@@ -200,6 +203,8 @@ public class ConstructionOrderService {
 
     public ConstructionOrderResponse setInfoForConstructionOrder(ConstructionOrder constructionOrder) {
         ConstructionOrderResponse constructionOrderResponse = modelMapper.map(constructionOrder, ConstructionOrderResponse.class);
+        constructionOrderResponse.setDesignDrawingResponse(designDrawingService.getDesignDrawingResponse(constructionOrder.getDesignDrawing()));
+        constructionOrderResponse.setQuotationResponse(quotationService.getQuotationResponse(constructionOrder.getQuotation()));
         constructionOrderResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
         constructionOrderResponse.setConstructorAccount(staffConstructionDetailService.getConstructorOfConstructionOrder(constructionOrderResponse.getId()));
         return constructionOrderResponse;
