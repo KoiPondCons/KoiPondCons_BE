@@ -15,13 +15,14 @@ public class StaffConstructionDetail {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "construction_order_id", nullable = false)
+    @JsonIgnore
     private ConstructionOrder constructionOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "constructor_account_id", nullable = false)
     private Account constructorAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "construction_item_id", nullable = false)
     private ComboConstructionItem constructionItem;
 
