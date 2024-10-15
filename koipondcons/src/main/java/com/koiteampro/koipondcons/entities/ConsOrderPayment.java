@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koiteampro.koipondcons.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,12 +17,13 @@ public class ConsOrderPayment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "construction_order_id", nullable = false)
+    @JsonIgnore
     private ConstructionOrder constructionOrder;
 
     @Column(nullable = false)
     private int period;
 
-    @Column(nullable = false)
+
     private LocalDateTime paidAt;
 
     @Column(nullable = false)
@@ -31,5 +33,6 @@ public class ConsOrderPayment {
 
     private boolean isPaid = false;
 
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 }
