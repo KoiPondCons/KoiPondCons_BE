@@ -1,13 +1,11 @@
 package com.koiteampro.koipondcons.models.response;
 
-import com.koiteampro.koipondcons.entities.Account;
-import com.koiteampro.koipondcons.entities.Customer;
-import com.koiteampro.koipondcons.entities.DesignDrawing;
-import com.koiteampro.koipondcons.entities.Quotation;
+import com.koiteampro.koipondcons.entities.*;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ConstructionOrderResponse {
@@ -43,5 +41,7 @@ public class ConstructionOrderResponse {
     private DesignDrawingResponse designDrawingResponse;
 
     private Account constructorAccount;
+
+    private List<ConsOrderPayment> consOrderPaymentList;
 
 }

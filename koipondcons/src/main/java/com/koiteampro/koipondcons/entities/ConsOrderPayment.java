@@ -1,7 +1,6 @@
 package com.koiteampro.koipondcons.entities;
 
 import com.koiteampro.koipondcons.enums.PaymentMethod;
-import com.koiteampro.koipondcons.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,7 +29,7 @@ public class ConsOrderPayment {
 
     private String content;
 
-    private PaymentStatus paymentStatus = PaymentStatus.NOT_YET;
+    private boolean isPaid = false;
 
     private PaymentMethod paymentMethod;
 }

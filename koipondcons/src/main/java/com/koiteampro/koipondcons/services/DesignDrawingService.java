@@ -1,6 +1,7 @@
 package com.koiteampro.koipondcons.services;
 
 import com.koiteampro.koipondcons.entities.Account;
+import com.koiteampro.koipondcons.entities.ConsOrderPayment;
 import com.koiteampro.koipondcons.entities.ConstructionOrder;
 import com.koiteampro.koipondcons.entities.DesignDrawing;
 import com.koiteampro.koipondcons.enums.DesignDrawingStatus;
@@ -32,6 +33,9 @@ public class DesignDrawingService {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    ConsOrderPaymentService consOrderPaymentService;
+
     public void updateDesignDrawing(long id, DesignDrawingRequest designDrawingRequest) {
         Optional<DesignDrawing> designDrawingOptional = designDrawingRepository.findById(id);
 
@@ -40,6 +44,9 @@ public class DesignDrawingService {
             designDrawing.setDesignerAccount(designDrawingRequest.getDesignerAccount());
             designDrawing.setDesignFile(designDrawingRequest.getDesignFile());
             designDrawing.setStatus(designDrawingRequest.getStatus());
+            if (designDrawing.getStatus() == DesignDrawingStatus.CUSTOMER_PENDING) {
+                consOrderPaymentService.addConsOrderPayment(designDrawing.getConstructionOrder());
+            }
             designDrawingRepository.save(designDrawing);
         } else {
             throw new NotFoundException("DesignDrawing with id " + id + " not found");

@@ -207,6 +207,7 @@ public class ConstructionOrderService {
         constructionOrderResponse.setQuotationResponse(quotationService.getQuotationResponse(constructionOrder.getQuotation()));
         constructionOrderResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
         constructionOrderResponse.setConstructorAccount(staffConstructionDetailService.getConstructorOfConstructionOrder(constructionOrderResponse.getId()));
+        constructionOrderResponse.setConsOrderPaymentList(constructionOrder.getConsOrderPaymentList());
         return constructionOrderResponse;
     }
 }
