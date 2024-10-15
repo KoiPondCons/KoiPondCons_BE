@@ -1,5 +1,7 @@
 package com.koiteampro.koipondcons.entities;
 
+import com.koiteampro.koipondcons.enums.PaymentMethod;
+import com.koiteampro.koipondcons.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,7 +30,7 @@ public class ConsOrderPayment {
 
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_method_id", nullable = false)
+    private PaymentStatus paymentStatus = PaymentStatus.NOT_YET;
+
     private PaymentMethod paymentMethod;
 }
