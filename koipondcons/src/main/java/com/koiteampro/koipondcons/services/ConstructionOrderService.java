@@ -125,6 +125,17 @@ public class ConstructionOrderService {
         }
     }
 
+    public ConstructionOrderResponse getCurrentOrderOfConstructor() {
+        Account consultantAccount = authenticationService.getCurrentAccount();
+        List<StaffConstructionDetail> staffConstructionDetails = staffConstructionDetailRepository.findByIsFinishedFalseAndConstructorAccountId(consultantAccount.getId());
+
+        if (staffConstructionDetails != null && !staffConstructionDetails.isEmpty()) {
+            return setInfoForConstructionOrder(staffConstructionDetails.getFirst().getConstructionOrder());
+        } else {
+            throw new NotFoundException("No construction order found");
+        }
+    }
+
     public List<ConstructionOrderResponse> getAllConstructionOrdersByStatus(ConstructionOrderStatus status) {
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByStatusIs(status);
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();

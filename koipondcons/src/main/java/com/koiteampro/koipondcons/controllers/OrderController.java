@@ -58,6 +58,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomer());
     }
 
+    @GetMapping("/orders/constructor/current")
+    public ResponseEntity getCurrentOrderOfConstructor () {
+        return ResponseEntity.ok(orderService.getCurrentOrderOfConstructor());
+    }
+
     @GetMapping("/orders/consultant")
     public ResponseEntity getAllOrdersOfConsultant () {
         return ResponseEntity.ok(orderService.getAllConstructionOrdersOfConsultant());
