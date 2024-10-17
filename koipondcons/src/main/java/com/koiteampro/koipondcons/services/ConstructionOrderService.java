@@ -219,6 +219,7 @@ public class ConstructionOrderService {
         constructionOrderResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
         constructionOrderResponse.setConstructorAccount(staffConstructionDetailService.getConstructorOfConstructionOrder(constructionOrderResponse.getId()));
         constructionOrderResponse.setConsOrderPaymentList(constructionOrder.getConsOrderPaymentList());
+        constructionOrderResponse.setConstructionProgress(staffConstructionDetailService.getProgressByConstructionOrder(constructionOrder.getId()));
         return constructionOrderResponse;
     }
 }

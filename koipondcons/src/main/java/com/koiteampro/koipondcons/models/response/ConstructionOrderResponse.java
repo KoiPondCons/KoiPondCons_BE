@@ -44,4 +44,5 @@ public class ConstructionOrderResponse {
 
     private List<ConsOrderPayment> consOrderPaymentList;
 
+    private double constructionProgress = 0;
 }
