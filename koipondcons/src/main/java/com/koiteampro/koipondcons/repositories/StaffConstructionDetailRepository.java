@@ -10,5 +10,6 @@ public interface StaffConstructionDetailRepository extends JpaRepository<StaffCo
     List<StaffConstructionDetail> findAllByConstructionOrderId(Long id);
     List<Long> findConstructorAccountIdByIsFinishedFalse();
     List<StaffConstructionDetail> findByIsFinishedFalseAndConstructorAccountId(Long id);
-
+    long countByConstructionOrderId(Long id);
+    long countByConstructionOrderIdAndIsFinishedTrue(Long id);
 }

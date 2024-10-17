@@ -4,6 +4,7 @@ import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.StaffConstructionDetail;
 import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.NotFoundException;
+import com.koiteampro.koipondcons.models.request.StaffConstructionDetailUpdateRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.StaffConstructionDetailRepository;
@@ -67,7 +68,25 @@ public class StaffConstructionDetailService {
         }
     }
 
+    public double getProgressByConstructionOrder(long orderId) {
+        try {
+            return staffConstructionDetailRepository.countByConstructionOrderIdAndIsFinishedTrue(orderId) * 1.0
+                    / staffConstructionDetailRepository.countByConstructionOrderId(orderId);
+        } catch (Exception e) {
+            throw new NotFoundException("Order not found!");
+        }
+    }
 
-
-
+    public StaffConstructionDetail updateStaffConstructionDetail(long detailId, StaffConstructionDetailUpdateRequest staffConstructionDetailUpdateRequest) {
+        StaffConstructionDetail oldDetail = staffConstructionDetailRepository.findById(detailId).orElse(null);
+        if (oldDetail != null) {
+            oldDetail.setDateStart(staffConstructionDetailUpdateRequest.getDateStart());
+            oldDetail.setDateEnd(staffConstructionDetailUpdateRequest.getDateEnd());
+            oldDetail.setFinished(staffConstructionDetailUpdateRequest.isFinished());
+            return staffConstructionDetailRepository.save(oldDetail);
+        }
+        else {
+            throw new NotFoundException("Work not found!");
+        }
+    }
 }
