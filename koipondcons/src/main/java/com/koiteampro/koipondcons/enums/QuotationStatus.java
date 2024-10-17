@@ -8,7 +8,6 @@ import lombok.Getter;
 public enum QuotationStatus {
     PROCESSING("Đang xử lý"),
     MANAGER_PENDING("Chờ duyệt"),
-    MANAGER_APPROVED("Quản lý đã duyệt"),
     MANAGER_REJECTED("Quản lý từ chối"),
     CUSTOMER_PENDING("Chờ khách xác nhận"),
     CUSTOMER_CONFIRMED("Đã xác nhận"),
