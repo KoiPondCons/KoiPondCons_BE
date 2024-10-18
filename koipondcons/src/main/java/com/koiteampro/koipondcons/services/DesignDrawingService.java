@@ -44,9 +44,6 @@ public class DesignDrawingService {
             designDrawing.setDesignerAccount(designDrawingRequest.getDesignerAccount());
             designDrawing.setDesignFile(designDrawingRequest.getDesignFile());
             designDrawing.setStatus(designDrawingRequest.getStatus());
-            if (designDrawing.getStatus() == DesignDrawingStatus.CUSTOMER_PENDING) {
-                consOrderPaymentService.addConsOrderPayment(designDrawing.getConstructionOrder());
-            }
             designDrawingRepository.save(designDrawing);
         } else {
             throw new NotFoundException("DesignDrawing with id " + id + " not found");

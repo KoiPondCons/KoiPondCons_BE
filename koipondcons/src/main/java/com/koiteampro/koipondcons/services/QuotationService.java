@@ -3,6 +3,7 @@ package com.koiteampro.koipondcons.services;
 import com.koiteampro.koipondcons.entities.ComboPrice;
 import com.koiteampro.koipondcons.entities.Promotion;
 import com.koiteampro.koipondcons.entities.Quotation;
+import com.koiteampro.koipondcons.enums.QuotationStatus;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.QuotationRequest;
 import com.koiteampro.koipondcons.models.response.QuotationResponse;
@@ -35,6 +36,12 @@ public class QuotationService {
 
     @Autowired
     CustomerService customerService;
+
+    @Autowired
+    private ConstructionOrderService constructionOrderService;
+
+    @Autowired
+    ConsOrderPaymentService consOrderPaymentService;
 
     public void addPromotionToQuotation(@PathVariable long id, @PathVariable long promotionId) {
         Optional<Quotation> quotation = quotationRepository.findById(id);
@@ -125,6 +132,10 @@ public class QuotationService {
             quotationUpdate.setConstructionOrder(quotationToUpdate.getConstructionOrder());
             quotationUpdate.setPromotions(quotationToUpdate.getPromotions());
             quotationUpdate.setStatus(quotationUpdate.getStatus());
+
+            if (quotationUpdate.getStatus() == QuotationStatus.CUSTOMER_PENDING) {
+                consOrderPaymentService.addConsOrderPayment(quotationUpdate.getConstructionOrder());
+            }
 
             updateQuotationPrice(quotationUpdate);
 
