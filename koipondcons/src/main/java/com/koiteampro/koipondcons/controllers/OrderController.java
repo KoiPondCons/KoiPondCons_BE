@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -76,9 +79,17 @@ public class OrderController {
 
     @GetMapping("/demo")
     public ResponseEntity demo () {
-        Calendar cld = Calendar.getInstance(TimeZone.getDefault());
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd(HH:mm:ss)");
-        System.out.println("Server Time Zone: " + formatter.format(cld.getTime()));
+        System.out.println("Server Time Zone (old): " + formatter.format(cld.getTime()));
+        //////////////////////////////////////////////////////////////////////////////
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZoneId zoneId2 = ZoneId.of("Asia/Bangkok");
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime1 = LocalDateTime.now(zoneId2);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd(HH:mm:ss)");
+        System.out.println("Server Time Zone1 (system)(new): " + dateTimeFormatter.format(localDateTime));
+        System.out.println("Server Time Zone2 (usersystem)(new): " + dateTimeFormatter.format(localDateTime1));
         return ResponseEntity.ok("Okeee");
     }
 
