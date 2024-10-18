@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class ConsOrderPaymentService {
                 ConsOrderPayment consOrderPayment = new ConsOrderPayment();
                 consOrderPayment.setConstructionOrder(constructionOrder);
                 consOrderPayment.setPeriod(i);
-                consOrderPayment.setAmount(constructionOrder.getQuotation().getFinalPrice().divide(new BigDecimal(2)));
+                consOrderPayment.setAmount(constructionOrder.getQuotation().getFinalPrice().multiply(new BigDecimal("0.5")));
                 consOrderPayment.setContent("Thanh toán đợt " + i);
                 consOrderPaymentRepository.save(consOrderPayment);
             }
@@ -34,7 +35,17 @@ public class ConsOrderPaymentService {
                 ConsOrderPayment consOrderPayment = new ConsOrderPayment();
                 consOrderPayment.setConstructionOrder(constructionOrder);
                 consOrderPayment.setPeriod(i);
-                consOrderPayment.setAmount(constructionOrder.getQuotation().getFinalPrice().divide(new BigDecimal(3)));
+                switch (i) {
+                    case 1:
+                        consOrderPayment.setAmount(constructionOrder.getQuotation().getFinalPrice().multiply(new BigDecimal("0.2")));
+                        break;
+                    case 2:
+                        consOrderPayment.setAmount(constructionOrder.getQuotation().getFinalPrice().multiply(new BigDecimal("0.3")));
+                        break;
+                    case 3:
+                        consOrderPayment.setAmount(constructionOrder.getQuotation().getFinalPrice().multiply(new BigDecimal("0.5")));
+                        break;
+                }
                 consOrderPayment.setContent("Thanh toán đợt " + i);
                 consOrderPaymentRepository.save(consOrderPayment);
             }
