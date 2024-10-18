@@ -160,7 +160,7 @@ public class ConstructionOrderService {
     public List<ConstructionOrderResponse> getAllConstructionOrdersOfCustomer() {
         Customer customer = customerService.getCurrentCustomer();
 
-        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerId(customer.getId());
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerIdAndStatusNot(customer.getId(), ConstructionOrderStatus.CANCELED);
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
