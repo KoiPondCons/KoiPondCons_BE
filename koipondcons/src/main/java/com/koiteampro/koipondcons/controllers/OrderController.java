@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.controllers;
 
+import com.koiteampro.koipondcons.entities.ConstructionOrder;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
@@ -9,6 +10,8 @@ import com.koiteampro.koipondcons.services.ConstructionOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -77,5 +80,10 @@ public class OrderController {
     public ResponseEntity<String> setConstructor(@PathVariable long id, @PathVariable long constructorId) {
         orderService.setConstructorToOrder(id,constructorId);
         return ResponseEntity.ok("Set constructor successfully!");
+    }
+
+    @GetMapping("/orders/constructor/current/finished")
+    public ResponseEntity<List<ConstructionOrder>> getFinishedOrdersByConstructorId(){
+        return ResponseEntity.ok(orderService.getFinishedOrdersByCurrentConstructor());
     }
 }
