@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -74,8 +76,9 @@ public class OrderController {
 
     @GetMapping("/demo")
     public ResponseEntity demo () {
-        System.out.println("Server Time Zone: " + TimeZone.getDefault().getID());
-        System.out.println("Server Time Zone: " + TimeZone.getTimeZone("Etc/GMT+7"));
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd(HH:mm:ss)");
+        System.out.println("Server Time Zone: " + formatter.format(cld.getTime()));
         return ResponseEntity.ok("Okeee");
     }
 
