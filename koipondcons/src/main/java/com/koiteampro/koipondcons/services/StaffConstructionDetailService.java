@@ -70,8 +70,8 @@ public class StaffConstructionDetailService {
 
     public double getProgressByConstructionOrder(long orderId) {
         try {
-            String result = String.format("%.2f", staffConstructionDetailRepository.countByConstructionOrderIdAndIsFinishedTrue(orderId) * 1.0
-                    / staffConstructionDetailRepository.countByConstructionOrderId(orderId))
+            String result = String.format("%.2f", (staffConstructionDetailRepository.countByConstructionOrderIdAndIsFinishedTrue(orderId) * 1.0
+                    / staffConstructionDetailRepository.countByConstructionOrderId(orderId)));
             return Double.parseDouble(result)*100;
         } catch (Exception e) {
             throw new NotFoundException("Order not found!");
