@@ -75,6 +75,7 @@ public class OrderController {
     @GetMapping("/demo")
     public ResponseEntity demo () {
         System.out.println("Server Time Zone: " + TimeZone.getDefault().getID());
+        System.out.println("Server Time Zone: " + TimeZone.getTimeZone("Etc/GMT+7"));
         return ResponseEntity.ok("Okeee");
     }
 
