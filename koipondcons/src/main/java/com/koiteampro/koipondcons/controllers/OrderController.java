@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.TimeZone;
 
 @RestController
 @RequestMapping("/api")
@@ -73,6 +74,7 @@ public class OrderController {
 
     @GetMapping("/demo")
     public ResponseEntity demo () {
+        System.out.println("Server Time Zone: " + TimeZone.getDefault().getID());
         return ResponseEntity.ok("Okeee");
     }
 
