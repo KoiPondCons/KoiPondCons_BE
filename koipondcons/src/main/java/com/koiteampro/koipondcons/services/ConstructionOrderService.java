@@ -222,4 +222,13 @@ public class ConstructionOrderService {
         constructionOrderResponse.setConstructionProgress(staffConstructionDetailService.getProgressByConstructionOrder(constructionOrder.getId()));
         return constructionOrderResponse;
     }
+
+    public List<ConstructionOrder> getFinishedOrdersByConstructorID(long constructorId){
+        return constructionOrderRepository.findFinishedOrdersByConstructorID(constructorId);
+    }
+
+    public List<ConstructionOrder> getFinishedOrdersByCurrentConstructor(){
+        Account constructorAccount = authenticationService.getCurrentAccount();
+        return constructionOrderRepository.findFinishedOrdersByConstructorID(constructorAccount.getId());
+    }
 }
