@@ -76,7 +76,7 @@ public class OrderController {
 
     @GetMapping("/demo")
     public ResponseEntity demo () {
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        Calendar cld = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd(HH:mm:ss)");
         System.out.println("Server Time Zone: " + formatter.format(cld.getTime()));
         return ResponseEntity.ok("Okeee");
