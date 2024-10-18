@@ -99,6 +99,9 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid role");
         }
     }
-
+    @GetMapping("/role/staff")
+    public ResponseEntity<List<AccountResponse>> getAllStaff(){
+        return ResponseEntity.ok(authenticationService.getAllStaff());
+    }
 
 }

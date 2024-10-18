@@ -226,4 +226,9 @@ public class AuthenticationService implements UserDetailsService {
         accountResponse.setDateCreate(account.getDateCreate());
         return accountResponse;
     }
+
+    public List<AccountResponse> getAllStaff(){
+        List<Account> accounts = accountRepository.findByRoleNot(Role.CUSTOMER);
+        return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
+    }
 }
