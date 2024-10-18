@@ -100,6 +100,7 @@ public class ConstructionOrderService {
             constructionOrderUpdate.setCustomerEmail(constructionOrderInfoUpdate.getCustomerEmail());
             constructionOrderUpdate.setCustomerPhone(constructionOrderInfoUpdate.getCustomerPhone());
             constructionOrderUpdate.setPondAddress(constructionOrderInfoUpdate.getPondAddress());
+            constructionOrderUpdate.setDesigned(constructionOrderInfoUpdate.isDesigned());
 
 
             constructionOrderRepository.save(constructionOrderUpdate);
