@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @org.springframework.stereotype.Controller
 @RestController
+@RequestMapping("api")
 @CrossOrigin("*")
 public class VNPayController {
     @Autowired

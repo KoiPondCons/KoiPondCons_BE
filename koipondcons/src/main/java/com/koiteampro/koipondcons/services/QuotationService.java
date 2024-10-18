@@ -133,7 +133,7 @@ public class QuotationService {
             quotationUpdate.setPromotions(quotationToUpdate.getPromotions());
             quotationUpdate.setStatus(quotationUpdate.getStatus());
 
-            if (quotationUpdate.getStatus() == QuotationStatus.CUSTOMER_PENDING) {
+            if (quotationUpdate.getStatus() == QuotationStatus.CUSTOMER_CONFIRMED) {
                 consOrderPaymentService.addConsOrderPayment(quotationUpdate.getConstructionOrder());
             }
 
