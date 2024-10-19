@@ -1,7 +1,10 @@
 package com.koiteampro.koipondcons.services;
 
 import com.koiteampro.koipondcons.config.VNPayConfig;
+import com.koiteampro.koipondcons.entities.ConsOrderPayment;
+import com.koiteampro.koipondcons.models.response.SubmitPaymentResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -16,7 +19,10 @@ import java.util.*;
 @Service
 public class VNPayService {
 
-    public String createOrder(HttpServletRequest request, int total, String orderInfor, String urlReturn){
+    @Autowired
+    private ConsOrderPaymentService consOrderPaymentService;
+
+    public String createOrder(HttpServletRequest request, long total, String orderInfor, String urlReturn){
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
@@ -124,6 +130,25 @@ public class VNPayService {
         } else {
             return -1;
         }
+    }
+
+    public SubmitPaymentResponse returnSubmitOrder(HttpServletRequest request){
+        int paymentStatus = orderReturn(request);
+        String orderPaymentId = request.getParameter("vnp_OrderInfo");
+//        String paymentTime = request.getParameter("vnp_PayDate");
+//        String transactionId = request.getParameter("vnp_TransactionNo");
+//        String totalPrice = request.getParameter("vnp_Amount");
+        SubmitPaymentResponse submitPaymentResponse = new SubmitPaymentResponse();
+
+        if (paymentStatus == 1) {
+            ConsOrderPayment consOrderPayment = consOrderPaymentService.getConsOrderPaymentById(Long.parseLong(orderPaymentId));
+            submitPaymentResponse.setOrderId(consOrderPayment.getConstructionOrder().getId());
+            consOrderPaymentService.setConsOrderPaymentIsPaidForVNPAY(consOrderPayment.getId());
+        }
+
+        submitPaymentResponse.setSuccess(paymentStatus == 1);
+
+        return submitPaymentResponse;
     }
 
 }

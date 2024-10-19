@@ -51,6 +51,17 @@ public class ConsOrderPaymentService {
             }
         }
     }
+
+    public ConsOrderPayment getConsOrderPaymentById(long id) {
+        Optional<ConsOrderPayment> consOrderPayment = consOrderPaymentRepository.findById(id);
+
+        if (consOrderPayment.isPresent()) {
+            return consOrderPayment.get();
+        } else {
+            throw new NotFoundException("ConsOrderPayment with id " + id + " not found");
+        }
+    }
+
     public ConsOrderPayment updateConsOrderPayment(long consOrderPaymentId,int period, boolean isPaid, PaymentMethod paymentMethod) {
         Optional<ConsOrderPayment> consOrderPayment = consOrderPaymentRepository.findByConstructionOrderIdAndPeriod(consOrderPaymentId, period);
 
@@ -62,7 +73,48 @@ public class ConsOrderPaymentService {
             consOrderPaymentRepository.save(consOrderPay);
             return consOrderPay;
         }else{
-            throw new NotFoundException("deo tim thay");
+            throw new NotFoundException("Not found order payment!");
+        }
+    }
+
+    public void setConsOrderPaymentIsPaidForVNPAY(long consOrderPaymentId) {
+        Optional<ConsOrderPayment> consOrderPayment = consOrderPaymentRepository.findById(consOrderPaymentId);
+
+        if(consOrderPayment.isPresent()) {
+            ConsOrderPayment consOrderPay = consOrderPayment.get();
+            //////////////////////////////////
+            ConstructionOrder constructionOrder = consOrderPay.getConstructionOrder();
+
+            if (!constructionOrder.isDesigned()) {
+               switch (consOrderPay.getPeriod()) {
+                   case 1:
+                       constructionOrder.setStatus(ConstructionOrderStatus.DESIGNING);
+                       break;
+                   case 2:
+                       constructionOrder.setStatus(ConstructionOrderStatus.CONSTRUCTING);
+                       break;
+                   case 3:
+                       constructionOrder.setStatus(ConstructionOrderStatus.FINISHED);
+                       break;
+               }
+            } else {
+                switch (consOrderPay.getPeriod()) {
+                    case 1:
+                        constructionOrder.setStatus(ConstructionOrderStatus.CONSTRUCTING);
+                        break;
+                    case 2:
+                        constructionOrder.setStatus(ConstructionOrderStatus.FINISHED);
+                        break;
+                }
+            }
+
+            /////////////////////////////////
+            consOrderPay.setPaid(true);
+            consOrderPay.setPaidAt(LocalDateTime.now());
+            consOrderPay.setPaymentMethod(PaymentMethod.TRANSFER);
+            consOrderPaymentRepository.save(consOrderPay);
+        } else {
+            throw new NotFoundException("Not found order payment!");
         }
     }
 

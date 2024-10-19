@@ -15,7 +15,7 @@ public class ConsOrderPayment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "construction_order_id", nullable = false)
     @JsonIgnore
     private ConstructionOrder constructionOrder;
