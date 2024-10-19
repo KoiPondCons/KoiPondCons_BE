@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class SubmitPaymentResponse {
     private long orderId;
-    private boolean isSuccess;
+    private boolean status;
 }

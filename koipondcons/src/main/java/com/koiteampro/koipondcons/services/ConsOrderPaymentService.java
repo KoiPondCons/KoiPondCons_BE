@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Service
@@ -110,7 +111,8 @@ public class ConsOrderPaymentService {
 
             /////////////////////////////////
             consOrderPay.setPaid(true);
-            consOrderPay.setPaidAt(LocalDateTime.now());
+            ZoneId zoneId = ZoneId.of("Asia/Bangkok");
+            consOrderPay.setPaidAt(LocalDateTime.now(zoneId));
             consOrderPay.setPaymentMethod(PaymentMethod.TRANSFER);
             consOrderPaymentRepository.save(consOrderPay);
         } else {

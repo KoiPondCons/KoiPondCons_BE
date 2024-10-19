@@ -138,16 +138,16 @@ public class VNPayService {
 //        String paymentTime = request.getParameter("vnp_PayDate");
 //        String transactionId = request.getParameter("vnp_TransactionNo");
 //        String totalPrice = request.getParameter("vnp_Amount");
-        SubmitPaymentResponse submitPaymentResponse = new SubmitPaymentResponse();
+
+        ConsOrderPayment consOrderPayment = consOrderPaymentService.getConsOrderPaymentById(Long.parseLong(orderPaymentId));
 
         if (paymentStatus == 1) {
-            ConsOrderPayment consOrderPayment = consOrderPaymentService.getConsOrderPaymentById(Long.parseLong(orderPaymentId));
-            submitPaymentResponse.setOrderId(consOrderPayment.getConstructionOrder().getId());
             consOrderPaymentService.setConsOrderPaymentIsPaidForVNPAY(consOrderPayment.getId());
         }
 
-        submitPaymentResponse.setSuccess(paymentStatus == 1);
-
+        SubmitPaymentResponse submitPaymentResponse = new SubmitPaymentResponse();
+        submitPaymentResponse.setOrderId(consOrderPayment.getConstructionOrder().getId());
+        submitPaymentResponse.setStatus(paymentStatus == 1);
         return submitPaymentResponse;
     }
 
