@@ -87,9 +87,11 @@ public class OrderController {
         ZoneId zoneId2 = ZoneId.of("Asia/Bangkok");
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime localDateTime1 = LocalDateTime.now(zoneId2);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd(HH:mm:ss)");
+        LocalDateTime localDateTime2 = LocalDateTime.now(zoneId2).plusMinutes(15);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         System.out.println("Server Time Zone1 (system)(new): " + dateTimeFormatter.format(localDateTime));
         System.out.println("Server Time Zone2 (usersystem)(new): " + dateTimeFormatter.format(localDateTime1));
+        System.out.println("Server Time Zone2 (usersystem)(new)(+15m): " + dateTimeFormatter.format(localDateTime2));
         return ResponseEntity.ok("Okeee");
     }
 
