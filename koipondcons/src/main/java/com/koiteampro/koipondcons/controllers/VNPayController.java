@@ -19,7 +19,8 @@ public class VNPayController {
     public String submitOrder(@RequestParam("amount") int orderTotal,
                             @RequestParam("orderInfo") String orderInfo,
                             HttpServletRequest request){
-        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + "5173";
+//        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + "5173";
+        String baseUrl = "http://localhost:" + "5173";
         return vnPayService.createOrder(request, orderTotal*100, orderInfo, baseUrl);
     }
 
