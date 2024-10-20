@@ -101,7 +101,7 @@ public class ConstructionOrderService {
             constructionOrderUpdate.setCustomerPhone(constructionOrderInfoUpdate.getCustomerPhone());
             constructionOrderUpdate.setPondAddress(constructionOrderInfoUpdate.getPondAddress());
             constructionOrderUpdate.setDesigned(constructionOrderInfoUpdate.isDesigned());
-
+            constructionOrderUpdate.setConfirmedDate(constructionOrderInfoUpdate.getConfirmedDate());
 
             constructionOrderRepository.save(constructionOrderUpdate);
 
@@ -228,8 +228,16 @@ public class ConstructionOrderService {
         return constructionOrderRepository.findFinishedOrdersByConstructorID(constructorId);
     }
 
-    public List<ConstructionOrder> getFinishedOrdersByCurrentConstructor(){
+    public List<ConstructionOrderResponse> getFinishedOrdersByCurrentConstructor(){
         Account constructorAccount = authenticationService.getCurrentAccount();
-        return constructionOrderRepository.findFinishedOrdersByConstructorID(constructorAccount.getId());
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findFinishedOrdersByConstructorID(constructorAccount.getId());
+        List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
+
+        for (ConstructionOrder constructionOrder : constructionOrders) {
+            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
+        }
+        return constructionOrderResponses;
     }
+
+
 }

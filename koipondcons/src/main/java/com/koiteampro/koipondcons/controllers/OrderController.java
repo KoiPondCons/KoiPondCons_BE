@@ -102,7 +102,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/constructor/current/finished")
-    public ResponseEntity<List<ConstructionOrder>> getFinishedOrdersByConstructorId(){
+    public ResponseEntity<List<ConstructionOrderResponse>> getFinishedOrdersByConstructorId(){
         return ResponseEntity.ok(orderService.getFinishedOrdersByCurrentConstructor());
     }
 }
