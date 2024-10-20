@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ConstructionOrderRequest {
 
@@ -23,4 +25,5 @@ public class ConstructionOrderRequest {
     private float pondVolume;
 
     private boolean isDesigned;
+
 }

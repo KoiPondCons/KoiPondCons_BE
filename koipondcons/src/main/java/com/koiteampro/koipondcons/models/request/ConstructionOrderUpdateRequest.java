@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ConstructionOrderUpdateRequest {
 
@@ -20,7 +22,7 @@ public class ConstructionOrderUpdateRequest {
 
     private String pondAddress;
 
-
     private boolean isDesigned;
 
+    private LocalDateTime confirmedDate;
 }
