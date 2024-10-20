@@ -34,16 +34,18 @@ public class StaffConstructionDetailService {
         List<Long> accountIds = new ArrayList<>();
 
         try {
-            accountIds = staffConstructionDetailRepository.findConstructorAccountIdByIsFinishedFalse();
+            accountIds = staffConstructionDetailRepository.findStaffIdsWithUnfinishedWorks();
+            System.out.println(accountIds.size());
         } catch (Exception e) {
             accountIds = null;
+            System.out.println("list account null roi nha");
         }
 
         try {
             if (accountIds == null || accountIds.isEmpty()) {
                 freeConstructors = accountRepository.findAccountByRoleAndIsEnabledTrue(Role.CONSTRUCTOR);
             } else {
-                freeConstructors = accountRepository.findByIdNotIn(accountIds);
+                freeConstructors = accountRepository.findByIdNotInAndRoleLike(accountIds, Role.CONSTRUCTOR);
             }
         } catch (Exception e) {
             throw new NotFoundException("Staff not found!");

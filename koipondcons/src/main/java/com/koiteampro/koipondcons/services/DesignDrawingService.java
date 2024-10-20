@@ -96,7 +96,7 @@ public class DesignDrawingService {
             if (accountIds == null || accountIds.isEmpty()) {
                 accounts = accountRepository.findAccountByRoleAndIsEnabledTrue(Role.DESIGNER);
             } else {
-                accounts = accountRepository.findByIdNotIn(accountIds);
+                accounts = accountRepository.findByIdNotInAndRoleLike(accountIds, Role.DESIGNER);
             }
         } catch (Exception e) {
             throw new NotFoundException("Staff not found!");

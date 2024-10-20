@@ -12,7 +12,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAccountsByIsEnabledTrue();
 
     List<Account> findAccountByRoleAndIsEnabledTrue(Role role);
-    List<Account> findByIdNotIn(List<Long> ids);
+    List<Account> findByIdNotInAndRoleLike(List<Long> ids, Role role);
 
     List<Account> findByRoleNot(Role role);
 }
