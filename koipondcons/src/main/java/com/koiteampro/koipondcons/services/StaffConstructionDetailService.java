@@ -35,10 +35,8 @@ public class StaffConstructionDetailService {
 
         try {
             accountIds = staffConstructionDetailRepository.findStaffIdsWithUnfinishedWorks();
-            System.out.println(accountIds.size());
         } catch (Exception e) {
             accountIds = null;
-            System.out.println("list account null roi nha");
         }
 
         try {

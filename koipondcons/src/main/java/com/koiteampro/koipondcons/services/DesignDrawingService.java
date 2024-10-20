@@ -14,6 +14,7 @@ import com.koiteampro.koipondcons.models.response.OrderCustomerResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.DesignDrawingRepository;
+import org.hibernate.validator.internal.constraintvalidators.bv.time.futureorpresent.FutureOrPresentValidatorForReadableInstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class DesignDrawingService {
 
     @Autowired
     ConsOrderPaymentService consOrderPaymentService;
+
 
     public void updateDesignDrawing(long id, DesignDrawingRequest designDrawingRequest) {
         Optional<DesignDrawing> designDrawingOptional = designDrawingRepository.findById(id);
@@ -87,7 +89,7 @@ public class DesignDrawingService {
         List<Long> accountIds = new ArrayList<>();
 
         try {
-            accountIds = designDrawingRepository.findDesignerAccountIdByStatusNotLike("%" + DesignDrawingStatus.CUSTOMER_CONFIRMED + "%");
+            accountIds = designDrawingRepository.findStaffIdsWithUnfinishedWorks(DesignDrawingStatus.CUSTOMER_CONFIRMED);
         } catch (Exception e) {
             accountIds = null;
         }
