@@ -1,10 +1,12 @@
 package com.koiteampro.koipondcons.entities;
 
+import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -33,14 +35,16 @@ public class MaintenanceOrder {
     @Pattern(regexp = "^(84|0)+[3|5|7|8|9]\\d{8}$", message = "Số điện thoại không hợp lệ!")
     private String customerPhone;
 
-    @Email(message = "Không đúng định dạng email!")
-    private String customerEmail;
-
     private String pondAddress;
 
     private float pondVolume;
 
     private double price;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
+
+    private LocalDate createAt;
+
+    private MaintenanceOrderStatus status = MaintenanceOrderStatus.REQUESTED;
+
 }

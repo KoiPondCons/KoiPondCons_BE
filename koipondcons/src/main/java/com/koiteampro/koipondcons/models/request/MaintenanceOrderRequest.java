@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class MaintenanceOrderRequest {
 
-    private Customer customer;
+    private boolean isWarranted;
 
     private String customerName;
 

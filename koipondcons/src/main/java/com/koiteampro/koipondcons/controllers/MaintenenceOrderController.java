@@ -2,6 +2,7 @@ package com.koiteampro.koipondcons.controllers;
 
 import com.koiteampro.koipondcons.entities.MaintenanceOrder;
 import com.koiteampro.koipondcons.models.request.MaintenanceOrderRequest;
+import com.koiteampro.koipondcons.models.response.MaintenanceOrderResponse;
 import com.koiteampro.koipondcons.services.MaintenanceOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class MaintenenceOrderController {
     private MaintenanceOrderService maintenanceOrderService;
 
     @PostMapping("/maintenence")
-    public ResponseEntity<MaintenanceOrder> create(@RequestBody MaintenanceOrderRequest maintenanceOrderRequest){
+    public ResponseEntity<MaintenanceOrderResponse> create(@RequestBody MaintenanceOrderRequest maintenanceOrderRequest){
         return ResponseEntity.ok(maintenanceOrderService.createMaintenanceOrder(maintenanceOrderRequest));
     }
 
