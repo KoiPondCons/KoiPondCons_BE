@@ -59,7 +59,7 @@ public class SecurityConfig {
 //                                .requestMatchers("/api/orders/**", "/api/design-drawings/**").hasAnyAuthority("MANAGER", "CUSTOMER")
 //                                .requestMatchers("/api/demo").hasAnyAuthority("MANAGER")
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register").permitAll()
-                                .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**").permitAll()
+                                .requestMatchers("/api/admin", "/api/combos/**", "/api/comboconstructionitems/**", "/api/promotions/**", "/api/quotation/**", "/api/cons-order-payment/**").permitAll()
                                 .requestMatchers("/api/orders/**", "/api/design-drawings/**", "/api/comboprices/**").permitAll()
                                 .requestMatchers("/api/account/**").permitAll()
                                 .requestMatchers("/api/demo").permitAll()

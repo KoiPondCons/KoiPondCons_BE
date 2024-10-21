@@ -8,5 +8,5 @@ import java.util.List;
 public interface ComboPriceRepository extends JpaRepository<ComboPrice, Long> {
     public List<ComboPrice> findByComboId(long comboId);
 
-    public ComboPrice findByComboIdAndMinVolumeLessThanAndMaxVolumeGreaterThan(long comboId, float minVolume, float maxVolume);
+    public ComboPrice findByComboIdAndMinVolumeLessThanEqualAndMaxVolumeGreaterThanEqual(long comboId, float minVolume, float maxVolume);
 }

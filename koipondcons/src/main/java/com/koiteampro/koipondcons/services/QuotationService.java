@@ -92,7 +92,7 @@ public class QuotationService {
 
     public void updateQuotationPrice(Quotation quotationUpdate) {
         if (quotationUpdate.getCombo() != null) {
-            ComboPrice comboPrice = comboPriceRepository.findByComboIdAndMinVolumeLessThanAndMaxVolumeGreaterThan(quotationUpdate.getCombo().getId(), quotationUpdate.getPondVolume(), quotationUpdate.getPondVolume());
+            ComboPrice comboPrice = comboPriceRepository.findByComboIdAndMinVolumeLessThanEqualAndMaxVolumeGreaterThanEqual(quotationUpdate.getCombo().getId(), quotationUpdate.getPondVolume(), quotationUpdate.getPondVolume());
             if (comboPrice != null) {
                 quotationUpdate.setInitialPrice(comboPrice.getUnitPrice().multiply(BigDecimal.valueOf(quotationUpdate.getPondVolume())));
             } else {

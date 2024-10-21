@@ -52,7 +52,7 @@ public class ComboPriceService {
     }
 
     public ComboPrice getCompoPriceByComboIdAndVolume(long comboId, float volume) {
-        ComboPrice comboPrice = comboPriceRepository.findByComboIdAndMinVolumeLessThanAndMaxVolumeGreaterThan(comboId, volume, volume);
+        ComboPrice comboPrice = comboPriceRepository.findByComboIdAndMinVolumeLessThanEqualAndMaxVolumeGreaterThanEqual(comboId, volume, volume);
         if (comboPrice != null) {
             return comboPrice;
         } else {

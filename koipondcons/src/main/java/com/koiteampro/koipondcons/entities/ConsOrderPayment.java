@@ -22,8 +22,7 @@ public class ConsOrderPayment {
 
     @Column(nullable = false)
     private int period;
-
-
+    
     private LocalDateTime paidAt;
 
     @Column(nullable = false)
