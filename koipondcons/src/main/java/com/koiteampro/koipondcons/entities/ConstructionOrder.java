@@ -68,4 +68,5 @@ public class ConstructionOrder {
 
     @OneToOne(mappedBy = "constructionOrder", cascade = CascadeType.PERSIST)
     private Quotation quotation;
+
 }

@@ -122,7 +122,6 @@ public class AuthenticationService implements UserDetailsService {
     public AccountResponse updateAccount(long id, UpdateAccountRequest updateAccountRequest ) {
         Account account = accountRepository.findAccountById(id);
 
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         if (account == null) {
             throw new EntityNotFoundException("Id không tồn tại");
