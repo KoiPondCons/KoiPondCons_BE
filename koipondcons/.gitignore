@@ -32,4 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
+## Codeceptjs ##
 /node_modules
+/output
