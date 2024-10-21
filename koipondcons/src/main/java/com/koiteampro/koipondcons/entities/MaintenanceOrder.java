@@ -45,6 +45,7 @@ public class MaintenanceOrder {
 
     private LocalDate createAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private MaintenanceOrderStatus status = MaintenanceOrderStatus.REQUESTED;
-
 }

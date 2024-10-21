@@ -3,6 +3,7 @@ package com.koiteampro.koipondcons.services;
 import com.koiteampro.koipondcons.entities.ConstructionOrder;
 import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.entities.MaintenanceOrder;
+import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import com.koiteampro.koipondcons.models.request.MaintenanceOrderRequest;
 import com.koiteampro.koipondcons.models.response.MaintenanceOrderResponse;
 import com.koiteampro.koipondcons.repositories.MaintenanceOrderRepository;
@@ -31,10 +32,10 @@ public class MaintenanceOrderService {
         maintenanceOrder.setCustomer(customer);
 
         maintenanceOrder.setCreateAt(LocalDate.now());
-
         maintenanceOrderRepository.save(maintenanceOrder);
 
         return modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class);
     }
+
 
 }
