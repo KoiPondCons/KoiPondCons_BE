@@ -21,8 +21,8 @@ public class ConsOrderPaymentController {
         return ResponseEntity.ok(consOrderPaymentService.updateConsOrderPayment(id,period, consOrderPaymentRequest.isPaid(), consOrderPaymentRequest.getPaymentMethod()));
     }
 
-    @GetMapping("cons-order-payment/demo/{orderId}")
-    public ResponseEntity<List<ConsOrderPayment>> getConsOrderPaymentDemo(@PathVariable long orderId) {
-        return ResponseEntity.ok(consOrderPaymentService.getDemoConsOrderPayments(orderId));
+    @GetMapping("cons-order-payment/demo")
+    public ResponseEntity<List<ConsOrderPayment>> getConsOrderPaymentDemo(@RequestParam long comboId, @RequestParam float pondVolume, @RequestParam boolean designed) {
+        return ResponseEntity.ok(consOrderPaymentService.getDemoConsOrderPayments(comboId, pondVolume, designed));
     }
 }
