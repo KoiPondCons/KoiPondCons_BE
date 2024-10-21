@@ -1,10 +1,12 @@
 package com.koiteampro.koipondcons.services;
 
+import com.koiteampro.koipondcons.entities.ComboPrice;
 import com.koiteampro.koipondcons.entities.ConsOrderPayment;
 import com.koiteampro.koipondcons.entities.ConstructionOrder;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.enums.PaymentMethod;
 import com.koiteampro.koipondcons.exception.NotFoundException;
+import com.koiteampro.koipondcons.repositories.ComboPriceRepository;
 import com.koiteampro.koipondcons.repositories.ConsOrderPaymentRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class ConsOrderPaymentService {
     private ConsOrderPaymentRepository consOrderPaymentRepository;
 
     @Autowired
-    private ConstructionOrderRepository constructionOrderRepository;
+    private ComboPriceRepository comboPriceRepository;
 
     public void addConsOrderPayment(ConstructionOrder constructionOrder) {
         BigDecimal finalPrice = constructionOrder.getQuotation().getFinalPrice();
@@ -96,11 +98,13 @@ public class ConsOrderPaymentService {
         }
     }
 
-    public List<ConsOrderPayment> getDemoConsOrderPayments(long orderId) {
-        ConstructionOrder constructionOrder = constructionOrderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException("Order not found"));
+    public List<ConsOrderPayment> getDemoConsOrderPayments(long comboId, float pondVolume, boolean designed) {
+        ComboPrice comboPrice = comboPriceRepository.findByComboIdAndMinVolumeLessThanEqualAndMaxVolumeGreaterThanEqual(comboId, pondVolume, pondVolume);
 
-        BigDecimal finalPrice = constructionOrder.getQuotation().getFinalPrice();
+
+        BigDecimal finalPrice = comboPrice.getUnitPrice().multiply(new BigDecimal(pondVolume));
+        ConstructionOrder constructionOrder = new ConstructionOrder();
+        constructionOrder.setDesigned(designed);
         int totalPayments = constructionOrder.isDesigned() ? 2 : 3;
         List<ConsOrderPayment> consOrderPayments = new ArrayList<>(totalPayments);
 
