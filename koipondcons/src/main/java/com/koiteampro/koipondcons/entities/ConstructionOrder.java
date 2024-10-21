@@ -62,7 +62,7 @@ public class ConstructionOrder {
     @JsonIgnore
     private List<StaffConstructionDetail> staffConstructionDetailList;
 
-    @OneToMany(mappedBy = "constructionOrder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "constructionOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ConsOrderPayment> consOrderPaymentList;
 
