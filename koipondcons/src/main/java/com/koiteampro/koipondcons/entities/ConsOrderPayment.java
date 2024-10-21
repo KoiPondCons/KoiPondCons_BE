@@ -34,5 +34,5 @@ public class ConsOrderPayment {
     private boolean isPaid = false;
 
     @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod = null;
+    private PaymentMethod paymentMethod;
 }
