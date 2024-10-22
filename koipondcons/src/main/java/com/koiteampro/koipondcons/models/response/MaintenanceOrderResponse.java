@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.models.response;
 
+import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import lombok.Data;
 
@@ -18,9 +19,9 @@ public class MaintenanceOrderResponse {
 
     private double price;
 
-    private String consultantName;
+    private Account consultantAccount;
 
-    private String constructorName;
+    private Account constructorAccount;
 
     private LocalDate endDate;
 
