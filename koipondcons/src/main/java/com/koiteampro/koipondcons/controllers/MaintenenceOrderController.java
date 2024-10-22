@@ -2,11 +2,17 @@ package com.koiteampro.koipondcons.controllers;
 
 import com.koiteampro.koipondcons.entities.MaintenanceOrder;
 import com.koiteampro.koipondcons.models.request.MaintenanceOrderRequest;
+import com.koiteampro.koipondcons.models.request.MaintenanceOrderUpdateRequest;
 import com.koiteampro.koipondcons.models.response.MaintenanceOrderResponse;
+import com.koiteampro.koipondcons.services.AuthenticationService;
+import com.koiteampro.koipondcons.services.CustomerService;
 import com.koiteampro.koipondcons.services.MaintenanceOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -16,9 +22,30 @@ public class MaintenenceOrderController {
     @Autowired
     private MaintenanceOrderService maintenanceOrderService;
 
-    @PostMapping("/maintenence")
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @PostMapping("/maintenance")
     public ResponseEntity<MaintenanceOrderResponse> create(@RequestBody MaintenanceOrderRequest maintenanceOrderRequest){
         return ResponseEntity.ok(maintenanceOrderService.createMaintenanceOrder(maintenanceOrderRequest));
+    }
+
+    @GetMapping("/maintenance/customer")
+    public ResponseEntity<List<MaintenanceOrderResponse>> getByCreateAtBeforeNowAndByCustomer(){
+        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderByCustomerAndBeforeNow(LocalDate.now(), customerService.getCurrentCustomer() ));
+    }
+
+    @GetMapping("/maintenance/consultant")
+    public ResponseEntity<List<MaintenanceOrderResponse>> getByCreateAtBeforeNowAndByConsultant(){
+        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderByConsultantAndBeforeNow(LocalDate.now(), authenticationService.getCurrentAccount()));
+    }
+
+    @PutMapping("/maintenance/{id}")
+    public ResponseEntity<MaintenanceOrderResponse> update(@PathVariable long id, @RequestBody MaintenanceOrderUpdateRequest maintenanceOrderUpdateRequest){
+        return ResponseEntity.ok(maintenanceOrderService.updateMaintenanceOrder(id, maintenanceOrderUpdateRequest));
     }
 
 }

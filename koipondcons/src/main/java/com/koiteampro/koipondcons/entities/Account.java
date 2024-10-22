@@ -71,6 +71,10 @@ public class Account implements UserDetails {
     @JsonIgnore
     private List<StaffConstructionDetail> staffConstructionDetailList;
 
+    @OneToMany(mappedBy = "consultantAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<MaintenanceOrder> maintenanceOrderList;
+
     public Account(long id) {
         this.id = id;
     }

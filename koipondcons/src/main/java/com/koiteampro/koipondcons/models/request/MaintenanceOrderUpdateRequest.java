@@ -18,7 +18,7 @@ public class MaintenanceOrderUpdateRequest {
 
     private double price;
 
-    private LocalDate dateEnd;
+    private LocalDate endDate;
 
     private MaintenanceOrderStatus status;
 
