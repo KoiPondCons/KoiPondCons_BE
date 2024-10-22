@@ -54,13 +54,18 @@ public class MaintenanceOrderController {
         return ResponseEntity.ok(maintenanceOrderService.updateMaintenanceOrder(id, maintenanceOrderUpdateRequest));
     }
 
-    @GetMapping("/maintenance-orders/current-constructor")
+    @GetMapping("/maintenance/current-constructor")
     public ResponseEntity<MaintenanceOrderResponse> getActiveMaintenanceOrderOfConstructor() {
         return ResponseEntity.ok(maintenanceOrderService.getActiveMaintenanceOrderOfConstructor());
     }
 
-//    @GetMapping("/maintenance-orders/manager")
-//    public ResponseEntity getAllConfirmedMaintenanceOrders() {
-//
-//    }
+    @GetMapping("/maintenance/confirmed-orders")
+    public ResponseEntity<List<MaintenanceOrderResponse>> getAllConfirmedMaintenanceOrders() {
+        return ResponseEntity.ok(maintenanceOrderService.getAllConfirmedMaintenanceOrders());
+    }
+
+    @GetMapping("/maintenance/requested-orders")
+    public ResponseEntity<List<MaintenanceOrderResponse>> getAllRequestedMaintenanceOrders() {
+        return ResponseEntity.ok(maintenanceOrderService.getAllRequestedMaintenanceOrders());
+    }
 }

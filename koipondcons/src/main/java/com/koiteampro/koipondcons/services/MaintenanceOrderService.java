@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,14 +45,36 @@ public class MaintenanceOrderService {
         maintenanceOrder.setCreateAt(LocalDate.now());
         maintenanceOrderRepository.save(maintenanceOrder);
 
-        return modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class);
+        return setToMaintenanceOrderResponse(maintenanceOrder);
+    }
+
+    public MaintenanceOrderResponse setToMaintenanceOrderResponse(MaintenanceOrder maintenanceOrder){
+        MaintenanceOrderResponse maintenanceOrderResponse = new MaintenanceOrderResponse();
+        maintenanceOrderResponse.setCustomerName(maintenanceOrder.getCustomerName());
+        maintenanceOrderResponse.setCustomerPhone(maintenanceOrder.getCustomerPhone());
+        maintenanceOrderResponse.setPondAddress(maintenanceOrder.getPondAddress());
+        maintenanceOrderResponse.setPondVolume(maintenanceOrder.getPondVolume());
+        maintenanceOrderResponse.setConsultantName(maintenanceOrder.getConsultantAccount().getName());
+        maintenanceOrderResponse.setConsultantPhone(maintenanceOrder.getConsultantAccount().getPhone());
+        maintenanceOrderResponse.setConstructorName(maintenanceOrder.getConstructorAccount().getName());
+        maintenanceOrderResponse.setCreateAt(maintenanceOrder.getCreateAt());
+        maintenanceOrderResponse.setEndDate(maintenanceOrder.getEndDate());
+        maintenanceOrderResponse.setPrice(maintenanceOrder.getPrice());
+        maintenanceOrderResponse.setStatus(maintenanceOrder.getStatus());
+        maintenanceOrderResponse.setWarranted(maintenanceOrder.isWarranted());
+        return maintenanceOrderResponse;
     }
 
     public List<MaintenanceOrderResponse> findMaintenanceOrderByCustomerAndBeforeNow(LocalDate now, Customer customer){
         List<MaintenanceOrder> maintenanceOrders =  maintenanceOrderRepository.findMaintenanceOrderByCreateAtBeforeAndCustomer(now, customer);
-        return maintenanceOrders.stream().map(maintenanceOrder -> modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class)).collect(Collectors.toList());
+        List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
+        for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
+            MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
+            maintenanceOrderResponses.add(maintenanceOrderResponse);
+        }
+        return maintenanceOrderResponses;
     }
-
+//
     public MaintenanceOrderResponse updateMaintenanceOrder(long id, MaintenanceOrderUpdateRequest maintenanceOrderUpdateRequest){
 
         Optional<MaintenanceOrder> maintenanceOrder = maintenanceOrderRepository.findById(id);
@@ -69,7 +92,7 @@ public class MaintenanceOrderService {
             maintenanceOrderUpdate.setStatus(maintenanceOrderInfoUpdate.getStatus());
 
             maintenanceOrderRepository.save(maintenanceOrderUpdate);
-            return modelMapper.map(maintenanceOrderUpdate, MaintenanceOrderResponse.class);
+            return setToMaintenanceOrderResponse(maintenanceOrderUpdate);
         }else{
             throw new RuntimeException("No maintenance order found with id " + id);
         }
@@ -77,13 +100,19 @@ public class MaintenanceOrderService {
 
     public List<MaintenanceOrderResponse> findMaintenanceOrderByConsultantAndBeforeNow(LocalDate now, Account consultant){
         List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderByCreateAtBeforeAndConsultantAccount(now, consultant);
-        return maintenanceOrders.stream().map(maintenanceOrder -> modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class)).collect(Collectors.toList());
+        List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
+        for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
+            MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
+            maintenanceOrderResponses.add(maintenanceOrderResponse);
+        }
+        return maintenanceOrderResponses;
     }
+
     public MaintenanceOrderResponse getActiveMaintenanceOrderOfConstructor() {
         Account constructorAccount = authenticationService.getCurrentAccount();
         MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findByConstructorAccountIdAndStatusLike(constructorAccount.getId(), MaintenanceOrderStatus.PROCESSING + "");
         if (maintenanceOrder != null)
-            return modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class);
+            return setToMaintenanceOrderResponse(maintenanceOrder);
         else
             throw new NotFoundException("Maintenance order not found!");
     }
@@ -91,13 +120,33 @@ public class MaintenanceOrderService {
     public List<MaintenanceOrderResponse> findMaintenanceOrderBeforeNowAndProcessedOrFinishedAndConstructor(LocalDate now,Account constructor, MaintenanceOrderStatus status){
         if(status.equals(MaintenanceOrderStatus.PROCESSED) || status.equals(MaintenanceOrderStatus.FINISHED)) {
             List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderByCreateAtBeforeAndStatusAndConstructorAccount(now,status, constructor);
-            return maintenanceOrders.stream().map(maintenanceOrder -> modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class)).collect(Collectors.toList());
-
+            List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
+            for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
+                MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
+                maintenanceOrderResponses.add(maintenanceOrderResponse);
+            }
+            return maintenanceOrderResponses;
         }
         return null;
     }
-//    public List<MaintenanceOrder> getAllConfirmedMaintenanceOrders() {
-//        List<MaintenanceOrder> = maintenanceOrderRepository.
-//
-//    }
+
+    public List<MaintenanceOrderResponse> getAllConfirmedMaintenanceOrders() {
+        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.getAllConfirmedMaintenanceOrders();
+        List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
+        for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
+            MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
+            maintenanceOrderResponses.add(maintenanceOrderResponse);
+        }
+        return maintenanceOrderResponses;
+    }
+
+    public List<MaintenanceOrderResponse> getAllRequestedMaintenanceOrders() {
+        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.getAllRequestedMaintenanceOrders();
+        List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
+        for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
+            MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
+            maintenanceOrderResponses.add(maintenanceOrderResponse);
+        }
+        return maintenanceOrderResponses;
+    }
 }

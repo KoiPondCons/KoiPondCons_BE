@@ -5,6 +5,7 @@ import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.entities.MaintenanceOrder;
 import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
@@ -16,4 +17,19 @@ public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrd
     List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndCustomer(LocalDate now, Customer customer);
     List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndConsultantAccount(LocalDate now, Account consultant);
     List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndStatusAndConstructorAccount(LocalDate createAt, MaintenanceOrderStatus status, Account constructorAccount);
+
+    @Query(
+            "select m \n" +
+            "from MaintenanceOrder m\n" +
+            "where m.status != 'REQUESTED'" +
+            "and m.status != 'PROCESSING'"
+    )
+    List<MaintenanceOrder> getAllConfirmedMaintenanceOrders();
+
+    @Query(
+            "select m \n" +
+            "from MaintenanceOrder m\n" +
+            "where m.status = 'REQUESTED'"
+    )
+    List<MaintenanceOrder> getAllRequestedMaintenanceOrders();
 }

@@ -15,13 +15,17 @@ public class MaintenanceOrderResponse {
 
     private String pondAddress;
 
+    private float pondVolume;
+
     private boolean isWarranted;
 
     private double price;
 
-    private Account consultantAccount;
+    private String consultantName;
 
-    private Account constructorAccount;
+    private String consultantPhone;
+
+    private String constructorName;
 
     private LocalDate endDate;
 
