@@ -4,6 +4,7 @@ import com.koiteampro.koipondcons.entities.*;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,4 +46,8 @@ public class ConstructionOrderResponse {
     private List<ConsOrderPayment> consOrderPaymentList;
 
     private double constructionProgress = 0;
+
+    private LocalDate warrantyEndDate;
+
+    private int warrantyRemaining;
 }
