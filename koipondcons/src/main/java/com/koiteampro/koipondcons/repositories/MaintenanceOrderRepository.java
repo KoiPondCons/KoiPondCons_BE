@@ -29,7 +29,8 @@ public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrd
     @Query(
             "select m \n" +
             "from MaintenanceOrder m\n" +
-            "where m.status = 'REQUESTED'"
+            "where m.status = 'REQUESTED'" +
+            "and m.createAt <= now()"
     )
     List<MaintenanceOrder> getAllRequestedMaintenanceOrders();
 }
