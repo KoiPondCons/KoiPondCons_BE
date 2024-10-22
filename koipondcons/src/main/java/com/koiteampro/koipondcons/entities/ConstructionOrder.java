@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,6 +51,10 @@ public class ConstructionOrder {
     private LocalDateTime requestDate = LocalDateTime.now();
 
     private LocalDateTime confirmedDate;
+
+    private LocalDate warrantyEndDate;
+
+    private int warrantyRemaining;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "combo_id")
