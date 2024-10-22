@@ -14,6 +14,8 @@ public class MaintenanceOrderResponse {
 
     private String pondAddress;
 
+    private boolean isWarranted;
+
     private double price;
 
     private String consultantName;

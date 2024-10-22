@@ -21,5 +21,4 @@ public class MaintenanceOrderRequest {
 
     private float pondVolume;
 
-    private MaintenanceOrderStatus status;
 }
