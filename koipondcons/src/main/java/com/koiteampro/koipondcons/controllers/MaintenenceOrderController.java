@@ -1,6 +1,7 @@
 package com.koiteampro.koipondcons.controllers;
 
 import com.koiteampro.koipondcons.entities.MaintenanceOrder;
+import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import com.koiteampro.koipondcons.models.request.MaintenanceOrderRequest;
 import com.koiteampro.koipondcons.models.request.MaintenanceOrderUpdateRequest;
 import com.koiteampro.koipondcons.models.response.MaintenanceOrderResponse;
@@ -41,6 +42,11 @@ public class MaintenenceOrderController {
     @GetMapping("/maintenance/consultant")
     public ResponseEntity<List<MaintenanceOrderResponse>> getByCreateAtBeforeNowAndByConsultant(){
         return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderByConsultantAndBeforeNow(LocalDate.now(), authenticationService.getCurrentAccount()));
+    }
+
+    @GetMapping("/maintenance/processed-or-finished")
+    public ResponseEntity<List<MaintenanceOrderResponse>> getByCreateAtBeforeNowAndByStatusAndConstructor(@RequestParam MaintenanceOrderStatus status){
+        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderBeforeNowAndProcessedOrFinishedAndConstructor(LocalDate.now(), authenticationService.getCurrentAccount(), status));
     }
 
     @PutMapping("/maintenance/{id}")
