@@ -94,7 +94,6 @@ public class ConstructionOrderService {
             ConstructionOrder constructionOrderUpdate = constructionOrder.get();
             ConstructionOrder constructionOrderInfoUpdate = modelMapper.map(constructionOrderUpdateRequest, ConstructionOrder.class);
 
-
             constructionOrderUpdate.setStatus(constructionOrderInfoUpdate.getStatus());
             constructionOrderUpdate.setCustomerName(constructionOrderInfoUpdate.getCustomerName());
             constructionOrderUpdate.setCustomerEmail(constructionOrderInfoUpdate.getCustomerEmail());
@@ -102,6 +101,8 @@ public class ConstructionOrderService {
             constructionOrderUpdate.setPondAddress(constructionOrderInfoUpdate.getPondAddress());
             constructionOrderUpdate.setDesigned(constructionOrderInfoUpdate.isDesigned());
             constructionOrderUpdate.setConfirmedDate(constructionOrderInfoUpdate.getConfirmedDate());
+            constructionOrderUpdate.setWarrantyEndDate(constructionOrderInfoUpdate.getWarrantyEndDate());
+            constructionOrderUpdate.setWarrantyRemaining(constructionOrderInfoUpdate.getWarrantyRemaining());
 
             constructionOrderRepository.save(constructionOrderUpdate);
 
@@ -221,6 +222,8 @@ public class ConstructionOrderService {
         constructionOrderResponse.setConstructorAccount(staffConstructionDetailService.getConstructorOfConstructionOrder(constructionOrderResponse.getId()));
         constructionOrderResponse.setConsOrderPaymentList(constructionOrder.getConsOrderPaymentList());
         constructionOrderResponse.setConstructionProgress(staffConstructionDetailService.getProgressByConstructionOrder(constructionOrder.getId()));
+        constructionOrderResponse.setWarrantyEndDate(constructionOrder.getWarrantyEndDate());
+        constructionOrderResponse.setWarrantyRemaining(constructionOrder.getWarrantyRemaining());
         return constructionOrderResponse;
     }
 
