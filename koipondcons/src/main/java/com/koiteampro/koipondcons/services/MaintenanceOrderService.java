@@ -149,4 +149,17 @@ public class MaintenanceOrderService {
         }
         return maintenanceOrderResponses;
     }
+
+    public void setConsultantToOrder(long orderId) {
+        Optional<MaintenanceOrder> maintenanceOrder = maintenanceOrderRepository.findById(orderId);
+        Account consultingAccount = authenticationService.getCurrentAccount();
+
+        if (maintenanceOrder.isPresent()) {
+            MaintenanceOrder maintenanceOrderUpdate = maintenanceOrder.get();
+            maintenanceOrderUpdate.setConsultantAccount(consultingAccount);
+            maintenanceOrderRepository.save(maintenanceOrderUpdate);
+        }
+        else
+            throw new NotFoundException("No maintenance order found with id " + orderId);
+    }
 }

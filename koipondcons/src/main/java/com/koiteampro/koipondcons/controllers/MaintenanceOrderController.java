@@ -68,4 +68,10 @@ public class MaintenanceOrderController {
     public ResponseEntity<List<MaintenanceOrderResponse>> getAllRequestedMaintenanceOrders() {
         return ResponseEntity.ok(maintenanceOrderService.getAllRequestedMaintenanceOrders());
     }
+
+    @PutMapping("/maintenance/set-consultant/{orderId}")
+    public ResponseEntity setConsultantToOrder(@PathVariable long orderId) {
+        maintenanceOrderService.setConsultantToOrder(orderId);
+        return ResponseEntity.ok("Set consultant to order successfully!");
+    }
 }
