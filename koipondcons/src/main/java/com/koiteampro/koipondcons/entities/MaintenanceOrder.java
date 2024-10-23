@@ -39,6 +39,8 @@ public class MaintenanceOrder {
 
     private float pondVolume;
 
+    private String customerDescription;
+
     private double price;
 
     private LocalDate endDate;

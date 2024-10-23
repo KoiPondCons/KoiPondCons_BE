@@ -21,4 +21,5 @@ public class MaintenanceOrderRequest {
 
     private float pondVolume;
 
+    private String customerDescription;
 }

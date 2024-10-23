@@ -17,6 +17,8 @@ public class MaintenanceOrderResponse {
 
     private float pondVolume;
 
+    private String customerDescription;
+
     private boolean isWarranted;
 
     private double price;
