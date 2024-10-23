@@ -8,9 +8,6 @@ import java.time.LocalDate;
 
 @Data
 public class MaintenanceOrderUpdateRequest {
-    private Account consultantAccount;
-
-    private Account constructorAccount;
 
     private boolean isWarranted;
 
