@@ -4,6 +4,7 @@ import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.services.DesignDrawingService;
 import com.koiteampro.koipondcons.services.StaffConstructionDetailService;
+import com.koiteampro.koipondcons.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,14 +19,14 @@ import java.util.List;
 @CrossOrigin("*")
 public class AccountController {
     @Autowired
-    StaffConstructionDetailService staffConstructionDetailService;
+    StaffService staffService;
 
     @Autowired
     DesignDrawingService designDrawingService;
 
     @GetMapping("/free-constructors")
     public ResponseEntity getAllFreeConstructors() {
-        List<AccountResponse> accounts = staffConstructionDetailService.getAllFreeConstructors();
+        List<AccountResponse> accounts = staffService.getALlFreeConstructor();
         return ResponseEntity.ok(accounts);
     }
 
