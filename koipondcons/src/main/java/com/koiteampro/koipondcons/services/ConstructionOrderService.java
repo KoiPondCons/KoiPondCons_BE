@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -95,6 +97,9 @@ public class ConstructionOrderService {
             ConstructionOrder constructionOrderInfoUpdate = modelMapper.map(constructionOrderUpdateRequest, ConstructionOrder.class);
 
             constructionOrderUpdate.setStatus(constructionOrderInfoUpdate.getStatus());
+            if (constructionOrderUpdate.getStatus() == ConstructionOrderStatus.CLOSED) {
+                constructionOrderUpdate.getCustomer().setTotal_points(constructionOrderUpdate.getCustomer().getTotal_points() + constructionOrderUpdate.getQuotation().getFinalPrice().divide(new BigDecimal(1000000), 0, RoundingMode.FLOOR).intValueExact());
+            }
             constructionOrderUpdate.setCustomerName(constructionOrderInfoUpdate.getCustomerName());
             constructionOrderUpdate.setCustomerEmail(constructionOrderInfoUpdate.getCustomerEmail());
             constructionOrderUpdate.setCustomerPhone(constructionOrderInfoUpdate.getCustomerPhone());

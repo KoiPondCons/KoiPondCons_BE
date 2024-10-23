@@ -28,7 +28,7 @@ public class ConstructionOrder {
     @JoinColumn(name = "consultant_account_id", nullable = true)
     private Account consultantAccount;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
