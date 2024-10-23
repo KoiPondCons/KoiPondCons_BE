@@ -29,7 +29,7 @@ public class StaffConstructionDetailService {
         return  staffConstructionDetailRepository.findAllByConstructionOrderId(constructionOrderId);
     }
 
-    public List<AccountResponse> getAllFreeConstructors() {
+    public List<AccountResponse> getConstructorsNotInConstructing() {
         List<Account> freeConstructors = new ArrayList<>();
         List<Long> accountIds = new ArrayList<>();
 
