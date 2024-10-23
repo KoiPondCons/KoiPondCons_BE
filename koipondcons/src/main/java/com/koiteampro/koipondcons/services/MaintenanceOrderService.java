@@ -54,6 +54,7 @@ public class MaintenanceOrderService {
         maintenanceOrderResponse.setCustomerPhone(maintenanceOrder.getCustomerPhone());
         maintenanceOrderResponse.setPondAddress(maintenanceOrder.getPondAddress());
         maintenanceOrderResponse.setPondVolume(maintenanceOrder.getPondVolume());
+        maintenanceOrderResponse.setCustomerDescription(maintenanceOrder.getCustomerDescription());
         maintenanceOrderResponse.setConsultantName(maintenanceOrder.getConsultantAccount().getName());
         maintenanceOrderResponse.setConsultantPhone(maintenanceOrder.getConsultantAccount().getPhone());
         maintenanceOrderResponse.setConstructorName(maintenanceOrder.getConstructorAccount().getName());
@@ -83,13 +84,11 @@ public class MaintenanceOrderService {
             MaintenanceOrder maintenanceOrderUpdate = maintenanceOrder.get();
             MaintenanceOrder maintenanceOrderInfoUpdate = modelMapper.map(maintenanceOrderUpdateRequest, MaintenanceOrder.class);
 
-            maintenanceOrderUpdate.setConsultantAccount(maintenanceOrderInfoUpdate.getConsultantAccount());
-            maintenanceOrderUpdate.setConstructorAccount(maintenanceOrderInfoUpdate.getConstructorAccount());
-
             maintenanceOrderUpdate.setWarranted(maintenanceOrderInfoUpdate.isWarranted());
             maintenanceOrderUpdate.setPondVolume(maintenanceOrderInfoUpdate.getPondVolume());
             maintenanceOrderUpdate.setEndDate(maintenanceOrderInfoUpdate.getEndDate());
             maintenanceOrderUpdate.setStatus(maintenanceOrderInfoUpdate.getStatus());
+            maintenanceOrderUpdate.setPrice(maintenanceOrderInfoUpdate.getPrice());
 
             maintenanceOrderRepository.save(maintenanceOrderUpdate);
             return setToMaintenanceOrderResponse(maintenanceOrderUpdate);
