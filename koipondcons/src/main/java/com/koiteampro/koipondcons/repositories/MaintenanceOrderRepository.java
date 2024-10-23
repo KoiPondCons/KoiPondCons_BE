@@ -22,7 +22,7 @@ public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrd
             "select m \n" +
             "from MaintenanceOrder m\n" +
             "where m.status != 'REQUESTED'" +
-            "and m.status != 'PROCESSING'"
+            "and m.status != 'PENDING'"
     )
     List<MaintenanceOrder> getAllConfirmedMaintenanceOrders();
 
