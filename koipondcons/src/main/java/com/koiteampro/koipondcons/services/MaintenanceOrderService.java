@@ -3,11 +3,15 @@ package com.koiteampro.koipondcons.services;
 import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.entities.MaintenanceOrder;
+import com.koiteampro.koipondcons.enums.DesignDrawingStatus;
 import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
+import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.MaintenanceOrderRequest;
 import com.koiteampro.koipondcons.models.request.MaintenanceOrderUpdateRequest;
+import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.models.response.MaintenanceOrderResponse;
+import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.MaintenanceOrderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,9 @@ public class MaintenanceOrderService {
 
     @Autowired
     AuthenticationService authenticationService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     public MaintenanceOrderResponse createMaintenanceOrder(MaintenanceOrderRequest maintenanceOrderRequest){
         MaintenanceOrder maintenanceOrder = modelMapper.map(maintenanceOrderRequest, MaintenanceOrder.class);
@@ -161,4 +168,52 @@ public class MaintenanceOrderService {
         else
             throw new NotFoundException("No maintenance order found with id " + orderId);
     }
+
+    public void setConstructorToOrder(long orderId, long constructorId) {
+        Optional<MaintenanceOrder> maintenanceOrder = maintenanceOrderRepository.findById(orderId);
+        if (maintenanceOrder.isPresent()) {
+            MaintenanceOrder maintenanceOrderUpdate = maintenanceOrder.get();
+            Optional<Account> constructorAccount = accountRepository.findById(constructorId);
+            if (constructorAccount.isPresent()) {
+                Account constructor = constructorAccount.get();
+                maintenanceOrderUpdate.setConstructorAccount(constructor);
+                maintenanceOrderRepository.save(maintenanceOrderUpdate);
+            }
+            else
+                throw new NotFoundException("No constructor found with id " + constructorId);
+        }
+        else
+            throw new NotFoundException("No maintenance order found with id " + orderId);
+    }
+
+    public List<AccountResponse> getConstructorsNotInMaintaining() {
+        List<Account> accounts = new ArrayList<>();
+        List<Long> accountIds = new ArrayList<>();
+
+        try {
+            accountIds = maintenanceOrderRepository.findStaffIdsWithUnfinishedWorks();
+        } catch (Exception e) {
+            accountIds = null;
+        }
+
+        try {
+            if (accountIds == null || accountIds.isEmpty()) {
+                accounts = accountRepository.findAccountByRoleAndIsEnabledTrue(Role.CONSTRUCTOR);
+            } else {
+                accounts = accountRepository.findByIdNotInAndRoleLike(accountIds, Role.CONSTRUCTOR);
+            }
+        } catch (Exception e) {
+            throw new NotFoundException("Staff not found!");
+        }
+
+        List<AccountResponse> accountResponses = new ArrayList<>();
+        for (Account account : accounts) {
+            AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+            accountResponses.add(accountResponse);
+        }
+
+        return accountResponses;
+    }
+
+
 }

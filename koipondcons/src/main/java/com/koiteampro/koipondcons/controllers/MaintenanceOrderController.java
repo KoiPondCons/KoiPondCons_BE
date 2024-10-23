@@ -74,4 +74,10 @@ public class MaintenanceOrderController {
         maintenanceOrderService.setConsultantToOrder(orderId);
         return ResponseEntity.ok("Set consultant to order successfully!");
     }
+
+    @PutMapping("/maintenance/set-constructor/{orderId}/{constructorId}")
+    public ResponseEntity setConstructorToOrder(@PathVariable long orderId, @PathVariable long constructorId) {
+        maintenanceOrderService.setConstructorToOrder(orderId, constructorId);
+        return ResponseEntity.ok("Set constructor to order successfully!");
+    }
 }

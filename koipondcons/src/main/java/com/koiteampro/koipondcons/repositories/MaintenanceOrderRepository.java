@@ -33,4 +33,12 @@ public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrd
             "and m.createAt <= now()"
     )
     List<MaintenanceOrder> getAllRequestedMaintenanceOrders();
+
+    @Query(
+            "select m.constructorAccount.id\n" +
+            "from MaintenanceOrder m\n" +
+            "where m.constructorAccount.id is not null\n" +
+            "and m.status = 'PROCESSING'"
+    )
+    List<Long> findStaffIdsWithUnfinishedWorks();
 }
