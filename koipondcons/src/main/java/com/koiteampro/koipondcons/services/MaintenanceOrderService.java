@@ -67,11 +67,12 @@ public class MaintenanceOrderService {
         maintenanceOrderResponse.setPrice(maintenanceOrder.getPrice());
         maintenanceOrderResponse.setStatus(maintenanceOrder.getStatus());
         maintenanceOrderResponse.setWarranted(maintenanceOrder.isWarranted());
-        if (maintenanceOrder.getConsultantAccount() != null) {
+        if (maintenanceOrder.getConsultantAccount() != null && maintenanceOrder.getConsultantAccount().getName() != null
+        && maintenanceOrder.getConsultantAccount().getPhone() != null) {
             maintenanceOrderResponse.setConsultantName(maintenanceOrder.getConsultantAccount().getName());
             maintenanceOrderResponse.setConsultantPhone(maintenanceOrder.getConsultantAccount().getPhone());
         }
-        if (maintenanceOrder.getConstructorAccount() != null) {
+        if (maintenanceOrder.getConstructorAccount() != null && maintenanceOrder.getConstructorAccount().getName() != null) {
             maintenanceOrderResponse.setConstructorName(maintenanceOrder.getConstructorAccount().getName());
         }
         return maintenanceOrderResponse;
