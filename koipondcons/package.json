@@ -13,6 +13,7 @@
     "playwright": "1.18"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "groq-sdk": "^0.7.0",
     "knex": "^3.1.0",
     "mysql2": "^3.11.3"

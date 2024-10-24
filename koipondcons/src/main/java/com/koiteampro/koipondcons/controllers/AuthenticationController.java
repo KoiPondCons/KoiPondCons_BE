@@ -64,7 +64,7 @@ public class AuthenticationController {
         return ResponseEntity.ok("Xóa rùi");
     }
 
-    @GetMapping("/")
+    @GetMapping("/accounts")
     public ResponseEntity<List<AccountResponse>> getAllAccounts() {
         return ResponseEntity.ok(authenticationService.getAllAccounts());
     }

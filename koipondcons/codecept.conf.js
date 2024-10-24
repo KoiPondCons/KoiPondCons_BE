@@ -1,5 +1,6 @@
 /** @type {CodeceptJS.MainConfig} */
 require('./heal')
+require('dotenv').config()
 exports.config = {
   tests: './*_test.js',
   output: './output',
@@ -29,7 +30,7 @@ exports.config = {
     request: async (messages) => {
       const Groq = require('groq-sdk');
       const groq = new Groq({
-        apiKey: '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'
+        apiKey: process.env.GROQ_API_KEY
       });
       const chatCompletion = await groq.chat.completions.create({
         messages,
