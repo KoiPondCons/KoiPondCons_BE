@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrder, Long> {
-    MaintenanceOrder findByConstructorAccountIdAndStatusLike(long constructorAccount_id, String status);
+    MaintenanceOrder findByConstructorAccountIdAndStatus(long constructorAccount_id, MaintenanceOrderStatus status);
 //    List<MaintenanceOrder> findAllByConstructorAccountIdAndStatusNotLike(MaintenanceOrderStatus status);
     List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndCustomer(LocalDate now, Customer customer);
     List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndConsultantAccount(LocalDate now, Account consultant);

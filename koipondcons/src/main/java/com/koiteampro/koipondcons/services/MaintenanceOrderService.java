@@ -62,14 +62,18 @@ public class MaintenanceOrderService {
         maintenanceOrderResponse.setPondAddress(maintenanceOrder.getPondAddress());
         maintenanceOrderResponse.setPondVolume(maintenanceOrder.getPondVolume());
         maintenanceOrderResponse.setCustomerDescription(maintenanceOrder.getCustomerDescription());
-        maintenanceOrderResponse.setConsultantName(maintenanceOrder.getConsultantAccount().getName());
-        maintenanceOrderResponse.setConsultantPhone(maintenanceOrder.getConsultantAccount().getPhone());
-        maintenanceOrderResponse.setConstructorName(maintenanceOrder.getConstructorAccount().getName());
         maintenanceOrderResponse.setCreateAt(maintenanceOrder.getCreateAt());
         maintenanceOrderResponse.setEndDate(maintenanceOrder.getEndDate());
         maintenanceOrderResponse.setPrice(maintenanceOrder.getPrice());
         maintenanceOrderResponse.setStatus(maintenanceOrder.getStatus());
         maintenanceOrderResponse.setWarranted(maintenanceOrder.isWarranted());
+        if (maintenanceOrder.getConsultantAccount() != null) {
+            maintenanceOrderResponse.setConsultantName(maintenanceOrder.getConsultantAccount().getName());
+            maintenanceOrderResponse.setConsultantPhone(maintenanceOrder.getConsultantAccount().getPhone());
+        }
+        if (maintenanceOrder.getConstructorAccount() != null) {
+            maintenanceOrderResponse.setConstructorName(maintenanceOrder.getConstructorAccount().getName());
+        }
         return maintenanceOrderResponse;
     }
 
@@ -116,7 +120,7 @@ public class MaintenanceOrderService {
 
     public MaintenanceOrderResponse getActiveMaintenanceOrderOfConstructor() {
         Account constructorAccount = authenticationService.getCurrentAccount();
-        MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findByConstructorAccountIdAndStatusLike(constructorAccount.getId(), MaintenanceOrderStatus.PROCESSING + "");
+        MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findByConstructorAccountIdAndStatus(constructorAccount.getId(), MaintenanceOrderStatus.PROCESSING);
         if (maintenanceOrder != null)
             return setToMaintenanceOrderResponse(maintenanceOrder);
         else
