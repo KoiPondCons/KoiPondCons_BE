@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,12 +37,12 @@ public class MaintenanceOrderController {
 
     @GetMapping("/maintenance/customer")
     public ResponseEntity<List<MaintenanceOrderResponse>> getByCreateAtBeforeNowAndByCustomer(){
-        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderByCustomerAndBeforeNow(LocalDate.now(), customerService.getCurrentCustomer() ));
+        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderByCustomerAndBeforeNow(LocalDateTime.now(), customerService.getCurrentCustomer() ));
     }
 
     @GetMapping("/maintenance/consultant")
     public ResponseEntity<List<MaintenanceOrderResponse>> getByCreateAtBeforeNowAndByConsultant(){
-        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderByConsultantAndBeforeNow(LocalDate.now(), authenticationService.getCurrentAccount()));
+        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderByConsultantAndBeforeNow(LocalDateTime.now(), authenticationService.getCurrentAccount()));
     }
 
     @GetMapping("/maintenance/processed-or-finished")

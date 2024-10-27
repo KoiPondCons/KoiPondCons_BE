@@ -82,7 +82,7 @@ public class MaintenanceOrderService {
         return maintenanceOrderResponse;
     }
 
-    public List<MaintenanceOrderResponse> findMaintenanceOrderByCustomerAndBeforeNow(LocalDate now, Customer customer){
+    public List<MaintenanceOrderResponse> findMaintenanceOrderByCustomerAndBeforeNow(LocalDateTime now, Customer customer){
         List<MaintenanceOrder> maintenanceOrders =  maintenanceOrderRepository.findMaintenanceOrderByRequestDateBeforeAndCustomer(now, customer);
         List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
         for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
@@ -113,7 +113,7 @@ public class MaintenanceOrderService {
         }
     }
 
-    public List<MaintenanceOrderResponse> findMaintenanceOrderByConsultantAndBeforeNow(LocalDate now, Account consultant){
+    public List<MaintenanceOrderResponse> findMaintenanceOrderByConsultantAndBeforeNow(LocalDateTime now, Account consultant){
         List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderByRequestDateBeforeAndConsultantAccount(now, consultant);
         List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
         for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
@@ -125,7 +125,7 @@ public class MaintenanceOrderService {
 
     public MaintenanceOrderResponse getActiveMaintenanceOrderOfConstructor() {
         Account constructorAccount = authenticationService.getCurrentAccount();
-        MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findByConstructorAccountIdAndStatus(constructorAccount.getId(), MaintenanceOrderStatus.PROCESSING);
+        MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findByConstructorAccountAndStatus(constructorAccount, MaintenanceOrderStatus.PROCESSING);
         if (maintenanceOrder != null)
             return setToMaintenanceOrderResponse(maintenanceOrder);
         else

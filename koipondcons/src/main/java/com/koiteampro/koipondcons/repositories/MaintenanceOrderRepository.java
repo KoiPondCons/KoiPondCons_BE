@@ -10,12 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrder, Long> {
-    MaintenanceOrder findByConstructorAccountIdAndStatus(long constructorAccount_id, MaintenanceOrderStatus status);
-    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndCustomer(LocalDate now, Customer customer);
-    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndConsultantAccount(LocalDate now, Account consultant);
+    MaintenanceOrder findByConstructorAccountAndStatus(Account constructorAccount, MaintenanceOrderStatus status);
+    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndCustomer(LocalDateTime now, Customer customer);
+    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndConsultantAccount(LocalDateTime now, Account consultant);
     MaintenanceOrder findMaintenanceOrderById(long maintenanceOrderId);
     @Query(
             "select m \n" +
