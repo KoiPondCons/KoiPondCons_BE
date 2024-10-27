@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -99,6 +100,8 @@ public class ConstructionOrderService {
             constructionOrderUpdate.setStatus(constructionOrderInfoUpdate.getStatus());
             if (constructionOrderUpdate.getStatus() == ConstructionOrderStatus.CLOSED) {
                 constructionOrderUpdate.getCustomer().setTotal_points(constructionOrderUpdate.getCustomer().getTotal_points() + constructionOrderUpdate.getQuotation().getFinalPrice().divide(new BigDecimal(1000000), 0, RoundingMode.FLOOR).intValueExact());
+                constructionOrderUpdate.setWarrantyEndDate(LocalDate.now().plusYears(1));
+                constructionOrderUpdate.setWarrantyRemaining(2);
             }
             constructionOrderUpdate.setCustomerName(constructionOrderInfoUpdate.getCustomerName());
             constructionOrderUpdate.setCustomerEmail(constructionOrderInfoUpdate.getCustomerEmail());
@@ -106,8 +109,6 @@ public class ConstructionOrderService {
             constructionOrderUpdate.setPondAddress(constructionOrderInfoUpdate.getPondAddress());
             constructionOrderUpdate.setDesigned(constructionOrderInfoUpdate.isDesigned());
             constructionOrderUpdate.setConfirmedDate(constructionOrderInfoUpdate.getConfirmedDate());
-            constructionOrderUpdate.setWarrantyEndDate(constructionOrderInfoUpdate.getWarrantyEndDate());
-            constructionOrderUpdate.setWarrantyRemaining(constructionOrderInfoUpdate.getWarrantyRemaining());
 
             constructionOrderRepository.save(constructionOrderUpdate);
 
