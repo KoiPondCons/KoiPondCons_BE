@@ -80,4 +80,9 @@ public class MaintenanceOrderController {
         maintenanceOrderService.setConstructorToOrder(orderId, constructorId);
         return ResponseEntity.ok("Set constructor to order successfully!");
     }
+
+    @GetMapping("/maintenance/{orderId}")
+    public ResponseEntity<List<MaintenanceOrderResponse>> getMaintenanceOrderByConstructionOrderId(@PathVariable long orderId) {
+        return ResponseEntity.ok(maintenanceOrderService.getByConstructionOrderId(orderId));
+    }
 }
