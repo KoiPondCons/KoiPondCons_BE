@@ -131,17 +131,15 @@ public class MaintenanceOrderService {
             throw new NotFoundException("Maintenance order not found!");
     }
 
-    public List<MaintenanceOrderResponse> findMaintenanceOrderBeforeNowAndProcessedOrFinishedAndConstructor(LocalDate now,Account constructor, MaintenanceOrderStatus status){
-        if(status.equals(MaintenanceOrderStatus.PROCESSED) || status.equals(MaintenanceOrderStatus.FINISHED)) {
-            List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderByRequestDateBeforeAndStatusAndConstructorAccount(now,status, constructor);
-            List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
-            for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
-                MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
-                maintenanceOrderResponses.add(maintenanceOrderResponse);
-            }
-            return maintenanceOrderResponses;
+    public List<MaintenanceOrderResponse> getFinishedMaintenanceOrderOfConstructor(){
+        Account constructorAccount = authenticationService.getCurrentAccount();
+        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.getFinishedMaintenanceOrderOfConstructor(constructorAccount);
+        List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
+        for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
+            MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
+            maintenanceOrderResponses.add(maintenanceOrderResponse);
         }
-        return null;
+        return maintenanceOrderResponses;
     }
 
     public List<MaintenanceOrderResponse> getAllConfirmedMaintenanceOrders() {

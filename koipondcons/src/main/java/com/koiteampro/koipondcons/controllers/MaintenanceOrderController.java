@@ -45,8 +45,8 @@ public class MaintenanceOrderController {
     }
 
     @GetMapping("/maintenance/processed-or-finished")
-    public ResponseEntity<List<MaintenanceOrderResponse>> getByCreateAtBeforeNowAndByStatusAndConstructor(@RequestParam MaintenanceOrderStatus status){
-        return ResponseEntity.ok(maintenanceOrderService.findMaintenanceOrderBeforeNowAndProcessedOrFinishedAndConstructor(LocalDate.now(), authenticationService.getCurrentAccount(), status));
+    public ResponseEntity<List<MaintenanceOrderResponse>> getFinishedMaintenanceOrderOfConstructor(){
+        return ResponseEntity.ok(maintenanceOrderService.getFinishedMaintenanceOrderOfConstructor());
     }
 
     @PutMapping("/maintenance/{id}")
