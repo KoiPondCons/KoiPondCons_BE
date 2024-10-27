@@ -14,5 +14,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAccountByRoleAndIsEnabledTrue(Role role);
     List<Account> findByIdNotInAndRoleLike(List<Long> ids, Role role);
 
-    List<Account> findByRoleNot(Role role);
+    List<Account> findByRoleNotAndIsEnabledTrue(Role role);
 }

@@ -227,7 +227,7 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public List<AccountResponse> getAllStaff(){
-        List<Account> accounts = accountRepository.findByRoleNot(Role.CUSTOMER);
+        List<Account> accounts = accountRepository.findByRoleNotAndIsEnabledTrue(Role.CUSTOMER);
         return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
     }
 }
