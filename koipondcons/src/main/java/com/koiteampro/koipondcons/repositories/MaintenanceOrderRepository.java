@@ -14,9 +14,9 @@ import java.util.List;
 public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrder, Long> {
     MaintenanceOrder findByConstructorAccountIdAndStatus(long constructorAccount_id, MaintenanceOrderStatus status);
 //    List<MaintenanceOrder> findAllByConstructorAccountIdAndStatusNotLike(MaintenanceOrderStatus status);
-    List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndCustomer(LocalDate now, Customer customer);
-    List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndConsultantAccount(LocalDate now, Account consultant);
-    List<MaintenanceOrder> findMaintenanceOrderByCreateAtBeforeAndStatusAndConstructorAccount(LocalDate createAt, MaintenanceOrderStatus status, Account constructorAccount);
+    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndCustomer(LocalDate now, Customer customer);
+    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndConsultantAccount(LocalDate now, Account consultant);
+    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndStatusAndConstructorAccount(LocalDate createAt, MaintenanceOrderStatus status, Account constructorAccount);
 
     @Query(
             "select m \n" +
@@ -30,7 +30,7 @@ public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrd
             "select m \n" +
             "from MaintenanceOrder m\n" +
             "where m.status = 'REQUESTED'" +
-            "and m.createAt <= now()"
+            "and m.requestDate <= now()"
     )
     List<MaintenanceOrder> getAllRequestedMaintenanceOrders();
 

@@ -34,7 +34,7 @@ public class MaintenanceOrderResponse {
 
     private LocalDate endDate;
 
-    private LocalDateTime createAt;
+    private LocalDateTime requestDate;
 
     private MaintenanceOrderStatus status;
 
