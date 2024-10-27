@@ -82,7 +82,7 @@ public class MaintenanceOrderController {
     }
 
     @GetMapping("/maintenance/{orderId}")
-    public ResponseEntity<List<MaintenanceOrderResponse>> getMaintenanceOrderByMaintenanceOrderId(@PathVariable long orderId) {
+    public ResponseEntity<MaintenanceOrderResponse> getMaintenanceOrderByMaintenanceOrderId(@PathVariable long orderId) {
         return ResponseEntity.ok(maintenanceOrderService.getByMaintenanceOrderId(orderId));
     }
 }

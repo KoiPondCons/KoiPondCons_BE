@@ -222,9 +222,9 @@ public class MaintenanceOrderService {
         return accountResponses;
     }
 
-    public List<MaintenanceOrderResponse> getByMaintenanceOrderId(long orderId) {
-        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderById(orderId);
-        return maintenanceOrders.stream().map(maintenanceOrder -> modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class)).collect(Collectors.toList());
+    public MaintenanceOrderResponse getByMaintenanceOrderId(long orderId) {
+        MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findMaintenanceOrderById(orderId);
+        return modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class);
 
     }
 }
