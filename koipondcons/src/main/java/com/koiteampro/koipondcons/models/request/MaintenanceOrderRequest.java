@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 public class MaintenanceOrderRequest {
+    private long constructionOrderId;
 
     private boolean isWarranted;
 

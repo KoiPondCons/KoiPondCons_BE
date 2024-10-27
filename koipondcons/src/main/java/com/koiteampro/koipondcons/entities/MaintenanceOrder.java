@@ -16,6 +16,8 @@ public class MaintenanceOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private long constructionOrderId;
+
     @ManyToOne
     @JoinColumn(name = "consultant_account_id")
     private Account consultantAccount;

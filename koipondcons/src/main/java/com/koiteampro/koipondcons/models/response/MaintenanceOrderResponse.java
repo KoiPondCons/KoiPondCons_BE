@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 public class MaintenanceOrderResponse {
     private long id;
 
+    private long constructionOrderId;
+
     private String customerName;
 
     private String customerEmail;
