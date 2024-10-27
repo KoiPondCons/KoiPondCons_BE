@@ -57,7 +57,9 @@ public class MaintenanceOrderService {
 
     public MaintenanceOrderResponse setToMaintenanceOrderResponse(MaintenanceOrder maintenanceOrder){
         MaintenanceOrderResponse maintenanceOrderResponse = new MaintenanceOrderResponse();
+        maintenanceOrderResponse.setId(maintenanceOrder.getId());
         maintenanceOrderResponse.setCustomerName(maintenanceOrder.getCustomerName());
+        maintenanceOrderResponse.setCustomerEmail(maintenanceOrder.getCustomer().getAccount().getEmail());
         maintenanceOrderResponse.setCustomerPhone(maintenanceOrder.getCustomerPhone());
         maintenanceOrderResponse.setPondAddress(maintenanceOrder.getPondAddress());
         maintenanceOrderResponse.setPondVolume(maintenanceOrder.getPondVolume());
@@ -66,9 +68,10 @@ public class MaintenanceOrderService {
         maintenanceOrderResponse.setEndDate(maintenanceOrder.getEndDate());
         maintenanceOrderResponse.setPrice(maintenanceOrder.getPrice());
         maintenanceOrderResponse.setStatus(maintenanceOrder.getStatus());
+        maintenanceOrderResponse.setStatusDescription(maintenanceOrder.getStatus().getDescription());
         maintenanceOrderResponse.setWarranted(maintenanceOrder.isWarranted());
         if (maintenanceOrder.getConsultantAccount() != null && maintenanceOrder.getConsultantAccount().getName() != null
-        && maintenanceOrder.getConsultantAccount().getPhone() != null) {
+                && maintenanceOrder.getConsultantAccount().getPhone() != null) {
             maintenanceOrderResponse.setConsultantName(maintenanceOrder.getConsultantAccount().getName());
             maintenanceOrderResponse.setConsultantPhone(maintenanceOrder.getConsultantAccount().getPhone());
         }

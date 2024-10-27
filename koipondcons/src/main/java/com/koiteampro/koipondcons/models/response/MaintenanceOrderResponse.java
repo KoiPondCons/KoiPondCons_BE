@@ -1,6 +1,5 @@
 package com.koiteampro.koipondcons.models.response;
 
-import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import lombok.Data;
 
@@ -8,8 +7,11 @@ import java.time.LocalDate;
 
 @Data
 public class MaintenanceOrderResponse {
+    private long id;
 
     private String customerName;
+
+    private String customerEmail;
 
     private String customerPhone;
 
@@ -35,4 +37,5 @@ public class MaintenanceOrderResponse {
 
     private MaintenanceOrderStatus status;
 
+    private String statusDescription;
 }
