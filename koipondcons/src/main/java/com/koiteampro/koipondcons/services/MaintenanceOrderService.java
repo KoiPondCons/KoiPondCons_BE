@@ -222,8 +222,8 @@ public class MaintenanceOrderService {
         return accountResponses;
     }
 
-    public List<MaintenanceOrderResponse> getByConstructionOrderId(long orderId) {
-        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderByConstructionOrderId(orderId);
+    public List<MaintenanceOrderResponse> getByMaintenanceOrderId(long orderId) {
+        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderById(orderId);
         return maintenanceOrders.stream().map(maintenanceOrder -> modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class)).collect(Collectors.toList());
 
     }
