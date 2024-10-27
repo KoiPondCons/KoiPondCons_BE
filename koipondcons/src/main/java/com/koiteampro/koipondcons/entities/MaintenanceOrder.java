@@ -45,7 +45,7 @@ public class MaintenanceOrder {
 
     private LocalDate endDate;
 
-    private LocalDate createAt;
+    private LocalDateTime createAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

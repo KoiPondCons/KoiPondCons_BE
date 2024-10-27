@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public class MaintenanceOrderService {
 
         maintenanceOrder.setStatus(MaintenanceOrderStatus.REQUESTED);
 
-        maintenanceOrder.setCreateAt(LocalDate.now());
+        maintenanceOrder.setCreateAt(LocalDateTime.now());
         maintenanceOrderRepository.save(maintenanceOrder);
 
         return setToMaintenanceOrderResponse(maintenanceOrder);

@@ -4,6 +4,7 @@ import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class MaintenanceOrderResponse {
@@ -33,7 +34,7 @@ public class MaintenanceOrderResponse {
 
     private LocalDate endDate;
 
-    private LocalDate createAt;
+    private LocalDateTime createAt;
 
     private MaintenanceOrderStatus status;
 
