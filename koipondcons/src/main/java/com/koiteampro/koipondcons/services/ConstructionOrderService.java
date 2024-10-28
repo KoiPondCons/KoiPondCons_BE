@@ -154,6 +154,19 @@ public class ConstructionOrderService {
         return constructionOrderResponses;
     }
 
+    public List<ConstructionOrderResponse> getAllConstructionOrdersOfConsultantByStatus(ConstructionOrderStatus status) {
+        Account account = authenticationService.getCurrentAccount();
+
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByConsultantAccountIdAndStatusIs(account.getId(), status);
+        List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
+
+        for (ConstructionOrder constructionOrder : constructionOrders) {
+            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
+        }
+
+        return constructionOrderResponses;
+    }
+
     public List<ConstructionOrderResponse> getAllConstructionOrders() {
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAll();
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();

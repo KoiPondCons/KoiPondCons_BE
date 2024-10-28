@@ -12,6 +12,7 @@ public interface ConstructionOrderRepository extends JpaRepository<ConstructionO
     List<ConstructionOrder> findAllByStatusIs(ConstructionOrderStatus status);
     List<ConstructionOrder> findAllByCustomerIdAndStatusNot(Long customerId, ConstructionOrderStatus status);
     List<ConstructionOrder> findAllByConsultantAccountId(Long consultantAccountId);
+    List<ConstructionOrder> findAllByConsultantAccountIdAndStatusIs(Long consultantAccountId, ConstructionOrderStatus status);
     long countByStatus(ConstructionOrderStatus status);
 
     @Query("SELECT scd.constructionOrder " +
