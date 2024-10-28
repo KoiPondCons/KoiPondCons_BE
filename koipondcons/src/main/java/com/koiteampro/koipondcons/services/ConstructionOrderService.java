@@ -194,7 +194,7 @@ public class ConstructionOrderService {
     public List<ConstructionOrderResponse> getAllConstructionOrdersOfConsultant() {
         Account account = accountService.getCurrentAccount();
 
-        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByConsultantAccountId(account.getId());
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByConsultantAccountIdAndStatusNot(account.getId(), ConstructionOrderStatus.CANCELED);
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
