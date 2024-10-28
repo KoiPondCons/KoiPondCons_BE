@@ -43,7 +43,7 @@ public class ConstructionOrderService {
     private ComboConstructionItemService comboConstructionItemService;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AccountService accountService;
 
     @Autowired
     StaffConstructionDetailService staffConstructionDetailService;
@@ -120,7 +120,7 @@ public class ConstructionOrderService {
 
     public void setConsultingToOrder(long constructionOrderId) {
         Optional<ConstructionOrder> constructionOrder = constructionOrderRepository.findById(constructionOrderId);
-        Account consultingAccount = authenticationService.getCurrentAccount();
+        Account consultingAccount = accountService.getCurrentAccount();
 
 
         if (constructionOrder.isPresent()) {
@@ -134,7 +134,7 @@ public class ConstructionOrderService {
     }
 
     public ConstructionOrderResponse getCurrentOrderOfConstructor() {
-        Account consultantAccount = authenticationService.getCurrentAccount();
+        Account consultantAccount = accountService.getCurrentAccount();
         List<StaffConstructionDetail> staffConstructionDetails = staffConstructionDetailRepository.findByIsFinishedFalseAndConstructorAccountId(consultantAccount.getId());
 
         if (staffConstructionDetails != null && !staffConstructionDetails.isEmpty()) {
@@ -192,7 +192,7 @@ public class ConstructionOrderService {
     }
 
     public List<ConstructionOrderResponse> getAllConstructionOrdersOfConsultant() {
-        Account account = authenticationService.getCurrentAccount();
+        Account account = accountService.getCurrentAccount();
 
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByConsultantAccountId(account.getId());
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
@@ -251,7 +251,7 @@ public class ConstructionOrderService {
     }
 
     public List<ConstructionOrderResponse> getFinishedOrdersByCurrentConstructor(){
-        Account constructorAccount = authenticationService.getCurrentAccount();
+        Account constructorAccount = accountService.getCurrentAccount();
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findFinishedOrdersByConstructorID(constructorAccount.getId());
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
 

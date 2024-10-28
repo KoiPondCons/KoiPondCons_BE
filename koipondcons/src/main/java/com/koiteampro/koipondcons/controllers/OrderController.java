@@ -1,10 +1,8 @@
 package com.koiteampro.koipondcons.controllers;
 
-import com.koiteampro.koipondcons.entities.ConstructionOrder;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
-import com.koiteampro.koipondcons.models.request.ConstructionOrderStatusRequest;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
 import com.koiteampro.koipondcons.services.ConstructionOrderService;
 import org.springframework.beans.factory.annotation.Autowired;

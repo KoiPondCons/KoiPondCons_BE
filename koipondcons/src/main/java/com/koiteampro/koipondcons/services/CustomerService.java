@@ -22,10 +22,10 @@ public class CustomerService {
     @Autowired
     private PointHistoryRepository pointHistoryRepository;
     @Autowired
-    AuthenticationService authenticationService;
+    AccountService accountService;
 
     public Customer getCurrentCustomer() {
-        Account account = authenticationService.getCurrentAccount();
+        Account account = accountService.getCurrentAccount();
         return customerRepository.findByAccountId(account.getId());
     }
 

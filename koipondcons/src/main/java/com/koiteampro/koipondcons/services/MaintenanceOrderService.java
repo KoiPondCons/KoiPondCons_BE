@@ -36,7 +36,7 @@ public class MaintenanceOrderService {
     ModelMapper modelMapper;
 
     @Autowired
-    AuthenticationService authenticationService;
+    AccountService accountService;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -124,7 +124,7 @@ public class MaintenanceOrderService {
     }
 
     public MaintenanceOrderResponse getActiveMaintenanceOrderOfConstructor() {
-        Account constructorAccount = authenticationService.getCurrentAccount();
+        Account constructorAccount = accountService.getCurrentAccount();
         MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findByConstructorAccountAndStatus(constructorAccount, MaintenanceOrderStatus.PROCESSING);
         if (maintenanceOrder != null)
             return setToMaintenanceOrderResponse(maintenanceOrder);
@@ -133,7 +133,7 @@ public class MaintenanceOrderService {
     }
 
     public List<MaintenanceOrderResponse> getFinishedMaintenanceOrderOfConstructor(){
-        Account constructorAccount = authenticationService.getCurrentAccount();
+        Account constructorAccount = accountService.getCurrentAccount();
         List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.getFinishedMaintenanceOrderOfConstructor(constructorAccount);
         List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
         for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
@@ -165,7 +165,7 @@ public class MaintenanceOrderService {
 
     public void setConsultantToOrder(long orderId) {
         Optional<MaintenanceOrder> maintenanceOrder = maintenanceOrderRepository.findById(orderId);
-        Account consultingAccount = authenticationService.getCurrentAccount();
+        Account consultingAccount = accountService.getCurrentAccount();
 
         if (maintenanceOrder.isPresent()) {
             MaintenanceOrder maintenanceOrderUpdate = maintenanceOrder.get();
@@ -215,7 +215,7 @@ public class MaintenanceOrderService {
 
         List<AccountResponse> accountResponses = new ArrayList<>();
         for (Account account : accounts) {
-            AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+            AccountResponse accountResponse = accountService.getAccountResponse(account);
             accountResponses.add(accountResponse);
         }
 
