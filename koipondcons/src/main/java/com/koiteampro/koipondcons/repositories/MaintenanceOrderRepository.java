@@ -51,4 +51,5 @@ public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrd
             "and m.status = 'PROCESSING'"
     )
     List<Long> findStaffIdsWithUnfinishedWorks();
+    List<MaintenanceOrder> findMaintenanceOrdersByStatusNot(MaintenanceOrderStatus status);
 }
