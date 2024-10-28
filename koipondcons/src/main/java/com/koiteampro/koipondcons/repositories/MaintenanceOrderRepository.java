@@ -18,6 +18,8 @@ public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrd
     List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndCustomer(LocalDateTime now, Customer customer);
     List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndConsultantAccount(LocalDateTime now, Account consultant);
     MaintenanceOrder findMaintenanceOrderById(long maintenanceOrderId);
+    long countByStatus(MaintenanceOrderStatus status);
+
     @Query(
             "select m \n" +
             "from MaintenanceOrder m\n" +

@@ -12,6 +12,7 @@ public interface ConstructionOrderRepository extends JpaRepository<ConstructionO
     List<ConstructionOrder> findAllByStatusIs(ConstructionOrderStatus status);
     List<ConstructionOrder> findAllByCustomerIdAndStatusNot(Long customerId, ConstructionOrderStatus status);
     List<ConstructionOrder> findAllByConsultantAccountId(Long consultantAccountId);
+    long countByStatus(ConstructionOrderStatus status);
 
     @Query("SELECT scd.constructionOrder " +
             "from StaffConstructionDetail scd " +
@@ -19,4 +20,15 @@ public interface ConstructionOrderRepository extends JpaRepository<ConstructionO
             "group by scd.constructionOrder " +
             "having count(scd) = sum(case when scd.isFinished = true then 1 else 0 end )")
     List<ConstructionOrder> findFinishedOrdersByConstructorID(@Param("ConstructorId") Long constructorId);
+
+    @Query(value =
+            "SELECT COUNT(CombinedOrder.customer_id) AS customer_count\n" +
+                    "FROM (\n" +
+                    "    SELECT c.customer_id FROM construction_order c WHERE c.status = 'CLOSED'\n" +
+                    "    UNION\n" +
+                    "    SELECT m.customer_id FROM maintenance_order m WHERE m.status = 'FINISHED'\n" +
+                    ") CombinedOrder",
+            nativeQuery = true
+    )
+    long countCustomersUsedService();
 }
