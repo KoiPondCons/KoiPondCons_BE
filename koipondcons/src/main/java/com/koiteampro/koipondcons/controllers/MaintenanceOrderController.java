@@ -87,4 +87,9 @@ public class MaintenanceOrderController {
     public ResponseEntity<MaintenanceOrderResponse> getMaintenanceOrderByMaintenanceOrderId(@PathVariable long orderId) {
         return ResponseEntity.ok(maintenanceOrderService.getByMaintenanceOrderId(orderId));
     }
+
+    @GetMapping("/maintenance")
+    public ResponseEntity<List<MaintenanceOrderResponse>> getMaintenanceOrders(){
+        return ResponseEntity.ok(maintenanceOrderService.getByStatusNotCancelled());
+    }
 }

@@ -225,6 +225,10 @@ public class MaintenanceOrderService {
     public MaintenanceOrderResponse getByMaintenanceOrderId(long orderId) {
         MaintenanceOrder maintenanceOrder = maintenanceOrderRepository.findMaintenanceOrderById(orderId);
         return modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class);
+    }
 
+    public List<MaintenanceOrderResponse> getByStatusNotCancelled(){
+        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrdersByStatusNot(MaintenanceOrderStatus.CANCELED);
+        return maintenanceOrders.stream().map(maintenanceOrder -> modelMapper.map(maintenanceOrder, MaintenanceOrderResponse.class)).collect(Collectors.toList());
     }
 }
