@@ -2,8 +2,14 @@ package com.koiteampro.koipondcons.services;
 
 import com.koiteampro.koipondcons.config.VNPayConfig;
 import com.koiteampro.koipondcons.entities.ConsOrderPayment;
+import com.koiteampro.koipondcons.entities.MaintenanceOrder;
+import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
+import com.koiteampro.koipondcons.models.request.MaintenanceOrderRequest;
+import com.koiteampro.koipondcons.models.request.MaintenanceOrderUpdateRequest;
+import com.koiteampro.koipondcons.models.response.MaintenanceOrderResponse;
 import com.koiteampro.koipondcons.models.response.SubmitPaymentResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +27,12 @@ public class VNPayService {
 
     @Autowired
     private ConsOrderPaymentService consOrderPaymentService;
+
+    @Autowired
+    private MaintenanceOrderService maintenanceOrderService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public String createOrder(HttpServletRequest request, long total, String orderInfor, String urlReturn){
         String vnp_Version = "2.1.0";
@@ -138,16 +150,36 @@ public class VNPayService {
 //        String paymentTime = request.getParameter("vnp_PayDate");
 //        String transactionId = request.getParameter("vnp_TransactionNo");
 //        String totalPrice = request.getParameter("vnp_Amount");
+        SubmitPaymentResponse submitPaymentResponse = new SubmitPaymentResponse();
 
-        ConsOrderPayment consOrderPayment = consOrderPaymentService.getConsOrderPaymentById(Long.parseLong(orderPaymentId));
+        String[] type = orderPaymentId.split("/");
 
-        if (paymentStatus == 1) {
-            consOrderPaymentService.setConsOrderPaymentIsPaidForVNPAY(consOrderPayment.getId());
+        System.out.println(type[0]);
+        System.out.println(type[1]);
+
+        if (type[0].equals("order")) {
+            ConsOrderPayment consOrderPayment = consOrderPaymentService.getConsOrderPaymentById(Long.parseLong(type[1]));
+
+            if (paymentStatus == 1) {
+                consOrderPaymentService.setConsOrderPaymentIsPaidForVNPAY(consOrderPayment.getId());
+                submitPaymentResponse.setOrderId(consOrderPayment.getConstructionOrder().getId());
+                submitPaymentResponse.setStatus(true);
+            } else {
+                submitPaymentResponse.setStatus(false);
+            }
+        } else {
+            MaintenanceOrderResponse maintenanceOrderResponse = maintenanceOrderService.getByMaintenanceOrderId(Long.parseLong(type[1]));
+
+            if (paymentStatus == 1) {
+                maintenanceOrderResponse.setStatus(MaintenanceOrderStatus.FINISHED);
+                maintenanceOrderService.updateMaintenanceOrder(Long.parseLong(type[1]), modelMapper.map(maintenanceOrderResponse, MaintenanceOrderUpdateRequest.class));
+                submitPaymentResponse.setOrderId(maintenanceOrderResponse.getId());
+                submitPaymentResponse.setStatus(true);
+            } else {
+                submitPaymentResponse.setStatus(false);
+            }
         }
 
-        SubmitPaymentResponse submitPaymentResponse = new SubmitPaymentResponse();
-        submitPaymentResponse.setOrderId(consOrderPayment.getConstructionOrder().getId());
-        submitPaymentResponse.setStatus(paymentStatus == 1);
         return submitPaymentResponse;
     }
 
