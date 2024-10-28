@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -169,10 +170,13 @@ public class VNPayService {
             }
         } else {
             MaintenanceOrderResponse maintenanceOrderResponse = maintenanceOrderService.getByMaintenanceOrderId(Long.parseLong(type[1]));
+            ZoneId zoneId = ZoneId.of("Asia/Bangkok");
 
             if (paymentStatus == 1) {
                 maintenanceOrderResponse.setStatus(MaintenanceOrderStatus.FINISHED);
-                maintenanceOrderService.updateMaintenanceOrder(Long.parseLong(type[1]), modelMapper.map(maintenanceOrderResponse, MaintenanceOrderUpdateRequest.class));
+                MaintenanceOrderUpdateRequest maintenanceOrderUpdateRequest = modelMapper.map(maintenanceOrderResponse, MaintenanceOrderUpdateRequest.class);
+                maintenanceOrderUpdateRequest.setEndDate(LocalDate.now(zoneId));
+                maintenanceOrderService.updateMaintenanceOrder(Long.parseLong(type[1]), maintenanceOrderUpdateRequest);
                 submitPaymentResponse.setOrderId(maintenanceOrderResponse.getId());
                 submitPaymentResponse.setStatus(true);
             } else {
