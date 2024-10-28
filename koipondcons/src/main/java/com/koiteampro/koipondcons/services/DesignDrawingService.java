@@ -29,7 +29,7 @@ public class DesignDrawingService {
     private DesignDrawingRepository designDrawingRepository;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AccountService accountService;
 
     @Autowired
     AccountRepository accountRepository;
@@ -74,7 +74,7 @@ public class DesignDrawingService {
     }
 
     public List<DesignDrawingResponse> getAllDesignOfDesigner() {
-        Account currentAccount = authenticationService.getCurrentAccount();
+        Account currentAccount = accountService.getCurrentAccount();
         List<DesignDrawing> designDrawings = designDrawingRepository.findAllByDesignerAccountId(currentAccount.getId());
         List<DesignDrawingResponse> designDrawingResponses = new ArrayList<>();
         for (DesignDrawing designDrawing : designDrawings) {
@@ -106,7 +106,7 @@ public class DesignDrawingService {
 
         List<AccountResponse> accountResponses = new ArrayList<>();
         for (Account account : accounts) {
-            AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+            AccountResponse accountResponse = accountService.getAccountResponse(account);
             accountResponses.add(accountResponse);
         }
 

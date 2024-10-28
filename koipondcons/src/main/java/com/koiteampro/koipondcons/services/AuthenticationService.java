@@ -68,7 +68,7 @@ public class AuthenticationService implements UserDetailsService {
             account.setDateCreate(LocalDate.now());
             Account newAccount = accountRepository.save(account);
 
-            if(registerRequest.getRole() == Role.CUSTOMER) {
+            if (registerRequest.getRole() == Role.CUSTOMER) {
                 Customer customer = new Customer();
                 customer.setAccount(newAccount);
                 customer.setTotal_points(0);
@@ -86,8 +86,7 @@ public class AuthenticationService implements UserDetailsService {
         } catch (Exception e) {
             if (e.getMessage().contains(account.getEmail())) {
                 throw new DuplicateEntity("Email đã được đăng ký, vui lòng sử dụng email khác!");
-            }
-            else {
+            } else {
                 throw new DuplicateEntity(e.getMessage());
             }
         }
@@ -108,126 +107,10 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
-    public Account getCurrentAccount() {
-        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return accountRepository.findAccountById(account.getId());
-    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return accountRepository.findAccountByEmailAndIsEnabledTrue(email);
     }
-
-
-    public AccountResponse updateAccount(long id, UpdateAccountRequest updateAccountRequest ) {
-        Account account = accountRepository.findAccountById(id);
-
-
-        if (account == null) {
-            throw new EntityNotFoundException("Id không tồn tại");
-
-        }
-
-        modelMapper.map(updateAccountRequest, account);
-
-        if(account.isEnabled()) {
-            if (updateAccountRequest.getName() != null) {
-                account.setName(updateAccountRequest.getName());
-            }
-            if (updateAccountRequest.getEmail() != null) {
-                account.setEmail(updateAccountRequest.getEmail());
-            }
-            if(updateAccountRequest.getAddress() != null){
-                account.setAddress(updateAccountRequest.getAddress());
-            }
-            if (updateAccountRequest.getAvatar() != null) {
-                account.setAvatar(updateAccountRequest.getAvatar());
-            }
-            if (updateAccountRequest.getPhone() != null) {
-                account.setPhone(updateAccountRequest.getPhone());
-            }
-
-        }
-        accountRepository.save(account);
-        AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
-
-        return accountResponse;
-
-    }
-
-    public boolean deleteAccount(long id) {
-
-        Account account = accountRepository.findAccountById(id);
-
-        if (account == null) {
-           return false;
-        }
-        //try{
-            account.setEnabled(false);
-            accountRepository.save(account);
-//        }catch(Exception e) {
-//            throw new UnauthorizeException("Không có quyền xóa");
-//        }
-
-
-        return true;
-    }
-
-    public List<AccountResponse> getAllAccounts() {
-       List<Account> accounts = accountRepository.findAll();
-       return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
-    }
-
-    public AccountResponse getAccountById(long id){
-        Account account = accountRepository.findAccountById(id);
-        try{
-            return modelMapper.map(account, AccountResponse.class);
-        }catch(Exception e){
-            throw new EntityNotFoundException("Id không tồn tại");
-        }
-    }
-
-    public List<AccountResponse> getAccountByRole(Role role){
-        List<Account> accounts = accountRepository.findAccountByRoleAndIsEnabledTrue(role);
-        return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
-    }
-
-    public List<AccountResponse> findAccountByName(String name){
-        List<AccountResponse> accountResponseList = new ArrayList<>();
-        List<AccountResponse> allAccounts = this.getAllAccounts();
-        for(AccountResponse accountResponse : allAccounts) {
-            if (accountResponse.getName().toLowerCase().contains(name)) {
-                accountResponseList.add(accountResponse);
-            }
-        }
-        return accountResponseList;
-    }
-
-    public boolean setRole(long id, Role role) {
-        Account account = accountRepository.findAccountById(id);
-        if (account == null) {
-            return false;
-        }
-        account.setRole(role);
-        accountRepository.save(account);
-        return true;
-    }
-
-    public AccountResponse getAccountResponse(Account account) {
-        AccountResponse accountResponse = new AccountResponse();
-        accountResponse.setId(account.getId());
-        accountResponse.setName(account.getName());
-        accountResponse.setRole(account.getRole());
-        accountResponse.setAvatar(account.getAvatar());
-        accountResponse.setEmail(account.getEmail());
-        accountResponse.setAddress(account.getAddress());
-        accountResponse.setPhone(account.getPhone());
-        accountResponse.setDateCreate(account.getDateCreate());
-        return accountResponse;
-    }
-
-    public List<AccountResponse> getAllStaff(){
-        List<Account> accounts = accountRepository.findByRoleNotAndIsEnabledTrue(Role.CUSTOMER);
-        return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
-    }
 }
+
+

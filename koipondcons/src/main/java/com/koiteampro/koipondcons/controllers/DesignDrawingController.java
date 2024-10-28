@@ -1,6 +1,5 @@
 package com.koiteampro.koipondcons.controllers;
 
-import com.koiteampro.koipondcons.entities.DesignDrawing;
 import com.koiteampro.koipondcons.models.request.DesignDrawingRequest;
 import com.koiteampro.koipondcons.services.DesignDrawingService;
 import org.springframework.beans.factory.annotation.Autowired;

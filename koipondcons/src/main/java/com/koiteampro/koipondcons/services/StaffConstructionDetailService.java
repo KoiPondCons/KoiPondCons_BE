@@ -23,7 +23,7 @@ public class StaffConstructionDetailService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AccountService accountService;
 
     public List<StaffConstructionDetail> findStaffConstructionDetailByConstructionOrderId(long constructionOrderId) {
         return  staffConstructionDetailRepository.findAllByConstructionOrderId(constructionOrderId);
@@ -51,7 +51,7 @@ public class StaffConstructionDetailService {
 
         List<AccountResponse> accountResponses = new ArrayList<>();
         for (Account account : freeConstructors) {
-            AccountResponse accountResponse = authenticationService.getAccountResponse(account);
+            AccountResponse accountResponse = accountService.getAccountResponse(account);
             accountResponses.add(accountResponse);
         }
 
