@@ -155,7 +155,7 @@ public class ConstructionOrderService {
     }
 
     public List<ConstructionOrderResponse> getAllConstructionOrdersOfConsultantByStatus(ConstructionOrderStatus status) {
-        Account account = authenticationService.getCurrentAccount();
+        Account account = accountService.getCurrentAccount();
 
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByConsultantAccountIdAndStatusIs(account.getId(), status);
         List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
