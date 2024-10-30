@@ -1,5 +1,6 @@
 package com.koiteampro.koipondcons.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,4 +26,7 @@ public class ComboPrice {
 
     @Column(nullable = false)
     private BigDecimal unitPrice;
+
+    @JsonIgnore
+    private boolean isDisabled = false;
 }

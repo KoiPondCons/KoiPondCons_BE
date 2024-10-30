@@ -47,8 +47,14 @@ public class ComboPriceService {
         return comboPrice;
     }
 
-    public void deleteComboPrice(long comboId) {
-        comboPriceRepository.deleteById(comboId);
+    public boolean deleteComboPrice(long comboId) {
+        Optional<ComboPrice> comboPrice = comboPriceRepository.findById(comboId);
+        if (comboPrice.isPresent()) {
+            comboPrice.get().setDisabled(true);
+            comboPriceRepository.save(comboPrice.get());
+            return true;
+        }
+        return false;
     }
 
     public ComboPrice getCompoPriceByComboIdAndVolume(long comboId, float volume) {

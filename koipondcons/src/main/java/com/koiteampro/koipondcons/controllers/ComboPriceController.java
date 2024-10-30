@@ -38,4 +38,12 @@ public class ComboPriceController {
     public ResponseEntity getCompoPriceByComboIdAndVolume(@PathVariable Long comboId, @PathVariable float pondVolume) {
         return ResponseEntity.ok(comboPriceService.getCompoPriceByComboIdAndVolume(comboId, pondVolume));
     }
+
+    @DeleteMapping("/comboprices/{id}")
+    public ResponseEntity<String> deleteComboPrices(@PathVariable Long id) {
+        if (comboPriceService.deleteComboPrice(id)) {
+            return ResponseEntity.ok("Deleted ròi");
+        }
+        return  ResponseEntity.ok("Deleted ko dc");
+    }
 }
