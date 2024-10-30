@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     List<Promotion> findAllByPointsAvailableLessThanEqualOrderByPointsAvailable(int pointsAvailable);
+    List<Promotion> findAllByisDisabledFalse();
 }

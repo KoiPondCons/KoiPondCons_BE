@@ -38,7 +38,7 @@ public class PromotionService {
     }
 
     public List<Promotion> getPromotions() {
-        return promotionRepository.findAll();
+        return promotionRepository.findAllByisDisabledFalse();
     }
 
     public Promotion getPromotionById(Long id) {
