@@ -23,4 +23,9 @@ public class ManagerController {
         Map<String, Object> dashboardStats = managerService.getDashboardStats();
         return ResponseEntity.ok(dashboardStats);
     }
+
+    @GetMapping("/monthly-revenue")
+    public ResponseEntity getMonthlyRevenue() {
+        return ResponseEntity.ok(managerService.getMonthlyRevenue());
+    }
 }

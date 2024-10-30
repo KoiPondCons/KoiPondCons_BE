@@ -3,10 +3,7 @@ package com.koiteampro.koipondcons.services;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.enums.MaintenanceOrderStatus;
 import com.koiteampro.koipondcons.enums.Role;
-import com.koiteampro.koipondcons.repositories.AccountRepository;
-import com.koiteampro.koipondcons.repositories.ComboRepository;
-import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
-import com.koiteampro.koipondcons.repositories.MaintenanceOrderRepository;
+import com.koiteampro.koipondcons.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +26,9 @@ public class ManagerService {
 
     @Autowired
     ComboRepository comboRepository;
+
+    @Autowired
+    ConsOrderPaymentRepository consOrderPaymentRepository;
 
     public Map<String, Object> getDashboardStats() {
         Map<String, Object> stats = new HashMap<>();
@@ -57,5 +57,36 @@ public class ManagerService {
         stats.put("totalOrdersByCombo", totalOrdersByComboList);
 
         return stats;
+    }
+
+    public List<Map<String, Object>> getMonthlyRevenue() {
+        List<Map<String, Object>> monthlyRevenueByYears = new ArrayList<>();
+
+        Map<Object, List<Map<String, Object>>> yearMap = new HashMap<>();
+
+        List<Object[]> getListFromRepo = consOrderPaymentRepository.getMonthlyRevenue();
+        for (Object[] row : getListFromRepo) {
+            Map<String, Object> monthInfo = new HashMap<>();
+            monthInfo.put("month", row[1]);
+            monthInfo.put("revenue", row[2]);
+
+            if (!yearMap.containsKey(row[0])) {
+                List<Map<String, Object>> monthList = new ArrayList<>();
+                monthList.add(monthInfo);
+                yearMap.put(row[0], monthList);
+            }
+            else {
+                yearMap.get(row[0]).add(monthInfo);
+            }
+        }
+
+        for (Map.Entry<Object, List<Map<String, Object>>> entry : yearMap.entrySet()) {
+            Map<String, Object> yearInfo = new HashMap<>();
+            yearInfo.put("year", entry.getKey());
+            yearInfo.put("monthlyRevenue", entry.getValue());
+            monthlyRevenueByYears.add(yearInfo);
+        }
+
+        return monthlyRevenueByYears;
     }
 }
