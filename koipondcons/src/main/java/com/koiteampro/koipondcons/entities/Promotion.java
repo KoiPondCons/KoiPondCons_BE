@@ -20,6 +20,9 @@ public class Promotion {
 
     private int pointsAvailable;
 
+    @JsonIgnore
+    private boolean isDisabled = false;
+
     @ManyToMany(mappedBy = "promotions", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Quotation> quotations;

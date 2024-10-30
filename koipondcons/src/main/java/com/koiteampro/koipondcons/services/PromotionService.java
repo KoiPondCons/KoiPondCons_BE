@@ -94,4 +94,14 @@ public class PromotionService {
             throw new NotFoundException("Quotation not found");
         }
     }
+
+    public boolean deletePromotion(Long id) {
+        Optional<Promotion> promotion = promotionRepository.findById(id);
+        if (promotion.isPresent()) {
+            promotion.get().setDisabled(true);
+            promotionRepository.save(promotion.get());
+            return true;
+        }
+        return false;
+    }
 }
