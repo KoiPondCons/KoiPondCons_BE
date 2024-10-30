@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ComboPriceRepository extends JpaRepository<ComboPrice, Long> {
-    public List<ComboPrice> findByComboId(long comboId);
-
-    public ComboPrice findByComboIdAndMinVolumeLessThanEqualAndMaxVolumeGreaterThanEqual(long comboId, float minVolume, float maxVolume);
+    List<ComboPrice> findByComboId(long comboId);
+    ComboPrice findById(long id);
+    ComboPrice findByComboIdAndMinVolumeLessThanEqualAndMaxVolumeGreaterThanEqual(long comboId, float minVolume, float maxVolume);
 }

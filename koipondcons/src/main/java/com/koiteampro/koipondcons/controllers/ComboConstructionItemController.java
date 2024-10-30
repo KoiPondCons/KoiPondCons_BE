@@ -1,10 +1,13 @@
 package com.koiteampro.koipondcons.controllers;
 
 import com.koiteampro.koipondcons.models.request.ComboConstructionItemRequest;
+import com.koiteampro.koipondcons.models.response.ComboConstructionItemResponse;
 import com.koiteampro.koipondcons.services.ComboConstructionItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -20,12 +23,12 @@ public class ComboConstructionItemController {
     }
 
     @GetMapping("/comboconstructionitems/combo/{comboId}")
-    public ResponseEntity getComboConstructionItemsByComboId(@PathVariable Long comboId) {
+    public ResponseEntity<List<ComboConstructionItemResponse>> getComboConstructionItemsByComboId(@PathVariable Long comboId) {
         return ResponseEntity.ok(comboConstructionItemService.getAllComboConstructionItemsByComboId(comboId));
     }
 
     @GetMapping("/comboconstructionitems/{id}")
-    public ResponseEntity getComboConstructionItemsById(@PathVariable Long id) {
+    public ResponseEntity<ComboConstructionItemResponse> getComboConstructionItemsById(@PathVariable Long id) {
         return ResponseEntity.ok(comboConstructionItemService.getComboConstructionItemById(id));
     }
 
