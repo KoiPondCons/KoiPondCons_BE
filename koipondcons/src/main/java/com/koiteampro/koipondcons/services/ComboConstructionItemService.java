@@ -4,6 +4,7 @@ import com.koiteampro.koipondcons.entities.ComboConstructionItem;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.ComboConstructionItemRequest;
 import com.koiteampro.koipondcons.repositories.ComboConstructionItemRepository;
+import com.koiteampro.koipondcons.repositories.ComboPriceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class ComboConstructionItemService {
 
     @Autowired
     private ComboConstructionItemRepository comboConstructionItemRepository;
+    @Autowired
+    private ComboPriceRepository comboPriceRepository;
 
     public ComboConstructionItem addComboConstructionItem(ComboConstructionItemRequest comboConstructionItemRequest) {
         ComboConstructionItem comboConstructionItem = modelMapper.map(comboConstructionItemRequest, ComboConstructionItem.class);
@@ -47,8 +50,14 @@ public class ComboConstructionItemService {
         return comboConstructionItem;
     }
 
-    public void deleteComboConstructionItem(long id) {
-        comboConstructionItemRepository.deleteById(id);
+    public boolean deleteComboConstructionItem(long id) {
+        Optional<ComboConstructionItem> comboConstructionItem = comboConstructionItemRepository.findById(id);
+        if(comboConstructionItem.isPresent()){
+            comboConstructionItem.get().setDisabled(true);
+            comboConstructionItemRepository.save(comboConstructionItem.get());
+            return true;
+        }
+        return false;
     }
 
 

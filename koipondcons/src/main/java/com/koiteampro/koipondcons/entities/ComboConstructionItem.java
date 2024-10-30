@@ -24,6 +24,9 @@ public class ComboConstructionItem {
 
     private int duration;
 
+    @JsonIgnore
+    private boolean isDisabled = false;
+
     @OneToMany(mappedBy = "constructionItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<StaffConstructionDetail> staffConstructionDetailList;

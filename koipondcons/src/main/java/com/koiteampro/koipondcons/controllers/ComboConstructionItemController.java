@@ -33,4 +33,12 @@ public class ComboConstructionItemController {
     public ResponseEntity updateComboConstructionItems(@PathVariable Long id, @RequestBody ComboConstructionItemRequest comboConstructionItemRequest) {
         return ResponseEntity.ok(comboConstructionItemService.updateComboConstructionItem(id, comboConstructionItemRequest));
     }
+
+    @DeleteMapping("/comboconstructionitems/{id}")
+    public ResponseEntity deleteComboConstructionItems(@PathVariable Long id) {
+        if(comboConstructionItemService.deleteComboConstructionItem(id)) {
+            return ResponseEntity.ok("Deleted ròi");
+        }
+        return ResponseEntity.ok("Deleted ko dc");
+    }
 }
