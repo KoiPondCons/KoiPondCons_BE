@@ -8,6 +8,7 @@ import com.koiteampro.koipondcons.services.AccountService;
 import com.koiteampro.koipondcons.services.DesignDrawingService;
 import com.koiteampro.koipondcons.services.StaffService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,14 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    @GetMapping("/current")
+    public ResponseEntity getCurrentAccount() {
+        return ResponseEntity.ok(modelMapper.map(accountService.getCurrentAccount(), AccountResponse.class));
+    }
 
     @GetMapping("/free-constructors")
     public ResponseEntity getAllFreeConstructors() {
