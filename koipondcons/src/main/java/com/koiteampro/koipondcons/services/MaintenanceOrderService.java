@@ -67,6 +67,7 @@ public class MaintenanceOrderService {
         maintenanceOrderResponse.setCustomerDescription(maintenanceOrder.getCustomerDescription());
         maintenanceOrderResponse.setRequestDate(maintenanceOrder.getRequestDate());
         maintenanceOrderResponse.setEndDate(maintenanceOrder.getEndDate());
+        maintenanceOrderResponse.setMaintenanceDescription(maintenanceOrder.getMaintenanceDescription());
         maintenanceOrderResponse.setPrice(maintenanceOrder.getPrice());
         maintenanceOrderResponse.setStatus(maintenanceOrder.getStatus());
         maintenanceOrderResponse.setStatusDescription(maintenanceOrder.getStatus().getDescription());
@@ -103,6 +104,7 @@ public class MaintenanceOrderService {
             maintenanceOrderUpdate.setWarranted(maintenanceOrderInfoUpdate.isWarranted());
             maintenanceOrderUpdate.setPondVolume(maintenanceOrderInfoUpdate.getPondVolume());
             maintenanceOrderUpdate.setEndDate(maintenanceOrderInfoUpdate.getEndDate());
+            maintenanceOrderUpdate.setMaintenanceDescription(maintenanceOrderInfoUpdate.getMaintenanceDescription());
             maintenanceOrderUpdate.setStatus(maintenanceOrderInfoUpdate.getStatus());
             maintenanceOrderUpdate.setPrice(maintenanceOrderInfoUpdate.getPrice());
 

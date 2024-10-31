@@ -17,6 +17,8 @@ public class MaintenanceOrderUpdateRequest {
 
     private LocalDate endDate;
 
+    private String maintenanceDescription;
+
     private MaintenanceOrderStatus status;
 
 }
