@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class ComboRequest {
     private String name;
+    private String description;
 }
