@@ -61,6 +61,12 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllConstructionOrdersByStatus(orderStatus));
     }
 
+    @GetMapping("/orders/requested")
+    public ResponseEntity getOrderByRequestedStatus () {
+        ConstructionOrderStatus orderStatus = ConstructionOrderStatus.REQUESTED;
+        return ResponseEntity.ok(orderService.getAllConstructionOrdersByRequestedStatus(orderStatus));
+    }
+
     @GetMapping("/orders/consultant/status")
     public ResponseEntity getOrderOfConsultantByStatus (@RequestParam String status) {
         ConstructionOrderStatus orderStatus = ConstructionOrderStatus.valueOf(status);

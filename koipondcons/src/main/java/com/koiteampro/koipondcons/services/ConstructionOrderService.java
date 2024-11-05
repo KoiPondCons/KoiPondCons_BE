@@ -5,6 +5,7 @@ import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequestStatusUpdate;
+import com.koiteampro.koipondcons.models.response.ConstructionOrderRequestedStatusResponse;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponseCustomerHistory;
@@ -177,6 +178,16 @@ public class ConstructionOrderService {
         return constructionOrderResponses;
     }
 
+    public List<ConstructionOrderRequestedStatusResponse> getAllConstructionOrdersByRequestedStatus(ConstructionOrderStatus status) {
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByStatusIs(status);
+        List<ConstructionOrderRequestedStatusResponse> constructionOrderResponses = new ArrayList<>();
+
+        for (ConstructionOrder constructionOrder : constructionOrders) {
+            constructionOrderResponses.add(setInfoForOrderRequestedStatus(constructionOrder));
+        }
+        return constructionOrderResponses;
+    }
+
     public List<ConstructionOrderResponse> getAllConstructionOrdersOfConsultantByStatus(ConstructionOrderStatus status) {
         Account account = accountService.getCurrentAccount();
 
@@ -275,6 +286,13 @@ public class ConstructionOrderService {
 //        constructionOrderResponseCustomerHistory.setDesignDrawingResponse(designDrawingService.getDesignDrawingResponse(constructionOrder.getDesignDrawing()));
 //        constructionOrderResponseCustomerHistory.setQuotationResponse(quotationService.getQuotationResponse(constructionOrder.getQuotation()));
         return constructionOrderResponseCustomerHistory;
+    }
+
+    public ConstructionOrderRequestedStatusResponse setInfoForOrderRequestedStatus(ConstructionOrder constructionOrder) {
+        ConstructionOrderRequestedStatusResponse constructionOrderRequestedStatusResponse = modelMapper.map(constructionOrder, ConstructionOrderRequestedStatusResponse.class);
+        constructionOrderRequestedStatusResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
+
+        return constructionOrderRequestedStatusResponse;
     }
 
     public List<ConstructionOrder> getFinishedOrdersByConstructorID(long constructorId){
