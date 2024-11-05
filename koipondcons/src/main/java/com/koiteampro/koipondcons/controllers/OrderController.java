@@ -2,6 +2,7 @@ package com.koiteampro.koipondcons.controllers;
 
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
+import com.koiteampro.koipondcons.models.request.ConstructionOrderRequestStatusUpdate;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
 import com.koiteampro.koipondcons.services.ConstructionOrderService;
@@ -35,6 +36,11 @@ public class OrderController {
     public ResponseEntity update (@PathVariable int id, @RequestBody ConstructionOrderUpdateRequest order) {
         ConstructionOrderResponse orderResponse = orderService.updateConstructionOrder(id, order);
         return ResponseEntity.ok(orderResponse);
+    }
+
+    @PutMapping("/orders/status/{id}")
+    public ResponseEntity updateOrderStatus (@PathVariable int id, @RequestBody ConstructionOrderRequestStatusUpdate order) {
+        return ResponseEntity.ok(orderService.updateConstructionOrderStatus(id, order));
     }
 
     @GetMapping("/orders/{id}")

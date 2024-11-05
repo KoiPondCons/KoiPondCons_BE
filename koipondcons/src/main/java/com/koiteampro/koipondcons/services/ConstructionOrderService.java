@@ -4,8 +4,10 @@ import com.koiteampro.koipondcons.entities.*;
 import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
+import com.koiteampro.koipondcons.models.request.ConstructionOrderRequestStatusUpdate;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
+import com.koiteampro.koipondcons.models.response.ConstructionOrderResponseCustomerHistory;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.CustomerRepository;
@@ -88,6 +90,27 @@ public class ConstructionOrderService {
         constructionOrderRepository.save(constructionOrder);
 
         return modelMapper.map(constructionOrder, ConstructionOrderResponse.class);
+    }
+
+    public String updateConstructionOrderStatus(long id, ConstructionOrderRequestStatusUpdate order) {
+        Optional<ConstructionOrder> constructionOrder = constructionOrderRepository.findById(id);
+
+        if (constructionOrder.isPresent()) {
+            ConstructionOrder constructionOrderUpdate = constructionOrder.get();
+
+            constructionOrderUpdate.setStatus(order.getStatus());
+            if (constructionOrderUpdate.getStatus() == ConstructionOrderStatus.CLOSED) {
+                constructionOrderUpdate.getCustomer().setTotal_points(constructionOrderUpdate.getCustomer().getTotal_points() + constructionOrderUpdate.getQuotation().getFinalPrice().divide(new BigDecimal(1000000), 0, RoundingMode.FLOOR).intValueExact());
+                constructionOrderUpdate.setWarrantyEndDate(LocalDate.now().plusYears(1));
+                constructionOrderUpdate.setWarrantyRemaining(2);
+            }
+
+            constructionOrderRepository.save(constructionOrderUpdate);
+
+            return "Update successfully";
+        } else {
+            throw new RuntimeException("No construction order found with id " + id);
+        }
     }
 
     public ConstructionOrderResponse updateConstructionOrder(long id, ConstructionOrderUpdateRequest constructionOrderUpdateRequest) {
@@ -178,14 +201,14 @@ public class ConstructionOrderService {
         return constructionOrderResponses;
     }
 
-    public List<ConstructionOrderResponse> getAllConstructionOrdersOfCustomer() {
+    public List<ConstructionOrderResponseCustomerHistory> getAllConstructionOrdersOfCustomer() {
         Customer customer = customerService.getCurrentCustomer();
 
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerIdAndStatusNot(customer.getId(), ConstructionOrderStatus.CANCELED);
-        List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
+        List<ConstructionOrderResponseCustomerHistory> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
+            constructionOrderResponses.add(setInfoForCustomerResponseHistory(constructionOrder));
         }
 
         return constructionOrderResponses;
@@ -244,6 +267,14 @@ public class ConstructionOrderService {
         constructionOrderResponse.setWarrantyEndDate(constructionOrder.getWarrantyEndDate());
         constructionOrderResponse.setWarrantyRemaining(constructionOrder.getWarrantyRemaining());
         return constructionOrderResponse;
+    }
+
+    public ConstructionOrderResponseCustomerHistory setInfoForCustomerResponseHistory(ConstructionOrder constructionOrder) {
+        ConstructionOrderResponseCustomerHistory constructionOrderResponseCustomerHistory = modelMapper.map(constructionOrder, ConstructionOrderResponseCustomerHistory.class);
+        constructionOrderResponseCustomerHistory.setStatusDescription(constructionOrder.getStatus().getDescription());
+//        constructionOrderResponseCustomerHistory.setDesignDrawingResponse(designDrawingService.getDesignDrawingResponse(constructionOrder.getDesignDrawing()));
+//        constructionOrderResponseCustomerHistory.setQuotationResponse(quotationService.getQuotationResponse(constructionOrder.getQuotation()));
+        return constructionOrderResponseCustomerHistory;
     }
 
     public List<ConstructionOrder> getFinishedOrdersByConstructorID(long constructorId){
