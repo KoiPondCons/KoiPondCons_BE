@@ -5,6 +5,7 @@ import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequestStatusUpdate;
+import com.koiteampro.koipondcons.models.response.ConstructionOrderConsultantResponse;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderRequestedStatusResponse;
 import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
@@ -225,14 +226,14 @@ public class ConstructionOrderService {
         return constructionOrderResponses;
     }
 
-    public List<ConstructionOrderResponse> getAllConstructionOrdersOfConsultant() {
+    public List<ConstructionOrderConsultantResponse> getAllConstructionOrdersOfConsultant() {
         Account account = accountService.getCurrentAccount();
 
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByConsultantAccountIdAndStatusNot(account.getId(), ConstructionOrderStatus.CANCELED);
-        List<ConstructionOrderResponse> constructionOrderResponses = new ArrayList<>();
+        List<ConstructionOrderConsultantResponse> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            constructionOrderResponses.add(setInfoForConstructionOrder(constructionOrder));
+            constructionOrderResponses.add(setInfoForConsultantOrderResponse(constructionOrder));
         }
 
         return constructionOrderResponses;
@@ -293,6 +294,14 @@ public class ConstructionOrderService {
         constructionOrderRequestedStatusResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
 
         return constructionOrderRequestedStatusResponse;
+    }
+
+    public ConstructionOrderConsultantResponse setInfoForConsultantOrderResponse(ConstructionOrder constructionOrder) {
+        ConstructionOrderConsultantResponse constructionOrderConsultantResponse = modelMapper.map(constructionOrder, ConstructionOrderConsultantResponse.class);
+        constructionOrderConsultantResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
+        constructionOrderConsultantResponse.getQuotation().setStatusDescription(constructionOrderConsultantResponse.getQuotation().getStatus().getDescription());
+        constructionOrderConsultantResponse.getDesignDrawing().setStatusDescription(constructionOrderConsultantResponse.getDesignDrawing().getStatus().getDescription());
+        return constructionOrderConsultantResponse;
     }
 
     public List<ConstructionOrder> getFinishedOrdersByConstructorID(long constructorId){
