@@ -47,6 +47,8 @@ public class MaintenanceOrder {
 
     private LocalDate endDate;
 
+    private String maintenanceDescription;
+
     private LocalDateTime requestDate;
 
     @Enumerated(EnumType.STRING)

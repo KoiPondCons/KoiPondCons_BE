@@ -15,8 +15,8 @@ import java.util.List;
 
 public interface MaintenanceOrderRepository extends JpaRepository<MaintenanceOrder, Long> {
     MaintenanceOrder findByConstructorAccountAndStatus(Account constructorAccount, MaintenanceOrderStatus status);
-    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndCustomer(LocalDateTime now, Customer customer);
-    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndConsultantAccount(LocalDateTime now, Account consultant);
+    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndCustomerAndStatusNot(LocalDateTime now, Customer customer, MaintenanceOrderStatus status);
+    List<MaintenanceOrder> findMaintenanceOrderByRequestDateBeforeAndConsultantAccountAndStatusNot(LocalDateTime now, Account consultant, MaintenanceOrderStatus status);
     MaintenanceOrder findMaintenanceOrderById(long maintenanceOrderId);
     long countByStatus(MaintenanceOrderStatus status);
 

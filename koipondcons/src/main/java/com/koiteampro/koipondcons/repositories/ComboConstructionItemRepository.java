@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ComboConstructionItemRepository extends JpaRepository<ComboConstructionItem, Long> {
-    public List<ComboConstructionItem> findByComboId(Long comboId);
+    List<ComboConstructionItem> findByComboIdAndIsDisabledFalse(Long comboId);
+    ComboConstructionItem findById(long id);
 }

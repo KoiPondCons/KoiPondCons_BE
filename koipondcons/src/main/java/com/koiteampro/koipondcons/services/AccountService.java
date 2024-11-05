@@ -156,7 +156,10 @@ public class AccountService {
     }
 
     public List<AccountResponse> getAllStaff(){
-        List<Account> accounts = accountRepository.findByRoleNotAndIsEnabledTrue(Role.CUSTOMER);
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.CUSTOMER);
+        roles.add(Role.MANAGER);
+        List<Account> accounts = accountRepository.findByRoleNotInAndIsEnabledTrue(roles);
         return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
     }
 }

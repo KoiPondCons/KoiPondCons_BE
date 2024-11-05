@@ -67,6 +67,7 @@ public class MaintenanceOrderService {
         maintenanceOrderResponse.setCustomerDescription(maintenanceOrder.getCustomerDescription());
         maintenanceOrderResponse.setRequestDate(maintenanceOrder.getRequestDate());
         maintenanceOrderResponse.setEndDate(maintenanceOrder.getEndDate());
+        maintenanceOrderResponse.setMaintenanceDescription(maintenanceOrder.getMaintenanceDescription());
         maintenanceOrderResponse.setPrice(maintenanceOrder.getPrice());
         maintenanceOrderResponse.setStatus(maintenanceOrder.getStatus());
         maintenanceOrderResponse.setStatusDescription(maintenanceOrder.getStatus().getDescription());
@@ -83,7 +84,7 @@ public class MaintenanceOrderService {
     }
 
     public List<MaintenanceOrderResponse> findMaintenanceOrderByCustomerAndBeforeNow(LocalDateTime now, Customer customer){
-        List<MaintenanceOrder> maintenanceOrders =  maintenanceOrderRepository.findMaintenanceOrderByRequestDateBeforeAndCustomer(now, customer);
+        List<MaintenanceOrder> maintenanceOrders =  maintenanceOrderRepository.findMaintenanceOrderByRequestDateBeforeAndCustomerAndStatusNot(now, customer, MaintenanceOrderStatus.CANCELED);
         List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
         for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
             MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);
@@ -103,6 +104,7 @@ public class MaintenanceOrderService {
             maintenanceOrderUpdate.setWarranted(maintenanceOrderInfoUpdate.isWarranted());
             maintenanceOrderUpdate.setPondVolume(maintenanceOrderInfoUpdate.getPondVolume());
             maintenanceOrderUpdate.setEndDate(maintenanceOrderInfoUpdate.getEndDate());
+            maintenanceOrderUpdate.setMaintenanceDescription(maintenanceOrderInfoUpdate.getMaintenanceDescription());
             maintenanceOrderUpdate.setStatus(maintenanceOrderInfoUpdate.getStatus());
             maintenanceOrderUpdate.setPrice(maintenanceOrderInfoUpdate.getPrice());
 
@@ -114,7 +116,7 @@ public class MaintenanceOrderService {
     }
 
     public List<MaintenanceOrderResponse> findMaintenanceOrderByConsultantAndBeforeNow(LocalDateTime now, Account consultant){
-        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderByRequestDateBeforeAndConsultantAccount(now, consultant);
+        List<MaintenanceOrder> maintenanceOrders = maintenanceOrderRepository.findMaintenanceOrderByRequestDateBeforeAndConsultantAccountAndStatusNot(now, consultant, MaintenanceOrderStatus.CANCELED);
         List<MaintenanceOrderResponse> maintenanceOrderResponses = new ArrayList<>();
         for (MaintenanceOrder maintenanceOrder : maintenanceOrders){
             MaintenanceOrderResponse maintenanceOrderResponse = setToMaintenanceOrderResponse(maintenanceOrder);

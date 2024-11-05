@@ -18,6 +18,8 @@ public class Combo {
     @Column(nullable = false)
     private String name;
 
+    private String description;
+
     @JsonIgnore
     private boolean isDeleted = false;
 
