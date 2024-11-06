@@ -43,6 +43,8 @@ public class Account implements UserDetails {
 
     private String address;
 
+    private String fcmToken;
+
     @NotBlank(message = "Vui lòng nhập mật khẩu")
     @Size(min = 6, message = "Mật khẩu phải chứa ít nhất 6 kí tự!")
     private String password;

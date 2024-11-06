@@ -4,10 +4,8 @@ import com.koiteampro.koipondcons.entities.Account;
 import com.koiteampro.koipondcons.entities.Customer;
 import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.exception.DuplicateEntity;
+import com.koiteampro.koipondcons.models.request.*;
 import com.koiteampro.koipondcons.models.response.EmailDetail;
-import com.koiteampro.koipondcons.models.request.LoginRequest;
-import com.koiteampro.koipondcons.models.request.RegisterRequest;
-import com.koiteampro.koipondcons.models.request.UpdateAccountRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.models.request.LoginRequest;
@@ -54,6 +52,9 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    AccountService accountService;
 
     @Autowired
     EmailService emailService;
@@ -110,6 +111,12 @@ public class AuthenticationService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return accountRepository.findAccountByEmailAndIsEnabledTrue(email);
+    }
+
+    public Account updateFCM(UpdateFCMRequest updateFCMRequest){
+        Account account = accountService.getCurrentAccount();
+        account.setFcmToken(updateFCMRequest.getFcmToken());
+        return accountRepository.save(account);
     }
 }
 

@@ -2,6 +2,7 @@ package com.koiteampro.koipondcons.controllers;
 
 import com.koiteampro.koipondcons.models.request.LoginRequest;
 import com.koiteampro.koipondcons.models.request.RegisterRequest;
+import com.koiteampro.koipondcons.models.request.UpdateFCMRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.services.AuthenticationService;
 import jakarta.validation.Valid;
@@ -28,6 +29,13 @@ public class AuthenticationController {
     public ResponseEntity<AccountResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         AccountResponse account = authenticationService.login(loginRequest);
         return ResponseEntity.ok(account);
+    }
+
+    @PostMapping("/update-fcm-token")
+    public ResponseEntity<String> updateFcmToken(@RequestBody UpdateFCMRequest updateFCMRequest) {
+        // Lấy tài khoản người dùng hiện tại từ SecurityContext
+        authenticationService.updateFCM(updateFCMRequest);
+        return ResponseEntity.ok("FCM Token được cập nhật thành công");
     }
 
 }
