@@ -44,7 +44,7 @@ public class VNPayController {
 
         ConsOrderPayment consOrderPayment = consOrderPaymentService.getConsOrderPaymentById(Long.parseLong(paymentId));
 
-        String baseUrl = "https://koipondcons.onrender.com";
+        String baseUrl = "http://localhost:5173";
 
         return vnPayService.createOrder(request, consOrderPayment.getAmount().longValueExact()*100, "order/" + String.valueOf(consOrderPayment.getId()), baseUrl);
     }
@@ -55,7 +55,7 @@ public class VNPayController {
 
         MaintenanceOrderResponse maintenanceOrderResponse = maintenanceOrderService.getByMaintenanceOrderId(Long.parseLong(paymentId));
 
-        String baseUrl = "https://koipondcons.onrender.com";
+        String baseUrl = "http://localhost:5173";
 
         return vnPayService.createOrder(request, (long)maintenanceOrderResponse.getPrice()*100, "maintain/" + String.valueOf(maintenanceOrderResponse.getId()), baseUrl);
     }

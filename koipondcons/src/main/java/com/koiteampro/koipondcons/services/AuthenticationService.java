@@ -79,7 +79,7 @@ public class AuthenticationService implements UserDetailsService {
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(newAccount);
             emailDetail.setSubject("[KoiPondCons] Xác minh tài khoản");
-            emailDetail.setLink("http://localhost:5173/login");
+            emailDetail.setLink("https://koipondcons.onrender.com/verify?accountId=" + newAccount.getId());
             emailService.sendEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);
