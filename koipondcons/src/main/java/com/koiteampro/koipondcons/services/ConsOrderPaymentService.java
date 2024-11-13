@@ -98,11 +98,12 @@ public class ConsOrderPaymentService {
         }
     }
 
-    public List<ConsOrderPayment> getDemoConsOrderPayments(long comboId, float pondVolume, boolean designed) {
+    public List<ConsOrderPayment> getDemoConsOrderPayments(long comboId, float pondVolume, boolean designed, double percentDiscount) {
         ComboPrice comboPrice = comboPriceRepository.findByComboIdAndMinVolumeLessThanEqualAndMaxVolumeGreaterThanEqual(comboId, pondVolume, pondVolume);
 
 
         BigDecimal finalPrice = comboPrice.getUnitPrice().multiply(new BigDecimal(pondVolume));
+        finalPrice = finalPrice.subtract(finalPrice.multiply(new BigDecimal(percentDiscount)));
         ConstructionOrder constructionOrder = new ConstructionOrder();
         constructionOrder.setDesigned(designed);
         int totalPayments = constructionOrder.isDesigned() ? 2 : 3;

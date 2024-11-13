@@ -223,13 +223,13 @@ public class ConstructionOrderService {
         return constructionOrderResponses;
     }
 
-    public List<ConstructionOrderResponseCustomerHistory> getAllConstructionOrdersOfCustomerById(long id) {
+    public List<ConstructionOrderResponseCustomerHistoryForManager> getAllConstructionOrdersOfCustomerById(long id) {
         long customerId = customerService.getCustomerByAccountId(id).getId();
         List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerIdAndStatusNot(customerId, ConstructionOrderStatus.CANCELED);
-        List<ConstructionOrderResponseCustomerHistory> constructionOrderResponses = new ArrayList<>();
+        List<ConstructionOrderResponseCustomerHistoryForManager> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {
-            constructionOrderResponses.add(setInfoForCustomerResponseHistory(constructionOrder));
+            constructionOrderResponses.add(setInfoForCustomerResponseHistoryForManager(constructionOrder));
         }
 
         return constructionOrderResponses;
@@ -296,6 +296,14 @@ public class ConstructionOrderService {
 //        constructionOrderResponseCustomerHistory.setDesignDrawingResponse(designDrawingService.getDesignDrawingResponse(constructionOrder.getDesignDrawing()));
 //        constructionOrderResponseCustomerHistory.setQuotationResponse(quotationService.getQuotationResponse(constructionOrder.getQuotation()));
         return constructionOrderResponseCustomerHistory;
+    }
+
+    public ConstructionOrderResponseCustomerHistoryForManager setInfoForCustomerResponseHistoryForManager(ConstructionOrder constructionOrder) {
+        ConstructionOrderResponseCustomerHistoryForManager constructionOrderResponseCustomerHistoryForManager = modelMapper.map(constructionOrder, ConstructionOrderResponseCustomerHistoryForManager.class);
+        constructionOrderResponseCustomerHistoryForManager.setStatusDescription(constructionOrder.getStatus().getDescription());
+//        constructionOrderResponseCustomerHistory.setDesignDrawingResponse(designDrawingService.getDesignDrawingResponse(constructionOrder.getDesignDrawing()));
+//        constructionOrderResponseCustomerHistory.setQuotationResponse(quotationService.getQuotationResponse(constructionOrder.getQuotation()));
+        return constructionOrderResponseCustomerHistoryForManager;
     }
 
     public ConstructionOrderRequestedStatusResponse setInfoForOrderRequestedStatus(ConstructionOrder constructionOrder) {

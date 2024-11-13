@@ -22,7 +22,7 @@ public class ConsOrderPaymentController {
     }
 
     @GetMapping("cons-order-payment/demo")
-    public ResponseEntity<List<ConsOrderPayment>> getConsOrderPaymentDemo(@RequestParam long comboId, @RequestParam float pondVolume, @RequestParam boolean designed) {
-        return ResponseEntity.ok(consOrderPaymentService.getDemoConsOrderPayments(comboId, pondVolume, designed));
+    public ResponseEntity<List<ConsOrderPayment>> getConsOrderPaymentDemo(@RequestParam long comboId, @RequestParam float pondVolume, @RequestParam boolean designed, @RequestParam double percentDiscount) {
+        return ResponseEntity.ok(consOrderPaymentService.getDemoConsOrderPayments(comboId, pondVolume, designed, percentDiscount));
     }
 }
