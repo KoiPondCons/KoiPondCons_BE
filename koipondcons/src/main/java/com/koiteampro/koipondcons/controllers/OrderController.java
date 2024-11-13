@@ -83,6 +83,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomer());
     }
 
+    @GetMapping("/orders/customer/{id}")
+    public ResponseEntity getAllOrdersOfCustomerById (@PathVariable long id) {
+        return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomerById(id));
+    }
+
     @GetMapping("/orders/constructor/current")
     public ResponseEntity getCurrentOrderOfConstructor () {
         return ResponseEntity.ok(orderService.getCurrentOrderOfConstructor());

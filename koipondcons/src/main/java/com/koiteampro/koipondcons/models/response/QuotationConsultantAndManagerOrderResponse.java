@@ -4,9 +4,11 @@ import com.koiteampro.koipondcons.enums.QuotationStatus;
 import lombok.Data;
 
 @Data
-public class QuotationConsultantOrderResponse {
+public class QuotationConsultantAndManagerOrderResponse {
 
     private QuotationStatus status;
+
     private float pondVolume;
+
     private String statusDescription;
 }

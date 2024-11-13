@@ -5,11 +5,8 @@ import com.koiteampro.koipondcons.enums.ConstructionOrderStatus;
 import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequest;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderRequestStatusUpdate;
-import com.koiteampro.koipondcons.models.response.ConstructionOrderConsultantResponse;
-import com.koiteampro.koipondcons.models.response.ConstructionOrderRequestedStatusResponse;
-import com.koiteampro.koipondcons.models.response.ConstructionOrderResponse;
+import com.koiteampro.koipondcons.models.response.*;
 import com.koiteampro.koipondcons.models.request.ConstructionOrderUpdateRequest;
-import com.koiteampro.koipondcons.models.response.ConstructionOrderResponseCustomerHistory;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
 import com.koiteampro.koipondcons.repositories.CustomerRepository;
@@ -226,6 +223,18 @@ public class ConstructionOrderService {
         return constructionOrderResponses;
     }
 
+    public List<ConstructionOrderResponseCustomerHistory> getAllConstructionOrdersOfCustomerById(long id) {
+
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerIdAndStatusNot(id, ConstructionOrderStatus.CANCELED);
+        List<ConstructionOrderResponseCustomerHistory> constructionOrderResponses = new ArrayList<>();
+
+        for (ConstructionOrder constructionOrder : constructionOrders) {
+            constructionOrderResponses.add(setInfoForCustomerResponseHistory(constructionOrder));
+        }
+
+        return constructionOrderResponses;
+    }
+
     public List<ConstructionOrderConsultantResponse> getAllConstructionOrdersOfConsultant() {
         Account account = accountService.getCurrentAccount();
 
@@ -303,6 +312,15 @@ public class ConstructionOrderService {
         constructionOrderConsultantResponse.getDesignDrawing().setStatusDescription(constructionOrderConsultantResponse.getDesignDrawing().getStatus().getDescription());
         return constructionOrderConsultantResponse;
     }
+
+//    public ConstructionOrderManagerResponse setInfoForManagerOrderResponse(ConstructionOrder constructionOrder) {
+//        ConstructionOrderManagerResponse constructionOrderManagerResponse = modelMapper.map(constructionOrder, ConstructionOrderManagerResponse.class);
+//        constructionOrderManagerResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
+//        constructionOrderManagerResponse.getQuotation().setStatusDescription(constructionOrderManagerResponse.getQuotation().getStatus().getDescription());
+//        constructionOrderManagerResponse.getDesignDrawing().setStatusDescription(constructionOrderManagerResponse.getDesignDrawing().getStatus().getDescription());
+//        constructionOrderManagerResponse.setConstructorAccount(staffConstructionDetailService.getConstructorOfConstructionOrder(constructionOrderManagerResponse.getId()));
+//        return constructionOrderManagerResponse;
+//    }
 
     public List<ConstructionOrder> getFinishedOrdersByConstructorID(long constructorId){
         return constructionOrderRepository.findFinishedOrdersByConstructorID(constructorId);

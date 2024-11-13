@@ -4,7 +4,7 @@ import com.koiteampro.koipondcons.enums.DesignDrawingStatus;
 import lombok.Data;
 
 @Data
-public class DesignDrawingConsultantOrderResponse {
+public class DesignDrawingConsultantAndManagerOrderResponse {
     private DesignDrawingStatus status;
     private String statusDescription;
 }
