@@ -181,6 +181,22 @@ public class ConsOrderPaymentService {
         }
     }
 
+    public ConsOrderPayment updateConsOrderPaymentSuccessByCash(long consOrderPaymentId) {
+        Optional<ConsOrderPayment> consOrderPayment = consOrderPaymentRepository.findById(consOrderPaymentId);
+
+        if(consOrderPayment.isPresent()) {
+            ConsOrderPayment consOrderPay = consOrderPayment.get();
+            consOrderPay.setPaid(true);
+            ZoneId zoneId = ZoneId.of("Asia/Bangkok");
+            consOrderPay.setPaidAt(LocalDateTime.now(zoneId));
+            consOrderPay.setPaymentMethod(PaymentMethod.CASH);
+            consOrderPaymentRepository.save(consOrderPay);
+            return consOrderPay;
+        }else{
+            throw new NotFoundException("Not found order payment!");
+        }
+    }
+
     public void setConsOrderPaymentIsPaidForVNPAY(long consOrderPaymentId) {
         Optional<ConsOrderPayment> consOrderPayment = consOrderPaymentRepository.findById(consOrderPaymentId);
 

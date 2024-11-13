@@ -44,7 +44,7 @@ public class VNPayController {
 
         ConsOrderPayment consOrderPayment = consOrderPaymentService.getConsOrderPaymentById(Long.parseLong(paymentId));
 
-        String baseUrl = "http://localhost:5173";
+        String baseUrl = "https://koipondcons.onrender.com";
 
         return vnPayService.createOrder(request, consOrderPayment.getAmount().longValueExact()*100, "order/" + String.valueOf(consOrderPayment.getId()), baseUrl);
     }
