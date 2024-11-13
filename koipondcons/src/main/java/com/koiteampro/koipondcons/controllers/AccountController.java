@@ -125,4 +125,9 @@ public class AccountController {
     public ResponseEntity<Long> countFreeDesigners(){
         return ResponseEntity.ok(designDrawingService.countFreeDesigners());
     }
+
+    @GetMapping("/free-staff-statistic")
+    public ResponseEntity freeStaffStatistic(){
+        return ResponseEntity.ok(staffService.staffStats());
+    }
 }
