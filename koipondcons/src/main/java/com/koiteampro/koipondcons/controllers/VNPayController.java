@@ -55,7 +55,7 @@ public class VNPayController {
 
         MaintenanceOrderResponse maintenanceOrderResponse = maintenanceOrderService.getByMaintenanceOrderId(Long.parseLong(paymentId));
 
-        String baseUrl = "http://localhost:5173";
+        String baseUrl = "https://koipondcons.onrender.com";
 
         return vnPayService.createOrder(request, (long)maintenanceOrderResponse.getPrice()*100, "maintain/" + String.valueOf(maintenanceOrderResponse.getId()), baseUrl);
     }
