@@ -39,6 +39,10 @@ public class CustomerService {
         }
     }
 
+    public Customer getCustomerByAccountId(long accountId) {
+        return customerRepository.findByAccountId(accountId);
+    }
+
     public void addTotalPoint(long id, int amount) {
         Optional<Customer> customer = customerRepository.findById(id);
 

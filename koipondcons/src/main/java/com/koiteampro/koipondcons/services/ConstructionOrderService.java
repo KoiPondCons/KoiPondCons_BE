@@ -224,8 +224,8 @@ public class ConstructionOrderService {
     }
 
     public List<ConstructionOrderResponseCustomerHistory> getAllConstructionOrdersOfCustomerById(long id) {
-
-        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerIdAndStatusNot(id, ConstructionOrderStatus.CANCELED);
+        long customerId = customerService.getCustomerByAccountId(id).getId();
+        List<ConstructionOrder> constructionOrders = constructionOrderRepository.findAllByCustomerIdAndStatusNot(customerId, ConstructionOrderStatus.CANCELED);
         List<ConstructionOrderResponseCustomerHistory> constructionOrderResponses = new ArrayList<>();
 
         for (ConstructionOrder constructionOrder : constructionOrders) {

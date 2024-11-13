@@ -83,9 +83,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomer());
     }
 
-    @GetMapping("/orders/customer/{id}")
-    public ResponseEntity getAllOrdersOfCustomerById (@PathVariable long id) {
-        return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomerById(id));
+    @GetMapping("/orders/customer/{accountId}")
+    public ResponseEntity getAllOrdersOfCustomerById (@PathVariable long accountId) {
+        return ResponseEntity.ok(orderService.getAllConstructionOrdersOfCustomerById(accountId));
     }
 
     @GetMapping("/orders/constructor/current")
