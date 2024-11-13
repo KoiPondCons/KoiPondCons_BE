@@ -78,8 +78,8 @@ public class AuthenticationService implements UserDetailsService {
 //            sau khi đăng kí thành công, gửi mail về cho người dùng
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(newAccount);
-            emailDetail.setSubject("Welcome to B-Learning, ");
-            emailDetail.setLink("https://www.google.com/");
+            emailDetail.setSubject("[KoiPondCons] Xác minh tài khoản");
+            emailDetail.setLink("http://localhost:5173/login");
             emailService.sendEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);

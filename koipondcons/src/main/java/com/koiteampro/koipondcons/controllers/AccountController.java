@@ -110,4 +110,9 @@ public class AccountController {
     public ResponseEntity<List<AccountResponse>> getAllStaff(){
         return ResponseEntity.ok(accountService.getAllStaff());
     }
+
+    @PutMapping("/verify-account/{accountId}")
+    public ResponseEntity verifyAccount(@PathVariable long accountId){
+        return ResponseEntity.ok(accountService.verifyAccount(accountId));
+    }
 }

@@ -186,6 +186,32 @@ public class ConsOrderPaymentService {
 
         if(consOrderPayment.isPresent()) {
             ConsOrderPayment consOrderPay = consOrderPayment.get();
+
+            ConstructionOrder constructionOrder = consOrderPay.getConstructionOrder();
+
+            if (!constructionOrder.isDesigned()) {
+                switch (consOrderPay.getPeriod()) {
+                    case 1:
+                        constructionOrder.setStatus(ConstructionOrderStatus.DESIGNING);
+                        break;
+                    case 2:
+                        constructionOrder.setStatus(ConstructionOrderStatus.CONSTRUCTING);
+                        break;
+                    case 3:
+                        constructionOrder.setStatus(ConstructionOrderStatus.FINISHED);
+                        break;
+                }
+            } else {
+                switch (consOrderPay.getPeriod()) {
+                    case 1:
+                        constructionOrder.setStatus(ConstructionOrderStatus.CONSTRUCTING);
+                        break;
+                    case 2:
+                        constructionOrder.setStatus(ConstructionOrderStatus.FINISHED);
+                        break;
+                }
+            }
+
             consOrderPay.setPaid(true);
             ZoneId zoneId = ZoneId.of("Asia/Bangkok");
             consOrderPay.setPaidAt(LocalDateTime.now(zoneId));

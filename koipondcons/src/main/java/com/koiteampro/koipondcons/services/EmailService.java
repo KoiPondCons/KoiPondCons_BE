@@ -25,7 +25,7 @@ public class EmailService {
         try {
             Context context = new Context();
             context.setVariable("name", emailDetail.getReceiver().getEmail());
-            context.setVariable("button", "Go to homepage");
+            context.setVariable("button", "Xác minh tài khoản");
             context.setVariable("link", emailDetail.getLink());
 
             String template = templateEngine.process("welcome-template", context);

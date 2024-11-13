@@ -5,6 +5,7 @@ import com.koiteampro.koipondcons.enums.Role;
 import com.koiteampro.koipondcons.models.request.UpdateAccountRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.models.response.StaffResponse;
+import com.koiteampro.koipondcons.models.response.VerifyAccountResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -161,6 +162,22 @@ public class AccountService {
         roles.add(Role.MANAGER);
         List<Account> accounts = accountRepository.findByRoleNotInAndIsEnabledTrue(roles);
         return accounts.stream().map(account -> modelMapper.map(account, AccountResponse.class)).collect(Collectors.toList());
+    }
+
+    public VerifyAccountResponse verifyAccount(long accountId) {
+        Account account = accountRepository.findAccountById(accountId);
+        VerifyAccountResponse verifyAccountResponse = new VerifyAccountResponse();
+
+        if (account != null && !account.isEnabled()) {
+            verifyAccountResponse.setStatus(1);
+            account.setEnabled(true);
+            accountRepository.save(account);
+        } else if (account != null && account.isEnabled()) {
+            verifyAccountResponse.setStatus(2);
+        } else {
+            verifyAccountResponse.setStatus(3);
+        }
+        return verifyAccountResponse;
     }
 }
 
