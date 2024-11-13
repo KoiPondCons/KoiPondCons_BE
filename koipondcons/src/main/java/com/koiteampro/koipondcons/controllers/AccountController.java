@@ -39,7 +39,7 @@ public class AccountController {
 
     @GetMapping("/free-constructors")
     public ResponseEntity getAllFreeConstructors() {
-        List<AccountResponse> accounts = staffService.getALlFreeConstructor();
+        List<AccountResponse> accounts = staffService.getAllFreeConstructor();
         return ResponseEntity.ok(accounts);
     }
 
@@ -114,5 +114,15 @@ public class AccountController {
     @PutMapping("/verify-account/{accountId}")
     public ResponseEntity verifyAccount(@PathVariable long accountId){
         return ResponseEntity.ok(accountService.verifyAccount(accountId));
+    }
+
+    @GetMapping("/count-free-constructors")
+    public ResponseEntity<Long> countFreeConstructors(){
+        return ResponseEntity.ok(staffService.countFreeConstructor());
+    }
+
+    @GetMapping("/count-free-designers")
+    public ResponseEntity<Long> countFreeDesigners(){
+        return ResponseEntity.ok(designDrawingService.countFreeDesigners());
     }
 }
