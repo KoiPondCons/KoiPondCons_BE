@@ -21,4 +21,5 @@ public class MaintenanceOrderUpdateRequest {
 
     private MaintenanceOrderStatus status;
 
+    private String pondAddress;
 }
