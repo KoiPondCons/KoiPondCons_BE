@@ -52,7 +52,7 @@ public class EmailService {
     public void sendFirstPaymentEmail(EmailPaymentDetail emailPaymentDetail) {
         try {
             Context context = new Context();
-            context.setVariable("name", emailPaymentDetail.getReceiver().getEmail());
+            context.setVariable("name", emailPaymentDetail.getReceiver().getName());
             context.setVariable("text1", emailPaymentDetail.getText1());
             context.setVariable("text2", emailPaymentDetail.getText2());
             context.setVariable("text3", emailPaymentDetail.getText3());
@@ -69,7 +69,7 @@ public class EmailService {
 
             //setting up necessary details
             mimeMessageHelper.setFrom("trankimnha272727@gmail.com");
-            mimeMessageHelper.setTo(emailPaymentDetail.getReceiver().getName());
+            mimeMessageHelper.setTo(emailPaymentDetail.getReceiver().getEmail());
             mimeMessageHelper.setText(template, true);
             mimeMessageHelper.setSubject(emailPaymentDetail.getSubject());
 
