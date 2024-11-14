@@ -12,7 +12,7 @@ public class MaintenanceOrderResponse {
 
     private long constructionOrderId;
 
-    private long customerId;
+    private long customerAccountId;
 
     private String customerName;
 

@@ -59,7 +59,7 @@ public class MaintenanceOrderService {
         MaintenanceOrderResponse maintenanceOrderResponse = new MaintenanceOrderResponse();
         maintenanceOrderResponse.setId(maintenanceOrder.getId());
         maintenanceOrderResponse.setConstructionOrderId(maintenanceOrder.getConstructionOrderId());
-        maintenanceOrderResponse.setCustomerId(maintenanceOrder.getCustomer().getAccount().getId());
+        maintenanceOrderResponse.setCustomerAccountId(maintenanceOrder.getCustomer().getAccount().getId());
         maintenanceOrderResponse.setCustomerName(maintenanceOrder.getCustomerName());
         maintenanceOrderResponse.setCustomerEmail(maintenanceOrder.getCustomer().getAccount().getEmail());
         maintenanceOrderResponse.setCustomerPhone(maintenanceOrder.getCustomerPhone());
