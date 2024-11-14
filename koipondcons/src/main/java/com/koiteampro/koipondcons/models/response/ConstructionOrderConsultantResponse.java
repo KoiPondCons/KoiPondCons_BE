@@ -8,6 +8,8 @@ public class ConstructionOrderConsultantResponse {
 
     private long id;
 
+    private long customerAccountId;
+
     private ConstructionOrderStatus status;
 
     private String statusDescription;

@@ -9,6 +9,8 @@ public class ConstructionOrderRequestedStatusResponse {
 
     private long id;
 
+    private long customerAccountId;
+
     private ConstructionOrderStatus status;
 
     private String statusDescription;

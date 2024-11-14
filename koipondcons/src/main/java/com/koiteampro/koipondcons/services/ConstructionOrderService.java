@@ -324,7 +324,7 @@ public class ConstructionOrderService {
     public ConstructionOrderRequestedStatusResponse setInfoForOrderRequestedStatus(ConstructionOrder constructionOrder) {
         ConstructionOrderRequestedStatusResponse constructionOrderRequestedStatusResponse = modelMapper.map(constructionOrder, ConstructionOrderRequestedStatusResponse.class);
         constructionOrderRequestedStatusResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
-
+        constructionOrderRequestedStatusResponse.setCustomerAccountId(constructionOrder.getCustomer().getAccount().getId());
         return constructionOrderRequestedStatusResponse;
     }
 
@@ -333,6 +333,7 @@ public class ConstructionOrderService {
         constructionOrderConsultantResponse.setStatusDescription(constructionOrder.getStatus().getDescription());
         constructionOrderConsultantResponse.getQuotation().setStatusDescription(constructionOrderConsultantResponse.getQuotation().getStatus().getDescription());
         constructionOrderConsultantResponse.getDesignDrawing().setStatusDescription(constructionOrderConsultantResponse.getDesignDrawing().getStatus().getDescription());
+        constructionOrderConsultantResponse.setCustomerAccountId(constructionOrder.getCustomer().getAccount().getId());
         return constructionOrderConsultantResponse;
     }
 
