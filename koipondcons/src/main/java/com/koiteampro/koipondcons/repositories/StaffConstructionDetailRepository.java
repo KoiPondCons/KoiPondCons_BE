@@ -16,7 +16,6 @@ public interface StaffConstructionDetailRepository extends JpaRepository<StaffCo
             "where d.isFinished = false"
     )
     List<Long> findStaffIdsWithUnfinishedWorks();
-
     List<StaffConstructionDetail> findByIsFinishedFalseAndConstructorAccountId(Long id);
     long countByConstructionOrderId(Long id);
     long countByConstructionOrderIdAndIsFinishedTrue(Long id);

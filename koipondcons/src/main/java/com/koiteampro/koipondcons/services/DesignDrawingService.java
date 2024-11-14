@@ -113,6 +113,10 @@ public class DesignDrawingService {
         return accountResponses;
     }
 
+    public long countFreeDesigners(){
+        return getAllFreeDesigners().size();
+    }
+
     public DesignDrawingResponse getDesignDrawingResponse(DesignDrawing designDrawing) {
         DesignDrawingResponse designDrawingResponse = new DesignDrawingResponse();
         designDrawingResponse.setId(designDrawing.getId());

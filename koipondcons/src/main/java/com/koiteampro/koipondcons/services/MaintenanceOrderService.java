@@ -107,6 +107,7 @@ public class MaintenanceOrderService {
             maintenanceOrderUpdate.setMaintenanceDescription(maintenanceOrderInfoUpdate.getMaintenanceDescription());
             maintenanceOrderUpdate.setStatus(maintenanceOrderInfoUpdate.getStatus());
             maintenanceOrderUpdate.setPrice(maintenanceOrderInfoUpdate.getPrice());
+            maintenanceOrderUpdate.setPondAddress(maintenanceOrderInfoUpdate.getPondAddress());
 
             maintenanceOrderRepository.save(maintenanceOrderUpdate);
             return setToMaintenanceOrderResponse(maintenanceOrderUpdate);
