@@ -55,6 +55,9 @@ public class ConstructionOrderService {
     @Autowired
     DesignDrawingService designDrawingService;
 
+    @Autowired
+    private EmailService emailService;
+
     public ConstructionOrderResponse createConstructionOrder(ConstructionOrderRequest constructionOrderRequest) {
 
         ConstructionOrder constructionOrder = modelMapper.map(constructionOrderRequest, ConstructionOrder.class);
@@ -124,6 +127,18 @@ public class ConstructionOrderService {
                 constructionOrderUpdate.getCustomer().setTotal_points(constructionOrderUpdate.getCustomer().getTotal_points() + constructionOrderUpdate.getQuotation().getFinalPrice().divide(new BigDecimal(1000000), 0, RoundingMode.FLOOR).intValueExact());
                 constructionOrderUpdate.setWarrantyEndDate(LocalDate.now().plusYears(1));
                 constructionOrderUpdate.setWarrantyRemaining(2);
+            }
+
+            if (constructionOrderUpdate.getStatus() == ConstructionOrderStatus.CONSTRUCTED) {
+                EmailPaymentDetail emailPaymentDetail = new EmailPaymentDetail();
+                emailPaymentDetail.setReceiver(constructionOrderUpdate.getCustomer().getAccount());
+                emailPaymentDetail.setSubject("[KoiPondCons] Thông Báo Thanh Toán Đợt 3 – Bàn Giao Hồ Cá Koi");
+                emailPaymentDetail.setText1("Chúng tôi xin gửi lời cảm ơn chân thành tới Quý khách vì đã đồng hành cùng chúng tôi trong suốt quá trình thiết kế và thi công hồ cá Koi. Hiện nay, dự án đã hoàn thiện và sẵn sàng cho giai đoạn bàn giao.");
+                emailPaymentDetail.setText2("Để chính thức hoàn tất và bàn giao hồ cá Koi theo đúng cam kết, chúng tôi kính đề nghị Quý khách thanh toán đợt 3, cũng là đợt thanh toán cuối cùng theo thỏa thuận. Việc thanh toán này sẽ giúp chúng tôi hoàn tất các thủ tục bàn giao và cung cấp các tài liệu liên quan đến việc bảo trì và chăm sóc hồ cá trong thời gian tới.");
+                emailPaymentDetail.setText3("Quý khách có thể thanh toán qua chuyển khoản ngân hàng hoặc các phương thức thanh toán đã được cung cấp. Sau khi nhận được thanh toán, chúng tôi sẽ sắp xếp lịch bàn giao chi tiết và hướng dẫn Quý khách các bước chăm sóc hồ cá để đảm bảo môi trường sống tốt nhất cho Koi.");
+                emailPaymentDetail.setText4("Xin chân thành cảm ơn Quý khách đã đồng hành cùng chúng tôi trong từng giai đoạn của dự án. Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua số điện thoại hoặc email dưới đây để được hỗ trợ.");
+                emailPaymentDetail.setText5("Trân trọng, KoiPondCons");
+                emailService.sendFirstPaymentEmail(emailPaymentDetail);
             }
             constructionOrderUpdate.setCustomerName(constructionOrderInfoUpdate.getCustomerName());
             constructionOrderUpdate.setCustomerEmail(constructionOrderInfoUpdate.getCustomerEmail());

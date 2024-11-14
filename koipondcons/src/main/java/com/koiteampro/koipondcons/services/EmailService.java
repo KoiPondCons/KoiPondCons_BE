@@ -69,7 +69,7 @@ public class EmailService {
 
             //setting up necessary details
             mimeMessageHelper.setFrom("trankimnha272727@gmail.com");
-            mimeMessageHelper.setTo(emailPaymentDetail.getReceiver().getEmail());
+            mimeMessageHelper.setTo(emailPaymentDetail.getReceiver().getName());
             mimeMessageHelper.setText(template, true);
             mimeMessageHelper.setSubject(emailPaymentDetail.getSubject());
 

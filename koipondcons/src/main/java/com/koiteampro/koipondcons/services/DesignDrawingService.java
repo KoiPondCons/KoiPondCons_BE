@@ -10,6 +10,7 @@ import com.koiteampro.koipondcons.exception.NotFoundException;
 import com.koiteampro.koipondcons.models.request.DesignDrawingRequest;
 import com.koiteampro.koipondcons.models.response.AccountResponse;
 import com.koiteampro.koipondcons.models.response.DesignDrawingResponse;
+import com.koiteampro.koipondcons.models.response.EmailPaymentDetail;
 import com.koiteampro.koipondcons.models.response.OrderCustomerResponse;
 import com.koiteampro.koipondcons.repositories.AccountRepository;
 import com.koiteampro.koipondcons.repositories.ConstructionOrderRepository;
@@ -37,6 +38,9 @@ public class DesignDrawingService {
     @Autowired
     ConsOrderPaymentService consOrderPaymentService;
 
+    @Autowired
+    private EmailService emailService;
+
 
     public void updateDesignDrawing(long id, DesignDrawingRequest designDrawingRequest) {
         Optional<DesignDrawing> designDrawingOptional = designDrawingRepository.findById(id);
@@ -46,6 +50,19 @@ public class DesignDrawingService {
             designDrawing.setDesignerAccount(designDrawingRequest.getDesignerAccount());
             designDrawing.setDesignFile(designDrawingRequest.getDesignFile());
             designDrawing.setStatus(designDrawingRequest.getStatus());
+
+            if (designDrawing.getStatus() == DesignDrawingStatus.CUSTOMER_PENDING) {
+                EmailPaymentDetail emailPaymentDetail = new EmailPaymentDetail();
+                emailPaymentDetail.setReceiver(designDrawing.getConstructionOrder().getCustomer().getAccount());
+                emailPaymentDetail.setSubject("[KoiPondCons] Thông Báo Thanh Toán Đợt 2 – Chuẩn Bị Vật Liệu & Thi Công Hồ Cá Koi");
+                emailPaymentDetail.setText1("Chúng tôi xin chân thành cảm ơn Quý khách đã hợp tác trong quá trình thiết kế hồ cá Koi. Để tiếp tục dự án đúng tiến độ và bắt đầu giai đoạn thi công, chúng tôi xin phép nhắc Quý khách về đợt thanh toán thứ hai.");
+                emailPaymentDetail.setText2("Theo kế hoạch, đợt thanh toán 2 sẽ giúp chúng tôi chuẩn bị đầy đủ vật liệu và nhân lực cần thiết để bắt đầu thi công hồ cá. Do đó, chúng tôi mong Quý khách hoàn tất thanh toán đợt này trong thời gian sớm nhất để đội ngũ thi công có thể nhanh chóng triển khai công việc.");
+                emailPaymentDetail.setText3("Thông tin chi tiết về khoản thanh toán đã được gửi trong hợp đồng và bảng báo giá. Quý khách có thể thực hiện thanh toán qua chuyển khoản ngân hàng hoặc các phương thức thanh toán đã được cung cấp.");
+                emailPaymentDetail.setText4("Xin chân thành cảm ơn Quý khách đã đồng hành cùng chúng tôi trong từng giai đoạn của dự án. Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua số điện thoại hoặc email dưới đây để được hỗ trợ.");
+                emailPaymentDetail.setText5("Trân trọng, KoiPondCons");
+                emailService.sendFirstPaymentEmail(emailPaymentDetail);
+            }
+
             designDrawingRepository.save(designDrawing);
         } else {
             throw new NotFoundException("DesignDrawing with id " + id + " not found");
