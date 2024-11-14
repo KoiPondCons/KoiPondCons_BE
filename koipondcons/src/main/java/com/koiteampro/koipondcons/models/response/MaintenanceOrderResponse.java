@@ -12,6 +12,8 @@ public class MaintenanceOrderResponse {
 
     private long constructionOrderId;
 
+    private long customerId;
+
     private String customerName;
 
     private String customerEmail;
